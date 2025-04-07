@@ -1,0 +1,57 @@
+'use client';
+
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { ArrowLeft } from 'lucide-react';
+import { motion } from 'motion/react';
+
+import AppLogo from '@/components/app-logo';
+import MaxWidthContainer from '@/components/max-width-container';
+import { Button } from '@/components/ui/button';
+
+export default function SignUpLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className='relative h-screen w-screen overflow-hidden'>
+      <motion.div
+        initial={{ x: '-100%' }}
+        animate={{ x: 0 }}
+        exit={{ x: '-100%' }}
+        transition={{ type: 'tween', duration: 0.5 }}
+        className='absolute top-0 left-0 h-full w-full p-10 md:max-w-1/2'
+      >
+        <div className='flex flex-row items-center justify-between'>
+          <AppLogo />
+          <Link href='/' passHref>
+            <Button variant='ghost'>
+              <ArrowLeft />
+              Back to home
+            </Button>
+          </Link>
+        </div>
+        <MaxWidthContainer className='flex h-full flex-col items-center justify-center'>
+          {children}
+        </MaxWidthContainer>
+      </motion.div>
+      <motion.div
+        initial={{ x: '100%' }}
+        animate={{ x: 0 }}
+        exit={{ x: '100%' }}
+        transition={{ type: 'tween', duration: 0.5 }}
+        className='absolute top-0 right-0 hidden h-screen w-full max-w-1/2 md:block'
+      >
+        <Image
+          fill
+          priority
+          src='/sign-up.jpg'
+          alt='Da Nang beach'
+          className='object-cover object-center'
+        />
+      </motion.div>
+    </div>
+  );
+}
