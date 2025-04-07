@@ -23,7 +23,7 @@ export default function SignInPage() {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onKeyDown={handleOnKeyDown}
-          className='mt-10 flex flex-col gap-4'
+          className='mt-8 flex flex-col gap-3'
         >
           <FormInput
             form={form}
@@ -39,7 +39,7 @@ export default function SignInPage() {
             placeholder='Enter your password'
           />
           <Link href='/forgot-password' passHref className='ml-auto'>
-            <Button variant='link' className='!h-auto !p-0'>
+            <Button variant='link' className='mt-4 !h-auto !p-0'>
               Forgot password?
             </Button>
           </Link>

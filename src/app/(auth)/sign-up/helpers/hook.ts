@@ -4,19 +4,16 @@ import { useRouter } from 'next/navigation';
 
 import api from '@/api';
 import { AuthRoutes } from '@/constants/routes';
-import IErrorResponse from '@/types/IErrorResponse';
 import IMessage from '@/types/IMessage';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HTTPError } from 'ky';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { z } from 'zod';
 
-import { ISignUpSchema, signUpSchema } from './schema';
+import { ISignUpSchema, ISignUpSchemaErrors, signUpSchema } from './schema';
 
 export default function useSignUpHook() {
   const router = useRouter();
-
   const form = useForm<ISignUpSchema>({
     resolver: zodResolver(signUpSchema),
     reValidateMode: 'onChange',
@@ -25,6 +22,7 @@ export default function useSignUpHook() {
       email: '',
       password: '',
       confirmPassword: '',
+      acceptTerms: false,
     },
   });
 
@@ -42,17 +40,25 @@ export default function useSignUpHook() {
       }
     } catch (error) {
       if (error instanceof HTTPError) {
-        const response = await error.response.json<IErrorResponse>();
-        if (error.response.status === 400) {
-          Object.keys(response.data).forEach((key) => {
-            form.setError(key as keyof z.infer<typeof signUpSchema>, {
-              message: response.data[key][0],
-            });
+        // Handle validation errors
+        const response = await error.response.json<ISignUpSchemaErrors>();
+        if (response.status === 400 && response.data) {
+          Object.entries(response.data).forEach(([field, messages]) => {
+            form.setError(
+              field as keyof ISignUpSchema,
+              {
+                type: 'value',
+                message: messages.join(', '),
+              },
+              { shouldFocus: true },
+            );
           });
         } else {
+          // Handle other errors
           toast.error(response.message);
         }
       } else {
+        // Handle unexpected errors
         toast.error('An error occurred. Please try again later.');
         console.log('~ Error on sign up:', error);
       }

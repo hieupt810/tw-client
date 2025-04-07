@@ -22,7 +22,7 @@ export default function SignUpLayout({
         animate={{ x: 0 }}
         exit={{ x: '-100%' }}
         transition={{ type: 'tween', duration: 0.5 }}
-        className='absolute top-0 left-0 h-full w-full p-10 md:max-w-1/2'
+        className='absolute top-0 left-0 flex h-full w-full flex-col p-10 md:max-w-1/2'
       >
         <div className='flex flex-row items-center justify-between'>
           <AppLogo />
@@ -33,7 +33,7 @@ export default function SignUpLayout({
             </Button>
           </Link>
         </div>
-        <MaxWidthContainer className='flex h-full flex-col items-center justify-center'>
+        <MaxWidthContainer className='flex grow flex-col items-center justify-center'>
           {children}
         </MaxWidthContainer>
       </motion.div>
@@ -47,6 +47,7 @@ export default function SignUpLayout({
         <Image
           fill
           priority
+          loading='eager'
           src='/sign-up.jpg'
           alt='Da Nang beach'
           className='object-cover object-center'

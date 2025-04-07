@@ -5,19 +5,16 @@ import { useRouter } from 'next/navigation';
 import api from '@/api';
 import { ACCESS_TOKEN_KEY } from '@/constants';
 import { AuthRoutes } from '@/constants/routes';
-import IErrorResponse from '@/types/IErrorResponse';
 import { ITokenPair } from '@/types/ITokenPair';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HTTPError } from 'ky';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { z } from 'zod';
 
-import { ISignInSchema, signInSchema } from './schema';
+import { ISignInSchema, ISignInSchemaErrors, signInSchema } from './schema';
 
 export default function useSignInHook() {
   const router = useRouter();
-
   const form = useForm<ISignInSchema>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -43,17 +40,25 @@ export default function useSignInHook() {
       }
     } catch (error) {
       if (error instanceof HTTPError) {
-        const response = await error.response.json<IErrorResponse>();
+        // Handle validation errors
+        const response = await error.response.json<ISignInSchemaErrors>();
         if (response.status === 400 && response.data) {
-          Object.keys(response.data).forEach((key) => {
-            form.setError(key as keyof z.infer<typeof signInSchema>, {
-              message: response.data[key][0],
-            });
+          Object.entries(response.data).forEach(([field, messages]) => {
+            form.setError(
+              field as keyof ISignInSchema,
+              {
+                type: 'server',
+                message: messages.join(', '),
+              },
+              { shouldFocus: true },
+            );
           });
         } else {
+          // Handle other errors
           toast.error(response.message);
         }
       } else {
+        // Handle unexpected errors
         toast.error('An error occurred. Please try again later.');
         console.log('~ Error on sign in:', error);
       }

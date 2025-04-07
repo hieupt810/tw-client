@@ -1,33 +1,20 @@
 import { UseFormReturn } from 'react-hook-form';
 
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from './ui/form';
-import { Input } from './ui/input';
+import { Checkbox } from './ui/checkbox';
+import { FormControl, FormField, FormItem, FormLabel } from './ui/form';
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: UseFormReturn<any>;
   name: string;
   label: string;
-  type?: React.HTMLInputTypeAttribute;
-  placeholder?: string;
-  description?: string;
   required?: boolean;
 };
 
-export default function FormInput({
+export default function FormCheckbox({
   form,
   name,
   label,
-  type = 'text',
-  placeholder,
-  description,
   required = false,
 }: Props) {
   return (
@@ -35,20 +22,18 @@ export default function FormInput({
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem>
-          <FormLabel>{label}</FormLabel>
+        <FormItem className='flex flex-row items-center'>
           <FormControl>
-            <Input
-              type={type}
+            <Checkbox
+              checked={field.value}
+              onCheckedChange={field.onChange}
               required={required}
-              placeholder={placeholder}
+              aria-required={required}
               disabled={form.formState.isSubmitting}
               aria-disabled={form.formState.isSubmitting}
-              {...field}
             />
           </FormControl>
-          {description && <FormDescription>{description}</FormDescription>}
-          <FormMessage />
+          <FormLabel className='font-normal'>{label}</FormLabel>
         </FormItem>
       )}
     />

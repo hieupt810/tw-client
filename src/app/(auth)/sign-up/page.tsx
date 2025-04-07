@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import { Loader2 } from 'lucide-react';
 
+import FormCheckbox from '@/components/form-checkbox';
 import FormInput from '@/components/form-input';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
@@ -23,7 +24,7 @@ export default function SignUpPage() {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           onKeyDown={handleOnKeyDown}
-          className='mt-10 flex flex-col gap-4'
+          className='mt-8 flex flex-col gap-3'
         >
           <FormInput
             form={form}
@@ -50,6 +51,12 @@ export default function SignUpPage() {
             label='Confirm password'
             type='password'
             placeholder='Re-enter your password'
+          />
+          <FormCheckbox
+            form={form}
+            name='acceptTerms'
+            label='I accept all terms & conditions'
+            required
           />
           <Button
             type='submit'

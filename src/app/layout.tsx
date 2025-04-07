@@ -37,7 +37,7 @@ export default function RootLayout({
           'min-h-screen font-sans antialiased',
         )}
       >
-        <main className='relative h-full w-full'>{children}</main>
+        <main className='relative flex h-full w-full flex-col'>{children}</main>
         <Toaster />
       </body>
     </html>
