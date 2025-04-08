@@ -51,6 +51,7 @@ export default function SignInLayout({
           src='/sign-in.jpg'
           alt='Hoi An Ancient Town'
           className='object-cover object-center'
+          sizes='(max-width: 768px) 100vw, (min-width: 768px) 50vw'
         />
       </motion.div>
     </div>

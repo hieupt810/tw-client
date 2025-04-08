@@ -26,7 +26,7 @@ type Props = {
 
 export default function CarouselImage({
   images,
-  delay = 3000,
+  delay = 5000,
   ratio = 16 / 9,
   className,
 }: Props) {
@@ -45,7 +45,9 @@ export default function CarouselImage({
   }, [api]);
 
   return (
-    <div className={cn('w-full md:px-12', className)}>
+    <div
+      className={cn('relative w-full overflow-hidden rounded-md', className)}
+    >
       <Carousel
         setApi={setApi}
         opts={{ align: 'center', loop: true }}
@@ -54,27 +56,24 @@ export default function CarouselImage({
         <CarouselContent>
           {images.map((image, index) => (
             <CarouselItem key={index}>
-              <div className='p-1'>
-                <AspectRatio
-                  ratio={ratio}
-                  className='overflow-hidden rounded-md'
-                >
-                  <Image
-                    fill
-                    src={image}
-                    alt='Image'
-                    className='h-full w-full object-cover object-center'
-                  />
-                </AspectRatio>
-              </div>
+              <AspectRatio ratio={ratio} className='overflow-hidden rounded-md'>
+                <Image
+                  fill
+                  src={image}
+                  alt='Image'
+                  className='h-full w-full object-cover object-center'
+                />
+              </AspectRatio>
             </CarouselItem>
           ))}
         </CarouselContent>
         <CarouselPrevious className='max-md:hidden' />
         <CarouselNext className='max-md:hidden' />
       </Carousel>
-      <div className='text-muted-foreground py-2 text-center text-sm'>
-        Image {current} of {count}
+      <div className='absolute bottom-2 z-10 flex w-full items-center justify-center'>
+        <div className='rounded-md bg-black/60 px-3 py-1.5 text-center text-xs text-white'>
+          {current}/{count}
+        </div>
       </div>
     </div>
   );

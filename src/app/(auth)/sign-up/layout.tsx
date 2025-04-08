@@ -51,6 +51,7 @@ export default function SignUpLayout({
           src='/sign-up.jpg'
           alt='Da Nang beach'
           className='object-cover object-center'
+          sizes='(max-width: 768px) 100vw, (min-width: 768px) 50vw'
         />
       </motion.div>
     </div>
