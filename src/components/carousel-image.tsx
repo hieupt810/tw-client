@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
-import { AspectRatio } from '@radix-ui/react-aspect-ratio';
 import Autoplay from 'embla-carousel-autoplay';
 
 import {
@@ -20,14 +19,12 @@ import {
 type Props = {
   images: string[];
   delay?: number;
-  ratio?: number;
   className?: React.ComponentProps<'div'>['className'];
 };
 
 export default function CarouselImage({
   images,
   delay = 5000,
-  ratio = 16 / 9,
   className,
 }: Props) {
   const [api, setApi] = useState<CarouselApi>();
@@ -55,20 +52,22 @@ export default function CarouselImage({
       >
         <CarouselContent>
           {images.map((image, index) => (
-            <CarouselItem key={index}>
-              <AspectRatio ratio={ratio} className='overflow-hidden rounded-md'>
-                <Image
-                  fill
-                  src={image}
-                  alt='Image'
-                  className='h-full w-full object-cover object-center'
-                />
-              </AspectRatio>
+            <CarouselItem
+              key={index}
+              className='max-h-[20rem] md:max-h-[35rem]'
+            >
+              <Image
+                src={image}
+                alt='Image'
+                width={1000}
+                height={1000}
+                className='h-full w-full object-cover object-center'
+              />
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className='max-md:hidden' />
-        <CarouselNext className='max-md:hidden' />
+        <CarouselPrevious />
+        <CarouselNext />
       </Carousel>
       <div className='absolute bottom-2 z-10 flex w-full items-center justify-center'>
         <div className='rounded-md bg-black/60 px-3 py-1.5 text-center text-xs text-white'>

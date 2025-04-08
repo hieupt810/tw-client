@@ -45,14 +45,18 @@ export default function PlaceDetailsPage() {
           </div>
         </div>
       </div>
-      <div className='mt-4 mb-8 flex flex-row gap-2'>
-        <CarouselImage
-          images={['/home.jpg', '/sign-in.jpg', '/sign-up.jpg']}
-          className='grow'
-        />
-        <div className='flex flex-row gap-2'>
+      <div className='mt-4 mb-8 flex flex-col gap-2 lg:flex-row'>
+        <div className='grow'>
+          <CarouselImage
+            images={['/home.jpg', '/sign-in.jpg', '/sign-up.jpg']}
+          />
+        </div>
+        <div className='flex grow flex-row gap-2'>
           {['/sign-in.jpg', '/sign-up.jpg'].map((image, index) => (
-            <div key={index} className='h-full w-52 overflow-hidden rounded-md'>
+            <div
+              key={index}
+              className='h-full max-h-[35rem] grow overflow-hidden rounded-md'
+            >
               <Image
                 src={image}
                 alt='Image'
