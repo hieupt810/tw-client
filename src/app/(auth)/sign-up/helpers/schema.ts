@@ -1,6 +1,7 @@
+import { z } from 'zod';
+
 import { Regex } from '@/constants/regex';
 import IResponse from '@/types/IResponse';
-import { z } from 'zod';
 
 export const signUpSchema = z
   .object({

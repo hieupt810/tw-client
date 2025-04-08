@@ -1,5 +1,6 @@
-import { API_URL } from '@/constants';
 import ky from 'ky';
+
+import { API_URL } from '@/constants';
 
 import { afterResponseHook, beforeRequestHook } from './utils';
 

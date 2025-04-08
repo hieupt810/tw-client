@@ -1,8 +1,7 @@
 'use client';
 
-import Link from 'next/link';
-
 import { Loader2, UserRoundPlus } from 'lucide-react';
+import Link from 'next/link';
 
 import FormCheckbox from '@/components/form-checkbox';
 import FormInput from '@/components/form-input';

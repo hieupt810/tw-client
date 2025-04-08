@@ -1,13 +1,12 @@
-import Image from 'next/image';
-
-import { LOREM_IPSUM } from '@/constants';
 import { BadgeCheck, Heart, MapPin, MessageCircle, Share } from 'lucide-react';
+import Image from 'next/image';
 
 import CarouselImage from '@/components/carousel-image';
 import MaxWidthContainer from '@/components/max-width-container';
 import Rating from '@/components/rating';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { LOREM_IPSUM } from '@/constants';
 
 import InformationCard from './components/information-card';
 

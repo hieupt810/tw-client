@@ -1,8 +1,7 @@
 'use client';
 
-import Link from 'next/link';
-
 import { Loader2, LogIn } from 'lucide-react';
+import Link from 'next/link';
 
 import FormInput from '@/components/form-input';
 import { Button } from '@/components/ui/button';

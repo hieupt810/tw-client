@@ -1,11 +1,10 @@
 'use client';
 
+import { Search } from 'lucide-react';
+import Image from 'next/image';
 import { useState } from 'react';
 
-import Image from 'next/image';
-
-import { Search } from 'lucide-react';
-
+import MaxWidthContainer from '@/components/max-width-container';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -29,7 +28,7 @@ export default function HomeSearch() {
         />
       </div>
       <div className='absolute top-0 left-0 z-10 h-[45rem] w-full bg-black/50' />
-      <div className='absolute inset-0 z-20 flex flex-col items-center justify-center gap-4'>
+      <MaxWidthContainer className='absolute inset-0 z-20 flex flex-col items-center justify-center gap-4'>
         <h1 className='scroll-m-20 text-center text-4xl/relaxed font-extrabold text-white lg:text-5xl/relaxed'>
           Explore Your Journey Awaits
         </h1>
@@ -46,7 +45,7 @@ export default function HomeSearch() {
             <Search />
           </Button>
         </div>
-      </div>
+      </MaxWidthContainer>
     </div>
   );
 }

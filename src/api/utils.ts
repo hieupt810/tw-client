@@ -1,8 +1,9 @@
+import ky, { KyRequest, KyResponse, NormalizedOptions } from 'ky';
+import { toast } from 'sonner';
+
 import { ACCESS_TOKEN_KEY, API_URL, REFRESH_TOKEN_KEY } from '@/constants';
 import { AuthRoutes } from '@/constants/routes';
 import { IAccessToken } from '@/types/IAccessToken';
-import ky, { KyRequest, KyResponse, NormalizedOptions } from 'ky';
-import { toast } from 'sonner';
 
 export function getTokens() {
   const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);

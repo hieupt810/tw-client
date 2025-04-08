@@ -1,5 +1,6 @@
-import { APP_NAME } from '@/constants';
 import { DraftingCompass } from 'lucide-react';
+
+import { APP_NAME } from '@/constants';
 
 export default function AppLogo() {
   return (

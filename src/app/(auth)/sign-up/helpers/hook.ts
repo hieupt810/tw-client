@@ -1,14 +1,14 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { HTTPError } from 'ky';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import api from '@/api';
 import { AuthRoutes } from '@/constants/routes';
 import IMessage from '@/types/IMessage';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { HTTPError } from 'ky';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 
 import { ISignUpSchema, ISignUpSchemaErrors, signUpSchema } from './schema';
 

@@ -1,11 +1,10 @@
 'use client';
 
+import Autoplay from 'embla-carousel-autoplay';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-import Image from 'next/image';
-
 import { cn } from '@/lib/utils';
-import Autoplay from 'embla-carousel-autoplay';
 
 import {
   Carousel,
