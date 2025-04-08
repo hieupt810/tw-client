@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import { Loader2 } from 'lucide-react';
+import { Loader2, UserRoundPlus } from 'lucide-react';
 
 import FormCheckbox from '@/components/form-checkbox';
 import FormInput from '@/components/form-input';
@@ -16,7 +16,12 @@ export default function SignUpPage() {
 
   return (
     <div className='w-full max-w-md'>
-      <h1 className='text-center text-4xl/relaxed font-bold'>Sign up</h1>
+      <div className='flex items-center justify-center'>
+        <div className='border-muted rounded-lg border p-2'>
+          <UserRoundPlus size={40} />
+        </div>
+      </div>
+      <h1 className='mt-4 text-center text-4xl/relaxed font-bold'>Sign up</h1>
       <p className='text-muted-foreground mt-1 text-center'>
         Explore personalized travel recommendations.
       </p>

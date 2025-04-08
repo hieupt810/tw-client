@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import { Loader2 } from 'lucide-react';
+import { Loader2, LogIn } from 'lucide-react';
 
 import FormInput from '@/components/form-input';
 import { Button } from '@/components/ui/button';
@@ -15,7 +15,12 @@ export default function SignInPage() {
 
   return (
     <div className='w-full max-w-md'>
-      <h1 className='text-center text-4xl/relaxed font-bold'>Sign in</h1>
+      <div className='flex items-center justify-center'>
+        <div className='border-muted rounded-lg border p-2'>
+          <LogIn size={36} />
+        </div>
+      </div>
+      <h1 className='mt-4 text-center text-4xl/relaxed font-bold'>Sign in</h1>
       <p className='text-muted-foreground mt-1 text-center'>
         Welcome back! Please sign in to your account.
       </p>

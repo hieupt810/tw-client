@@ -28,9 +28,9 @@ export default function HomeSearch() {
           className='z-0 h-full w-full object-cover object-center'
         />
       </div>
-      <div className='absolute top-0 left-0 z-10 h-[45rem] w-full bg-black/60' />
+      <div className='absolute top-0 left-0 z-10 h-[45rem] w-full bg-black/50' />
       <div className='absolute inset-0 z-20 flex flex-col items-center justify-center gap-4'>
-        <h1 className='text-center text-4xl/relaxed font-extrabold text-white lg:text-5xl/relaxed'>
+        <h1 className='scroll-m-20 text-center text-4xl/relaxed font-extrabold text-white lg:text-5xl/relaxed'>
           Explore Your Journey Awaits
         </h1>
         <div className='flex w-full max-w-3xl flex-row items-center gap-2'>

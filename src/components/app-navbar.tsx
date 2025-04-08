@@ -17,8 +17,10 @@ export default function AppNavbar() {
   return (
     <header className='absolute top-0 z-40 w-full bg-white shadow-md'>
       <MaxWidthContainer className='flex flex-row items-center justify-between space-x-4 py-3'>
-        <AppLogo />
-        <NavigationMenu>
+        <Link href='/' passHref>
+          <AppLogo />
+        </Link>
+        <NavigationMenu className='hidden md:block'>
           <NavigationMenuList>
             {NAVIGATION_MENU_ITEMS.map((item) => (
               <NavigationMenuItem key={item.href}>
@@ -31,7 +33,7 @@ export default function AppNavbar() {
             ))}
           </NavigationMenuList>
         </NavigationMenu>
-        <div className='flex flex-row items-center gap-2'>
+        <div className='hidden flex-row items-center gap-2 md:flex'>
           <Link href='/sign-in' passHref>
             <Button variant='outline'>Sign in</Button>
           </Link>
