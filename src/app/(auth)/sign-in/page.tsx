@@ -1,16 +1,58 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, LogIn } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 import FormInput from '@/components/form-input';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
+import { Regex } from '@/constants/regex';
+import { postSignIn } from '@/services/auth';
 
-import useSignInHook from './helpers/hook';
+const signInSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: 'This field is required.' })
+    .email('Invalid email address.'),
+  password: z
+    .string()
+    .min(8, 'Password must be at least 8 characters long.')
+    .max(32, 'Password must be at most 32 characters long.')
+    .regex(Regex.PASSWORD, {
+      message:
+        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+    }),
+});
+
+type ISignInSchema = z.infer<typeof signInSchema>;
 
 export default function SignInPage() {
-  const { form, onSubmit, handleOnKeyDown } = useSignInHook();
+  const router = useRouter();
+  const form = useForm<ISignInSchema>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  async function onSubmit(values: ISignInSchema) {
+    const response = await postSignIn(values);
+    if (response) {
+      router.push('/');
+    }
+  }
+
+  function handleOnKeyDown(e: React.KeyboardEvent<HTMLFormElement>) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      form.handleSubmit(onSubmit)();
+    }
+  }
 
   return (
     <div className='w-full max-w-md'>

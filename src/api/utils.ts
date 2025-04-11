@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { ACCESS_TOKEN_KEY, API_URL, REFRESH_TOKEN_KEY } from '@/constants';
 import { AuthRoutes } from '@/constants/routes';
 import { IAccessToken } from '@/types/IAccessToken';
+import IMessage from '@/types/IMessage';
 
 export function getTokens() {
   const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
@@ -40,8 +41,8 @@ export async function refreshAccessToken() {
   }
 
   // Store the new access token in local storage
-  localStorage.setItem(ACCESS_TOKEN_KEY, response.data.access_token);
-  return response.data.access_token;
+  localStorage.setItem(ACCESS_TOKEN_KEY, response.data.accessToken);
+  return response.data.accessToken;
 }
 
 export function beforeRequestHook(request: KyRequest) {
@@ -68,6 +69,9 @@ export async function afterResponseHook(
       toast.info('Session expired. Please log in again.');
       window.location.href = '/sign-in';
     }
+  } else {
+    const data = await response.json<IMessage>();
+    toast.error(data.message);
   }
   return response;
 }

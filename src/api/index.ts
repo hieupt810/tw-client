@@ -10,10 +10,6 @@ const api = ky.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  retry: {
-    limit: 1,
-    statusCodes: [500],
-  },
   hooks: {
     beforeRequest: [beforeRequestHook],
     afterResponse: [afterResponseHook],

@@ -1,3 +1,3 @@
 import IResponse from './IResponse';
 
-export type IAccessToken = IResponse<{ access_token: string }>;
+export type IAccessToken = IResponse<{ accessToken: string }>;
