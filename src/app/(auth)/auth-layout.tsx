@@ -9,11 +9,12 @@ import AppLogo from '@/components/app-logo';
 import MaxWidthContainer from '@/components/max-width-container';
 import { Button } from '@/components/ui/button';
 
-export default function SignUpLayout({
-  children,
-}: {
+type Props = {
   children: React.ReactNode;
-}) {
+  image: string;
+};
+
+export default function AuthLayout({ children, image }: Props) {
   return (
     <div className='relative h-screen w-screen overflow-hidden'>
       <motion.div
@@ -47,8 +48,8 @@ export default function SignUpLayout({
           fill
           priority
           loading='eager'
-          src='/sign-up.jpg'
-          alt='Da Nang beach'
+          src={image}
+          alt='Image'
           className='object-cover object-center'
           sizes='(max-width: 768px) 100vw, (min-width: 768px) 50vw'
         />

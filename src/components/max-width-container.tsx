@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 
 type Props = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 } & React.HTMLProps<HTMLDivElement>;
 
 export default function MaxWidthContainer({
