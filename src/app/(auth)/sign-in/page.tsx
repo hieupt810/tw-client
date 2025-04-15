@@ -5,6 +5,7 @@ import { Loader2, LogIn } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import FormInput from '@/components/form-input';
 import { Button } from '@/components/ui/button';
@@ -16,7 +17,7 @@ import AuthLayout from '../auth-layout';
 
 export default function SignInPage() {
   const router = useRouter();
-  const { signIn, isAuthenticated } = useAuthStore();
+  const { signIn } = useAuthStore();
 
   const form = useForm<ISignInSchema>({
     resolver: zodResolver(signInSchema),
@@ -25,7 +26,9 @@ export default function SignInPage() {
 
   async function onSubmit(values: ISignInSchema) {
     await signIn(values);
+    const { isAuthenticated, error } = useAuthStore.getState();
     if (isAuthenticated) router.push('/');
+    else toast.error(error);
   }
 
   function handleOnKeyDown(e: React.KeyboardEvent<HTMLFormElement>) {

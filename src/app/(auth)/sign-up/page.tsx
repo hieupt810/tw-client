@@ -36,7 +36,6 @@ export default function SignUpPage() {
       toast.error('Something went wrong. Please try again later.');
       return;
     }
-
     if (response.data === 200) {
       toast.success(response.message);
       router.push('/sign-in');
