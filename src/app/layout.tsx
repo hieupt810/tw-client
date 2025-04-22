@@ -36,7 +36,9 @@ export default function RootLayout({
           'min-h-screen font-sans antialiased',
         )}
       >
-        <main className='relative flex h-full w-full flex-col'>{children}</main>
+        <main className='relative flex min-h-screen w-full flex-col'>
+          {children}
+        </main>
         <Toaster richColors position='top-right' />
       </body>
     </html>
