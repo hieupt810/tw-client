@@ -5,47 +5,37 @@ import remarkGfm from 'remark-gfm';
 import { cn } from '@/lib/utils';
 
 type MessageProps = {
-  isUserMessage?: boolean;
   content: string;
+  isUser?: boolean;
 };
 
-export default function Message({
-  isUserMessage = false,
-  content,
-}: MessageProps) {
+export default function Message({ content, isUser = false }: MessageProps) {
   return (
     <div
       className={cn(
         'flex w-full items-start gap-2',
-        isUserMessage ? 'flex-row-reverse' : 'flex-row',
+        isUser ? 'flex-row-reverse' : 'flex-row',
       )}
     >
-      <div className='size-12 overflow-hidden rounded-full shadow-md'>
-        {!isUserMessage ? (
+      <div className='py-1'>
+        <div className='size-10 overflow-hidden rounded-full shadow-md'>
           <Image
-            src={'/robot.jpeg'}
-            alt='Chatbot avatar'
-            width={100}
-            height={100}
+            src={isUser ? 'https://github.com/shadcn.png' : '/robot.jpeg'}
+            alt={isUser ? 'User' : 'Assistant'}
+            width={500}
+            height={500}
           />
-        ) : (
-          <Image
-            src={'https://github.com/shadcn.png'}
-            alt='Chatbot avatar'
-            width={100}
-            height={100}
-          />
-        )}
+        </div>
       </div>
 
       <div
         className={cn(
-          'w-fit rounded-xl px-4 py-2.5 shadow-md',
-          isUserMessage ? 'bg-accent text-accent-foreground' : 'bg-violet-100',
+          'rounded-xl px-4 py-2.5 shadow-md',
+          isUser ? 'bg-accent text-accent-foreground' : 'bg-violet-100',
         )}
       >
         <div className='prose prose-sm md:prose-base'>
-          {isUserMessage ? (
+          {isUser ? (
             <p>{content}</p>
           ) : (
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>

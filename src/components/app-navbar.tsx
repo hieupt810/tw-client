@@ -25,7 +25,7 @@ export default function AppNavbar() {
   }, [me]);
 
   return (
-    <header className='absolute top-0 z-40 w-full bg-white shadow-md'>
+    <header className='sticky top-0 z-40 w-full bg-white shadow-md'>
       <MaxWidthContainer className='flex flex-row items-center justify-between space-x-4 py-3'>
         <Link href='/' passHref>
           <AppLogo />

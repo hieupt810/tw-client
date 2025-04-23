@@ -1,7 +1,6 @@
-import AppFooter from '@/components/app-footer';
 import AppNavbar from '@/components/app-navbar';
 
-export default function PublicLayout({
+export default function PrivateLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -10,7 +9,6 @@ export default function PublicLayout({
     <>
       <AppNavbar />
       <div className='grow'>{children}</div>
-      <AppFooter />
     </>
   );
 }
