@@ -1,15 +1,15 @@
 import Image from 'next/image';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 
 import { cn } from '@/lib/utils';
 
-type MessageProps = {
-  content: string;
+import Markdown from './markdown';
+
+type Props = {
+  text: string;
   isUser?: boolean;
 };
 
-export default function Message({ content, isUser = false }: MessageProps) {
+export default function Message({ text, isUser = false }: Props) {
   return (
     <div
       className={cn(
@@ -34,13 +34,7 @@ export default function Message({ content, isUser = false }: MessageProps) {
           isUser ? 'bg-accent text-accent-foreground' : 'bg-violet-100',
         )}
       >
-        <div className='prose prose-sm md:prose-base'>
-          {isUser ? (
-            <p>{content}</p>
-          ) : (
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
-          )}
-        </div>
+        <Markdown text={text} />
       </div>
     </div>
   );

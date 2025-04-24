@@ -1,46 +1,33 @@
-'use client';
+import { SquarePen } from 'lucide-react';
 
-import { useRef } from 'react';
+import { Button } from '@/components/ui/button';
+import { LOREM_IPSUM } from '@/constants';
 
-import Message from '@/components/message';
-import { Input } from '@/components/ui/input';
-import { LOREM_IPSUM_MARKDOWN } from '@/constants';
+import ChatPanel from './components/chat-panel';
 
 export default function ChatPage() {
-  const boxChatRef = useRef<HTMLDivElement>(null);
-
   return (
     <div id='chat' className='flex h-[calc(100vh-4rem)] w-full grid-cols-4'>
-      {/* Left panel */}
-      <div className='bg-accent text-accent-foreground max-h-dvh basis-1/4 p-6'>
-        Left
-      </div>
-      {/* End of Left panel */}
-
-      {/* Right panel */}
-      <div ref={boxChatRef} className='flex max-h-dvh basis-3/4 flex-col'>
-        {/* Top */}
-        <div className='flex max-h-[calc(100vh-4rem)] flex-col-reverse gap-y-4 overflow-y-auto p-6'>
-          <Message content={LOREM_IPSUM_MARKDOWN} />
-          <Message
-            isUser
-            content='Please briefly explain why I should visit the Dragon Bridge in Da Nang.'
-          />
-          <Message content={LOREM_IPSUM_MARKDOWN} />
-          <Message
-            isUser
-            content='Please briefly explain why I should visit the Dragon Bridge in Da Nang.'
-          />
+      <div className='relative hidden max-h-dvh basis-1/4 flex-col gap-2 overflow-x-hidden overflow-y-auto px-2 py-4 shadow-md md:flex'>
+        <div className='absolute top-0 left-0 z-10 flex w-full items-center justify-between gap-2 px-5 py-2.5'>
+          <h3 className='font-semibold tracking-wide'>History</h3>
+          <Button variant='ghost' size='icon'>
+            <SquarePen />
+          </Button>
         </div>
-        {/* End of Top */}
 
-        {/* Bottom */}
-        <div className='px-6 py-3'>
-          <Input placeholder='Ask something...' />
+        <div className='mt-10 flex grow flex-col gap-1'>
+          {Array.from({ length: 20 }, (_, i) => (
+            <button
+              key={i}
+              className='hover:bg-accent text-accent-foreground cursor-pointer truncate rounded-md px-3 py-1.5 text-sm select-none'
+            >
+              {LOREM_IPSUM}
+            </button>
+          ))}
         </div>
-        {/* End of Bottom */}
       </div>
-      {/* End of Right panel */}
+      <ChatPanel />
     </div>
   );
 }

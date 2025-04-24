@@ -23,7 +23,7 @@ type Props = {
 
 export default function CarouselImage({
   images,
-  delay = 5000,
+  delay = 8000,
   className,
 }: Props) {
   const [api, setApi] = useState<CarouselApi>();
@@ -41,9 +41,7 @@ export default function CarouselImage({
   }, [api]);
 
   return (
-    <div
-      className={cn('relative w-full overflow-hidden rounded-md', className)}
-    >
+    <div className={cn('relative w-full max-w-4xl', className)}>
       <Carousel
         setApi={setApi}
         opts={{ align: 'center', loop: true }}
@@ -53,14 +51,14 @@ export default function CarouselImage({
           {images.map((image, index) => (
             <CarouselItem
               key={index}
-              className='max-h-[20rem] md:max-h-[35rem]'
+              className='max-h-[20rem] md:max-h-[30rem]'
             >
               <Image
                 src={image}
                 alt='Image'
                 width={1000}
                 height={1000}
-                className='h-full w-full object-cover object-center'
+                className='h-full w-full overflow-hidden rounded-xl object-cover object-center'
               />
             </CarouselItem>
           ))}
