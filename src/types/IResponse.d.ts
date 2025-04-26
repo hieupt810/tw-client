@@ -1,7 +1,4 @@
-type IResponse<T> = {
-  data: T;
-  status: number;
-  message: string;
+export type IResponse = {
+  data: null;
+  success: boolean;
 };
-
-export default IResponse;

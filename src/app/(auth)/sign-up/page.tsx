@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { HTTPError } from 'ky';
 import { Loader2, UserRoundPlus } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -31,16 +32,35 @@ export default function SignUpPage() {
   });
 
   async function onSubmit(values: ISignUpSchema) {
-    const response = await postSignUp(values);
-    if (!response) {
-      toast.error('Something went wrong. Please try again later.');
-      return;
-    }
-    if (response.data === 200) {
-      toast.success(response.message);
-      router.push('/sign-in');
-    } else {
-      toast.error(response.message);
+    try {
+      const response = await postSignUp(values);
+      if (response.success) {
+        toast.success('Signed up successfully.');
+        router.push('/sign-in');
+      } else {
+        toast.error('Failed to create account. Please try again.');
+      }
+    } catch (error) {
+      if (error instanceof HTTPError) {
+        const response = await error.response.json<IErrorResponse>();
+        if (error.response.status === 400) {
+          Object.entries(response.error).forEach(([field, messages]) => {
+            form.setError(
+              field as keyof ISignUpSchema,
+              {
+                type: 'value',
+                message: messages.join(', '),
+              },
+              { shouldFocus: true },
+            );
+          });
+          return;
+        } else if (typeof response.error === 'string') {
+          toast.error(response.error);
+          return;
+        }
+      }
+      toast.error('An unexpected error occurred. Please try again later.');
     }
   }
 

@@ -8,6 +8,7 @@ import { useAuthStore } from '@/stores/auth-store';
 
 import AppLogo from './app-logo';
 import MaxWidthContainer from './max-width-container';
+import { Avatar, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import {
   NavigationMenu,
@@ -16,9 +17,10 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from './ui/navigation-menu';
+import { Skeleton } from './ui/skeleton';
 
 export default function AppNavbar() {
-  const { isLoading, isAuthenticated, me } = useAuthStore();
+  const { isLoading, user, me } = useAuthStore();
 
   useEffect(() => {
     me();
@@ -44,7 +46,13 @@ export default function AppNavbar() {
           </NavigationMenuList>
         </NavigationMenu>
         <div className='hidden flex-row items-center gap-2 md:flex'>
-          {!isLoading && !isAuthenticated && (
+          {isLoading ? (
+            <Skeleton className='h-9 w-44' />
+          ) : user ? (
+            <Avatar>
+              <AvatarImage src='https://github.com/shadcn.png' />
+            </Avatar>
+          ) : (
             <>
               <Link href='/sign-in' passHref>
                 <Button variant='outline'>Sign in</Button>

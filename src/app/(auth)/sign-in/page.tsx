@@ -27,8 +27,15 @@ export default function SignInPage() {
   async function onSubmit(values: ISignInSchema) {
     await signIn(values);
     const { isAuthenticated, error } = useAuthStore.getState();
-    if (isAuthenticated) router.push('/');
-    else toast.error(error);
+    if (isAuthenticated) {
+      toast.success('Signed in successfully.');
+      router.push('/');
+    }
+
+    if (error && typeof error === 'string') {
+      toast.error(error);
+      return;
+    }
   }
 
   function handleOnKeyDown(e: React.KeyboardEvent<HTMLFormElement>) {

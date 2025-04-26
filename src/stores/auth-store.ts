@@ -1,13 +1,19 @@
+import { HTTPError } from 'ky';
 import { create } from 'zustand';
 
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constants';
 import { getTokenPair } from '@/lib/utils';
 import { getMe, postSignIn } from '@/services/auth';
-import { IShortUser } from '@/types/IMe';
+import { IMe } from '@/types/IMeResponse';
 import { ISignInSchema } from '@/types/ISignInSchema';
 
 type IAuthStore = {
-  error: string | null;
-  user: IShortUser | null;
+  error:
+    | string
+    | {
+        [key: string]: string[];
+      };
+  user: IMe | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   me: () => Promise<void>;
@@ -15,52 +21,83 @@ type IAuthStore = {
 };
 
 export const useAuthStore = create<IAuthStore>()((set) => ({
-  error: null,
+  error: '',
   user: null,
-  isLoading: false,
+  isLoading: true,
   isAuthenticated: false,
 
   // Actions
   async me() {
-    if (getTokenPair() === null) return;
-
-    // Check if the user is already authenticated
     set((state) => ({ ...state, isLoading: true }));
-    const payload = await getMe();
-    if (payload.status === 200) {
+    try {
+      if (getTokenPair() === null) {
+        set((state) => ({
+          ...state,
+          user: null,
+          isAuthenticated: false,
+        }));
+        return;
+      }
+
+      const response = await getMe();
       set((state) => ({
         ...state,
-        isLoading: false,
-        user: payload.data,
+        user: response.data,
         isAuthenticated: true,
       }));
-    } else {
-      set((state) => ({
-        ...state,
-        error: payload.message,
-        isLoading: false,
-        user: null,
-        isAuthenticated: false,
-      }));
+    } catch (error) {
+      if (error instanceof HTTPError) {
+        const response = await error.response.json<IErrorResponse>();
+        set((state) => ({
+          ...state,
+          error: response.error,
+          user: null,
+          isAuthenticated: false,
+        }));
+      } else {
+        set((state) => ({
+          ...state,
+          error: 'Something went wrong. Please try again later.',
+          user: null,
+          isAuthenticated: false,
+        }));
+      }
+    } finally {
+      set((state) => ({ ...state, isLoading: false }));
     }
   },
 
   async signIn(values) {
-    set((state) => ({ ...state, isLoading: true }));
-    const payload = await postSignIn(values);
-    if (payload.status === 200) {
-      set((state) => ({
-        ...state,
-        isLoading: false,
-        isAuthenticated: true,
-      }));
-    } else {
-      set((state) => ({
-        ...state,
-        error: payload.message,
-        isLoading: false,
-        isAuthenticated: false,
-      }));
+    set((state) => ({ ...state, isLoading: true, error: '' }));
+    try {
+      const response = await postSignIn(values);
+      if (!response.success) {
+        throw new Error('Invalid response from server.');
+      }
+
+      // Save tokens in local storage
+      localStorage.setItem(ACCESS_TOKEN_KEY, response.data.access_token);
+      localStorage.setItem(REFRESH_TOKEN_KEY, response.data.refresh_token);
+
+      // Set state
+      set((state) => ({ ...state, isAuthenticated: true }));
+    } catch (error) {
+      if (error instanceof HTTPError) {
+        const data = await error.response.json<IErrorResponse>();
+        set((state) => ({
+          ...state,
+          error: data.error,
+          isAuthenticated: false,
+        }));
+      } else {
+        set((state) => ({
+          ...state,
+          error: 'Something went wrong. Please try again later.',
+          isAuthenticated: false,
+        }));
+      }
+    } finally {
+      set((state) => ({ ...state, isLoading: false }));
     }
   },
 }));

@@ -1,8 +1,8 @@
 import ky from 'ky';
 
-import { ACCESS_TOKEN_KEY, API_URL, REFRESH_TOKEN_KEY } from '@/constants';
+import { ACCESS_TOKEN_KEY, API_URL } from '@/constants';
 import { AuthRoutes } from '@/constants/routes';
-import { IAccessToken } from '@/types/IAccessToken';
+import { IAccessTokenResponse } from '@/types/IToken';
 
 import { getTokenPair } from './utils';
 
@@ -37,20 +37,18 @@ const api = ky.create({
                 Authorization: `Bearer ${tokenPair.refreshToken}`,
               },
             })
-            .json<IAccessToken>();
-          if (response.status === 200) {
-            localStorage.setItem(ACCESS_TOKEN_KEY, response.data.accessToken);
+            .json<IAccessTokenResponse>();
+          if (response.success) {
+            localStorage.setItem(ACCESS_TOKEN_KEY, response.data.access_token);
 
             // Request the original request again with the new access token
             request.headers.set(
               'Authorization',
-              `Bearer ${response.data.accessToken}`,
+              `Bearer ${response.data.access_token}`,
             );
             return ky(request);
           }
         } else {
-          localStorage.removeItem(ACCESS_TOKEN_KEY);
-          localStorage.removeItem(REFRESH_TOKEN_KEY);
         }
       },
     ],
