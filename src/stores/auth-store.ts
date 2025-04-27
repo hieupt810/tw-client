@@ -4,7 +4,8 @@ import { create } from 'zustand';
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constants';
 import { getTokenPair } from '@/lib/utils';
 import { getMe, postSignIn } from '@/services/auth';
-import { IMe } from '@/types/IMeResponse';
+import { IError } from '@/types/IError';
+import { IMe } from '@/types/IMe';
 import { ISignInSchema } from '@/types/ISignInSchema';
 
 type IAuthStore = {
@@ -40,27 +41,28 @@ export const useAuthStore = create<IAuthStore>()((set) => ({
         return;
       }
 
+      // Fetch data
       const response = await getMe();
       set((state) => ({
         ...state,
-        user: response.data,
+        user: response,
         isAuthenticated: true,
       }));
     } catch (error) {
       if (error instanceof HTTPError) {
-        const response = await error.response.json<IErrorResponse>();
+        const response = await error.response.json<IError>();
         set((state) => ({
           ...state,
-          error: response.error,
           user: null,
+          error: response.error,
           isAuthenticated: false,
         }));
       } else {
         set((state) => ({
           ...state,
-          error: 'Something went wrong. Please try again later.',
           user: null,
           isAuthenticated: false,
+          error: 'Something went wrong. Please try again later.',
         }));
       }
     } finally {
@@ -74,14 +76,14 @@ export const useAuthStore = create<IAuthStore>()((set) => ({
       const response = await postSignIn(values);
 
       // Save tokens in local storage
-      localStorage.setItem(ACCESS_TOKEN_KEY, response.data.access_token);
-      localStorage.setItem(REFRESH_TOKEN_KEY, response.data.refresh_token);
+      localStorage.setItem(ACCESS_TOKEN_KEY, response.access_token);
+      localStorage.setItem(REFRESH_TOKEN_KEY, response.refresh_token);
 
       // Set state
       set((state) => ({ ...state, isAuthenticated: true }));
     } catch (error) {
       if (error instanceof HTTPError) {
-        const data = await error.response.json<IErrorResponse>();
+        const data = await error.response.json<IError>();
         set((state) => ({
           ...state,
           error: data.error,

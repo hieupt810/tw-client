@@ -13,6 +13,7 @@ import FormInput from '@/components/form-input';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { postSignUp } from '@/services/auth';
+import { IError } from '@/types/IError';
 import { ISignUpSchema, signUpSchema } from '@/types/ISignUpSchema';
 
 import AuthLayout from '../auth-layout';
@@ -38,7 +39,7 @@ export default function SignUpPage() {
       router.push('/sign-in');
     } catch (error) {
       if (error instanceof HTTPError) {
-        const response = await error.response.json<IErrorResponse>();
+        const response = await error.response.json<IError>();
         if (error.response.status === 400) {
           Object.entries(response.error).forEach(([field, messages]) => {
             form.setError(

@@ -3,7 +3,3 @@ export type IMe = {
   name: string;
   avatar: string;
 };
-
-export type IMeResponse = {
-  data: IMe;
-};

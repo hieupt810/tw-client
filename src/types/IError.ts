@@ -1,4 +1,4 @@
-type IErrorResponse = {
+export type IError = {
   error:
     | string
     | {
