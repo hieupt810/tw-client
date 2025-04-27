@@ -12,7 +12,7 @@ import ChatPanel from './components/chat-panel';
 
 export default function ChatPage() {
   const router = useRouter();
-  const { chat, getChatList } = useChatStore();
+  const { chat, newChat, getChatList } = useChatStore();
 
   useEffect(() => {
     getChatList();
@@ -20,6 +20,7 @@ export default function ChatPage() {
 
   function handleNewChat(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
+    newChat();
     router.replace('/chat');
   }
 

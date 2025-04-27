@@ -7,4 +7,5 @@ export class AuthRoutes {
 
 export class ChatRoutes {
   static DEFAULT = 'chat';
+  static MESSAGES = 'chat/messages';
 }

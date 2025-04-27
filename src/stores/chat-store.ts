@@ -10,6 +10,7 @@ type IChatStore = {
   isLoading: boolean;
   chat: IChat[];
   messages: IChatMessage[];
+  newChat: () => void;
   getChatList: () => Promise<void>;
   getChatMessages: (id: string) => Promise<void>;
 };
@@ -21,6 +22,10 @@ export const useChatStore = create<IChatStore>()((set) => ({
   messages: [],
 
   // Actions
+  newChat: () => {
+    set((state) => ({ ...state, messages: [] }));
+  },
+
   async getChatList() {
     set((state) => ({ ...state, isLoading: true }));
     try {
@@ -37,7 +42,7 @@ export const useChatStore = create<IChatStore>()((set) => ({
     set((state) => ({ ...state, isLoading: true }));
     try {
       const response = await api
-        .get(ChatRoutes.DEFAULT + '/' + id)
+        .get(ChatRoutes.MESSAGES, { searchParams: { id } })
         .json<IChatMessage[]>();
       set((state) => ({ ...state, messages: response }));
     } catch {

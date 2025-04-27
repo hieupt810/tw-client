@@ -28,7 +28,7 @@ export default function ChatPanel() {
       ref={boxChatRef}
       className='flex max-h-dvh w-full flex-col md:basis-3/4'
     >
-      <div className='flex max-h-[calc(100vh-4rem)] grow flex-col-reverse gap-y-4 overflow-y-auto px-5 pt-5 pb-3'>
+      <div className='flex max-h-[calc(100vh-4rem)] grow flex-col-reverse gap-y-4 overflow-y-auto px-5 py-4'>
         {id ? (
           messages.map((message) => (
             <Message
@@ -48,7 +48,7 @@ export default function ChatPanel() {
           </div>
         )}
       </div>
-      <form className='px-5 pt-3 pb-5'>
+      <form className='px-5 py-3'>
         <Input
           type='text'
           disabled={isLoading}
