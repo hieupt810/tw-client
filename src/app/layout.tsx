@@ -37,7 +37,12 @@ export default function RootLayout({
         )}
       >
         <main className='relative flex h-full w-full flex-col'>{children}</main>
-        <Toaster richColors position='top-right' />
+        <Toaster
+          richColors
+          closeButton
+          position='bottom-right'
+          duration={2000}
+        />
       </body>
     </html>
   );

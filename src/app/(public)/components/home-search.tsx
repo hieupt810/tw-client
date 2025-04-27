@@ -29,8 +29,8 @@ export default function HomeSearch() {
         />
       </div>
       <div className='absolute top-0 left-0 z-10 h-[35rem] w-full bg-black/50' />
-      <MaxWidthContainer className='absolute inset-0 z-20 flex flex-col items-center justify-center gap-4'>
-        <h1 className='scroll-m-20 text-center text-4xl/relaxed font-extrabold tracking-tight text-white lg:text-5xl/relaxed'>
+      <MaxWidthContainer className='absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 md:gap-6'>
+        <h1 className='text-center text-3xl font-bold tracking-tight text-white md:text-4xl'>
           Explore Your Journey Awaits
         </h1>
         <div className='flex w-full max-w-3xl flex-row items-center gap-2'>
@@ -42,7 +42,7 @@ export default function HomeSearch() {
             value={value}
             onChange={handleChange}
           />
-          <Button size='lg'>
+          <Button size='lg' aria-label='Search'>
             <Search />
           </Button>
         </div>

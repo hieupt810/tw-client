@@ -18,6 +18,7 @@ type IAuthStore = {
   isAuthenticated: boolean;
   me: () => Promise<void>;
   signIn: (values: ISignInSchema) => Promise<void>;
+  logOut: () => void;
 };
 
 export const useAuthStore = create<IAuthStore>()((set) => ({
@@ -99,5 +100,17 @@ export const useAuthStore = create<IAuthStore>()((set) => ({
     } finally {
       set((state) => ({ ...state, isLoading: false }));
     }
+  },
+
+  logOut() {
+    set((state) => ({ ...state, isLoading: true }));
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
+    set((state) => ({
+      ...state,
+      user: null,
+      isLoading: false,
+      isAuthenticated: false,
+    }));
   },
 }));
