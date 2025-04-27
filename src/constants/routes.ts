@@ -4,3 +4,7 @@ export class AuthRoutes {
   static SIGN_UP = 'auth/sign-up';
   static REFRESH_TOKEN = 'auth/refresh';
 }
+
+export class ChatRoutes {
+  static DEFAULT = 'chat';
+}

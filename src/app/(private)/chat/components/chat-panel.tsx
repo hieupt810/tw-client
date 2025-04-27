@@ -3,45 +3,57 @@
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
+import Message from '@/components/message';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuthStore } from '@/stores/auth-store';
+import { useChatStore } from '@/stores/chat-store';
 
 export default function ChatPanel() {
   const { user } = useAuthStore();
+  const { isLoading, messages, getChatMessages } = useChatStore();
   const boxChatRef = useRef<HTMLDivElement>(null);
 
   const searchParams = useSearchParams();
   const id = searchParams.get('id') || '';
 
-  function scrollToBottom() {
-    if (boxChatRef.current)
-      boxChatRef.current.scrollTop = boxChatRef.current.scrollHeight;
-  }
-
   useEffect(() => {
-    scrollToBottom();
-  }, []);
+    if (id) {
+      getChatMessages(id);
+    }
+  }, [id]);
 
   return (
     <div
       ref={boxChatRef}
       className='flex max-h-dvh w-full flex-col md:basis-3/4'
     >
-      <div className='flex max-h-[calc(100vh-4rem)] grow flex-col-reverse gap-y-4 overflow-y-auto px-5 pt-5'>
-        {id ? null : (
+      <div className='flex max-h-[calc(100vh-4rem)] grow flex-col-reverse gap-y-4 overflow-y-auto px-5 pt-5 pb-3'>
+        {id ? (
+          messages.map((message) => (
+            <Message
+              key={message.id}
+              text={message.text}
+              isUser={message.is_user}
+            />
+          ))
+        ) : (
           <div className='inline-flex items-center justify-center gap-1 text-2xl/relaxed font-semibold tracking-wide'>
             <span>Hello,</span>
             {user ? (
               <span className='text-primary'>{user.name}</span>
             ) : (
-              <Skeleton className='h-8 w-24' />
+              <Skeleton className='ml-1 h-8 w-48' />
             )}
           </div>
         )}
       </div>
       <form className='px-5 pt-3 pb-5'>
-        <Input type='text' placeholder='Ask something...' />
+        <Input
+          type='text'
+          disabled={isLoading}
+          placeholder='Ask something...'
+        />
       </form>
     </div>
   );

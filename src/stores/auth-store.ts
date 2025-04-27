@@ -33,21 +33,13 @@ export const useAuthStore = create<IAuthStore>()((set) => ({
     set((state) => ({ ...state, isLoading: true }));
     try {
       if (getTokenPair() === null) {
-        set((state) => ({
-          ...state,
-          user: null,
-          isAuthenticated: false,
-        }));
+        set((state) => ({ ...state, user: null, isAuthenticated: false }));
         return;
       }
 
       // Fetch data
       const response = await getMe();
-      set((state) => ({
-        ...state,
-        user: response,
-        isAuthenticated: true,
-      }));
+      set((state) => ({ ...state, user: response, isAuthenticated: true }));
     } catch (error) {
       if (error instanceof HTTPError) {
         const response = await error.response.json<IError>();

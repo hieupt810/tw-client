@@ -70,14 +70,22 @@ export default function AppNavbar() {
             <Skeleton className='h-9 w-[11rem]' />
           ) : user ? (
             <>
-              <Link href='/chat' passHref>
-                <Button variant='ghost' size='icon'>
+              <Link href='/chat' aria-label='Chatbot' passHref>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  title='Chatbot'
+                  aria-label='Chatbot'
+                >
                   <Bot />
                 </Button>
               </Link>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <div className='border-primary size-9 overflow-hidden rounded-full border-2 shadow-md'>
+                  <div
+                    className='border-primary size-9 overflow-hidden rounded-full border-2 shadow-md'
+                    aria-label='User Avatar'
+                  >
                     <Image
                       src={
                         user && user.avatar
