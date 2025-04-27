@@ -38,17 +38,16 @@ const api = ky.create({
               },
             })
             .json<IAccessTokenResponse>();
-          if (response.success) {
-            localStorage.setItem(ACCESS_TOKEN_KEY, response.data.access_token);
 
-            // Request the original request again with the new access token
-            request.headers.set(
-              'Authorization',
-              `Bearer ${response.data.access_token}`,
-            );
-            return ky(request);
-          }
-        } else {
+          // Update the access token in local storage
+          localStorage.setItem(ACCESS_TOKEN_KEY, response.data.access_token);
+
+          // Request the original request again with the new access token
+          request.headers.set(
+            'Authorization',
+            `Bearer ${response.data.access_token}`,
+          );
+          return ky(request);
         }
       },
     ],

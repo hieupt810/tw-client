@@ -33,13 +33,9 @@ export default function SignUpPage() {
 
   async function onSubmit(values: ISignUpSchema) {
     try {
-      const response = await postSignUp(values);
-      if (response.success) {
-        toast.success('Signed up successfully.');
-        router.push('/sign-in');
-      } else {
-        toast.error('Failed to create account. Please try again.');
-      }
+      await postSignUp(values);
+      toast.success('Signed up successfully.');
+      router.push('/sign-in');
     } catch (error) {
       if (error instanceof HTTPError) {
         const response = await error.response.json<IErrorResponse>();

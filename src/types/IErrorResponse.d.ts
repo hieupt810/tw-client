@@ -4,5 +4,4 @@ type IErrorResponse = {
     | {
         [key: string]: string[];
       };
-  success: boolean;
 };

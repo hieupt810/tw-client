@@ -6,5 +6,4 @@ export type IMe = {
 
 export type IMeResponse = {
   data: IMe;
-  success: boolean;
 };

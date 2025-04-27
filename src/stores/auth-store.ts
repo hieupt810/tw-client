@@ -72,9 +72,6 @@ export const useAuthStore = create<IAuthStore>()((set) => ({
     set((state) => ({ ...state, isLoading: true, error: '' }));
     try {
       const response = await postSignIn(values);
-      if (!response.success) {
-        throw new Error('Invalid response from server.');
-      }
 
       // Save tokens in local storage
       localStorage.setItem(ACCESS_TOKEN_KEY, response.data.access_token);

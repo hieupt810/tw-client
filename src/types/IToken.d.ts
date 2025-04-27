@@ -5,12 +5,10 @@ export type ITokenPair = {
 
 export type ITokenPairResponse = {
   data: ITokenPair;
-  success: boolean;
 };
 
 export type IAccessToken = Omit<ITokenPair, 'refresh_token'>;
 
 export type IAccessTokenResponse = {
   data: IAccessToken;
-  success: boolean;
 };
