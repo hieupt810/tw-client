@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
+import { AspectRatio } from './ui/aspect-ratio';
 import {
   Carousel,
   CarouselApi,
@@ -53,13 +54,14 @@ export default function CarouselImage({
               key={index}
               className='max-h-[20rem] md:max-h-[30rem]'
             >
-              <Image
-                src={image}
-                alt='Image'
-                width={1000}
-                height={1000}
-                className='h-full w-full overflow-hidden rounded-xl object-cover object-center'
-              />
+              <AspectRatio ratio={16 / 9}>
+                <Image
+                  fill
+                  src={image}
+                  alt='Image'
+                  className='h-full w-full overflow-hidden rounded-xl object-cover object-center'
+                />
+              </AspectRatio>
             </CarouselItem>
           ))}
         </CarouselContent>

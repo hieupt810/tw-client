@@ -1,6 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
+import { useAuthStore } from '@/stores/auth-store';
 
 import Markdown from './markdown';
 
@@ -10,6 +13,8 @@ type Props = {
 };
 
 export default function Message({ text, isUser = false }: Props) {
+  const { user } = useAuthStore();
+
   return (
     <div
       className={cn(
@@ -20,7 +25,13 @@ export default function Message({ text, isUser = false }: Props) {
       <div className='py-1'>
         <div className='size-10 overflow-hidden rounded-full shadow-md'>
           <Image
-            src={isUser ? 'https://github.com/shadcn.png' : '/robot.jpeg'}
+            src={
+              isUser
+                ? user && user.avatar
+                  ? user.avatar
+                  : 'https://github.com/shadcn.png'
+                : '/robot.jpeg'
+            }
             alt={isUser ? 'User' : 'Assistant'}
             width={500}
             height={500}

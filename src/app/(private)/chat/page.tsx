@@ -3,6 +3,7 @@
 import { SquarePen } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Suspense, useEffect } from 'react';
+import { v4 } from 'uuid';
 
 import { Button } from '@/components/ui/button';
 import { LOREM_IPSUM } from '@/constants';
@@ -21,7 +22,14 @@ export default function ChatPage() {
   function handleNewChat(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     newChat();
-    router.replace('/chat');
+
+    // Generate a new chat ID
+    const newChatId = v4();
+    const params = new URLSearchParams(window.location.search);
+    params.set('id', newChatId);
+
+    // Update the URL with the new chat ID
+    router.replace(`/chat?${params.toString()}`);
   }
 
   function handleClickChat(id: string) {
@@ -29,7 +37,7 @@ export default function ChatPage() {
     params.set('id', id);
 
     // Replace the current URL with the new one
-    router.push(`/chat?${params.toString()}`);
+    router.replace(`/chat?${params.toString()}`);
   }
 
   return (
@@ -49,8 +57,7 @@ export default function ChatPage() {
           </div>
 
           <div className='mt-10 flex grow flex-col gap-1'>
-            {chat &&
-              chat.length > 0 &&
+            {chat && chat.length > 0 ? (
               chat.map((item) => (
                 <button
                   key={item.id}
@@ -60,7 +67,10 @@ export default function ChatPage() {
                 >
                   {LOREM_IPSUM}
                 </button>
-              ))}
+              ))
+            ) : (
+              <p className='py-5 text-center text-sm'>No recent chat</p>
+            )}
           </div>
         </div>
         <ChatPanel />
