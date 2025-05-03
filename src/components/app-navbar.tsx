@@ -43,8 +43,10 @@ export default function AppNavbar() {
   }
 
   useEffect(() => {
-    me();
-  }, [me]);
+    if (!user) {
+      me();
+    }
+  }, [user, me]);
 
   return (
     <header className='sticky top-0 z-40 w-full bg-white shadow-md'>
@@ -83,26 +85,24 @@ export default function AppNavbar() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <div
-                    className='border-primary size-9 overflow-hidden rounded-full border-2 shadow-md'
+                    className='border-primary size-8 overflow-hidden rounded-full border-2 shadow-md select-none'
                     aria-label='User Avatar'
                   >
                     <Image
-                      src={
-                        user && user.avatar
-                          ? user.avatar
-                          : 'https://github.com/shadcn.png'
-                      }
-                      alt='User Avatar'
+                      src={user && user.avatar}
+                      alt={`${user.name} avatar`}
                       width={1000}
                       height={1000}
                     />
                   </div>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className='w-56'>
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuContent className='w-40'>
+                  <DropdownMenuLabel>My account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <Link href='/account' passHref>
+                      <DropdownMenuItem>Profile</DropdownMenuItem>
+                    </Link>
                     <DropdownMenuItem
                       variant='destructive'
                       onClick={handleLogOut}

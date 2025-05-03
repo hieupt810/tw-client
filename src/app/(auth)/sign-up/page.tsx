@@ -12,9 +12,10 @@ import FormCheckbox from '@/components/form-checkbox';
 import FormInput from '@/components/form-input';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import { postSignUp } from '@/services/auth';
+import { AuthService } from '@/services/auth';
 import { IError } from '@/types/IError';
 import { ISignUpSchema, signUpSchema } from '@/types/ISignUpSchema';
+import { IValidationError } from '@/types/IValidationError';
 
 import AuthLayout from '../auth-layout';
 
@@ -34,13 +35,16 @@ export default function SignUpPage() {
 
   async function onSubmit(values: ISignUpSchema) {
     try {
-      await postSignUp(values);
+      await AuthService.postSignUp(values);
       toast.success('Signed up successfully.');
       router.push('/sign-in');
     } catch (error) {
       if (error instanceof HTTPError) {
-        const response = await error.response.json<IError>();
-        if (error.response.status === 400) {
+        const response = await error.response.json<IValidationError | IError>();
+        if (
+          error.response.status === 400 &&
+          typeof response.error === 'object'
+        ) {
           Object.entries(response.error).forEach(([field, messages]) => {
             form.setError(
               field as keyof ISignUpSchema,
@@ -76,7 +80,7 @@ export default function SignUpPage() {
             <UserRoundPlus size={40} />
           </div>
         </div>
-        <h1 className='mt-1 text-center text-4xl/relaxed font-bold'>Sign up</h1>
+        <h1 className='mt-2 text-center text-3xl font-bold'>Sign up</h1>
         <p className='text-muted-foreground mt-1 text-center'>
           Explore personalized travel recommendations.
         </p>

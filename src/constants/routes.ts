@@ -9,3 +9,8 @@ export class ChatRoutes {
   static DEFAULT = 'chat';
   static MESSAGES = 'chat/messages';
 }
+
+export class UserRoutes {
+  static DEFAULT = 'users';
+  static PROFILE = 'users/profile';
+}

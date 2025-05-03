@@ -3,17 +3,14 @@ import { create } from 'zustand';
 
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constants';
 import { getTokenPair } from '@/lib/utils';
-import { getMe, postSignIn } from '@/services/auth';
+import { AuthService } from '@/services/auth';
 import { IError } from '@/types/IError';
 import { IMe } from '@/types/IMe';
 import { ISignInSchema } from '@/types/ISignInSchema';
+import { IValidationError } from '@/types/IValidationError';
 
 type IAuthStore = {
-  error:
-    | string
-    | {
-        [key: string]: string[];
-      };
+  error: IError['error'] | IValidationError['error'] | null;
   user: IMe | null;
   isLoading: boolean;
   isAuthenticated: boolean;
@@ -23,7 +20,7 @@ type IAuthStore = {
 };
 
 export const useAuthStore = create<IAuthStore>()((set) => ({
-  error: '',
+  error: null,
   user: null,
   isLoading: true,
   isAuthenticated: false,
@@ -38,7 +35,7 @@ export const useAuthStore = create<IAuthStore>()((set) => ({
       }
 
       // Fetch data
-      const response = await getMe();
+      const response = await AuthService.getMe();
       set((state) => ({ ...state, user: response, isAuthenticated: true }));
     } catch (error) {
       if (error instanceof HTTPError) {
@@ -65,7 +62,7 @@ export const useAuthStore = create<IAuthStore>()((set) => ({
   async signIn(values) {
     set((state) => ({ ...state, isLoading: true, error: '' }));
     try {
-      const response = await postSignIn(values);
+      const response = await AuthService.postSignIn(values);
 
       // Save tokens in local storage
       localStorage.setItem(ACCESS_TOKEN_KEY, response.access_token);
@@ -75,7 +72,7 @@ export const useAuthStore = create<IAuthStore>()((set) => ({
       set((state) => ({ ...state, isAuthenticated: true }));
     } catch (error) {
       if (error instanceof HTTPError) {
-        const data = await error.response.json<IError>();
+        const data = await error.response.json<IValidationError | IError>();
         set((state) => ({
           ...state,
           error: data.error,

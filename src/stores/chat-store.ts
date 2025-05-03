@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 
-import { ChatRoutes } from '@/constants/routes';
-import api from '@/lib/api';
+import { ChatService } from '@/services/chat';
 import { IChat } from '@/types/IChat';
 import { IChatMessage } from '@/types/IChatMessage';
 
@@ -40,12 +39,7 @@ export const useChatStore = create<IChatStore>()((set) => ({
       }));
 
       // Send message to the server
-      const response = await api
-        .post(ChatRoutes.DEFAULT, {
-          json: { text, conversation_id },
-          timeout: 20000,
-        })
-        .json<IChatMessage>();
+      const response = await ChatService.postMessage(text, conversation_id);
 
       // Add response to the top of the messages
       set((state) => ({
@@ -61,7 +55,7 @@ export const useChatStore = create<IChatStore>()((set) => ({
   async getChatList() {
     set((state) => ({ ...state, isLoading: true }));
     try {
-      const response = await api.get(ChatRoutes.DEFAULT).json<IChat[]>();
+      const response = await ChatService.getChatList();
       set((state) => ({ ...state, chat: response }));
     } catch {
       set((state) => ({ ...state, error: 'Unexpected error occurred.' }));
@@ -73,9 +67,7 @@ export const useChatStore = create<IChatStore>()((set) => ({
   async getChatMessages(id) {
     set((state) => ({ ...state, isLoading: true }));
     try {
-      const response = await api
-        .get(ChatRoutes.MESSAGES, { searchParams: { id } })
-        .json<IChatMessage[]>();
+      const response = await ChatService.getChatMessages(id);
       set((state) => ({ ...state, messages: response }));
     } catch {
       set((state) => ({ ...state, error: 'Unexpected error occurred.' }));

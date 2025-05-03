@@ -42,7 +42,7 @@ export default function ChatPage() {
 
   return (
     <Suspense>
-      <div id='chat' className='flex h-[calc(100vh-4rem)] w-full grid-cols-4'>
+      <div id='chat' className='flex h-[calc(100vh-3.5rem)] w-full grid-cols-4'>
         <div className='relative hidden max-h-dvh basis-1/4 flex-col gap-2 overflow-x-hidden overflow-y-auto px-2 py-4 shadow-md md:flex'>
           <div className='absolute top-0 left-0 z-10 flex w-full items-center justify-between gap-2 px-5 py-2.5'>
             <h3 className='font-semibold tracking-wide'>History</h3>

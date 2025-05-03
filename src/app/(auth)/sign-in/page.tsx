@@ -53,7 +53,7 @@ export default function SignInPage() {
             <LogIn size={36} />
           </div>
         </div>
-        <h1 className='mt-1 text-center text-4xl/relaxed font-bold'>Sign in</h1>
+        <h1 className='mt-2 text-center text-3xl font-bold'>Sign in</h1>
         <p className='text-muted-foreground mt-1 text-center'>
           Welcome back! Please sign in to your account.
         </p>
