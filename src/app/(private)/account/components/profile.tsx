@@ -20,8 +20,7 @@ export default function ProfileCard() {
 
   useEffect(() => {
     getProfile();
-    console.log('getProfile');
-  }, []);
+  }, [getProfile]);
 
   useEffect(() => {
     if (error) {
