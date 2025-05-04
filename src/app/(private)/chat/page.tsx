@@ -39,7 +39,9 @@ export default function ChatPage() {
   }
 
   useEffect(() => {
-    getChatHistory();
+    if (chatHistory.length === 0) {
+      getChatHistory();
+    }
 
     return () => {
       reset();
@@ -77,7 +79,7 @@ export default function ChatPage() {
                   aria-label={`Open chat ${item.id}`}
                   onClick={() => router.replace(`/chat?id=${item.id}`)}
                   className={cn(
-                    'hover:bg-accent text-accent-foreground cursor-pointer truncate rounded-md px-3 py-1.5 text-justify select-none',
+                    'hover:bg-accent text-accent-foreground cursor-pointer truncate rounded-md px-3 py-1.5 text-justify text-sm select-none',
                     item.id === chatId && 'text-primary font-semibold',
                   )}
                 >

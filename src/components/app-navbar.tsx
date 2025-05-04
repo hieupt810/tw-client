@@ -21,13 +21,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from './ui/navigation-menu';
 import { Skeleton } from './ui/skeleton';
 
 export default function AppNavbar() {
@@ -49,26 +42,26 @@ export default function AppNavbar() {
   }, [getMe]);
 
   return (
-    <header className='sticky top-0 z-40 w-full bg-white shadow-md'>
-      <MaxWidthContainer className='grid grid-cols-5 p-2.5'>
-        <Link href='/' passHref>
-          <AppLogo />
-        </Link>
-        <NavigationMenu className='mx-auto hidden md:col-span-3 md:block'>
-          <NavigationMenuList>
+    <header className='bg-background/95 border-grid sticky top-0 z-50 w-full border-b backdrop-blur-sm'>
+      <MaxWidthContainer className='flex h-14 items-center justify-between px-6'>
+        <div className='flex items-center gap-4 lg:gap-6'>
+          <Link href='/' passHref>
+            <AppLogo />
+          </Link>
+          <div className='hidden items-center gap-4 text-sm md:flex xl:gap-6'>
             {NAVIGATION_MENU_ITEMS.map((item) => (
-              <NavigationMenuItem key={item.href}>
-                <Link href={item.href} legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    {item.label}
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
+              <Link
+                key={item.href}
+                href={item.href}
+                className='hover:text-foreground/80 text-foreground/80 transition-colors'
+              >
+                {item.label}
+              </Link>
             ))}
-          </NavigationMenuList>
-        </NavigationMenu>
-        <div className='hidden flex-row items-center justify-end gap-3 md:flex'>
-          {isLoadingMe && <Skeleton className='h-9 w-[11rem]' />}
+          </div>
+        </div>
+        <div className='hidden flex-row items-center justify-end gap-2 md:flex'>
+          {isLoadingMe && <Skeleton className='h-9 w-[9.5rem]' />}
           {!isLoadingMe && me && (
             <>
               <Link href='/chat' aria-label='Chatbot' passHref>
@@ -116,10 +109,12 @@ export default function AppNavbar() {
           {!isLoadingMe && !me && (
             <>
               <Link href='/sign-in' passHref>
-                <Button variant='outline'>Sign in</Button>
+                <Button size='sm' variant='outline'>
+                  Sign in
+                </Button>
               </Link>
               <Link href='/sign-up' passHref>
-                <Button>Sign up</Button>
+                <Button size='sm'>Sign up</Button>
               </Link>
             </>
           )}

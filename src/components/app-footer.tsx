@@ -1,12 +1,10 @@
-import AppLogo from './app-logo';
 import MaxWidthContainer from './max-width-container';
 
 export default function AppFooter() {
   return (
-    <footer className='bg-neutral-100'>
-      <MaxWidthContainer className='flex flex-col items-center justify-center gap-1'>
-        <AppLogo />
-        <p className='text-xs tracking-wide text-neutral-700 md:text-sm'>
+    <footer className='border-grid h-[3.75rem] border-t'>
+      <MaxWidthContainer className='p-4'>
+        <p className='text-muted-foreground text-sm leading-loose text-balance'>
           &copy; {new Date().getFullYear()} TripWise. All rights reserved.
         </p>
       </MaxWidthContainer>

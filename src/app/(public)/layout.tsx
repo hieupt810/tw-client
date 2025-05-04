@@ -9,7 +9,7 @@ export default function PublicLayout({
   return (
     <>
       <AppNavbar />
-      <div className='grow'>{children}</div>
+      <div className='flex grow flex-col'>{children}</div>
       <AppFooter />
     </>
   );

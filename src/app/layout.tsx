@@ -33,10 +33,12 @@ export default function RootLayout({
         className={cn(
           geistSans.variable,
           geistMono.variable,
-          'min-h-screen font-sans antialiased',
+          'min-h-svh font-sans antialiased',
         )}
       >
-        <main className='relative flex h-full w-full flex-col'>{children}</main>
+        <main className='bg-background relative flex min-h-svh flex-col'>
+          <div className='border-grid flex grow flex-col'>{children}</div>
+        </main>
         <Toaster
           richColors
           closeButton

@@ -74,7 +74,7 @@ export default function SignUpPage() {
 
   return (
     <AuthLayout image='/sign-up.jpg'>
-      <div className='w-full max-w-md'>
+      <div className='mx-auto w-full max-w-md py-10'>
         <div className='flex items-center justify-center'>
           <div className='border-muted rounded-lg border p-2'>
             <UserRoundPlus size={40} />
