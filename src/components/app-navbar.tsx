@@ -42,8 +42,8 @@ export default function AppNavbar() {
   }, [getMe]);
 
   return (
-    <header className='bg-background/95 border-grid sticky top-0 z-50 w-full border-b backdrop-blur-sm'>
-      <MaxWidthContainer className='flex h-14 items-center justify-between px-6'>
+    <header className='border-grid sticky top-0 z-40 flex h-14 w-full border-b backdrop-blur-sm'>
+      <MaxWidthContainer className='flex items-center justify-between gap-8'>
         <div className='flex items-center gap-4 lg:gap-6'>
           <Link href='/' passHref>
             <AppLogo />

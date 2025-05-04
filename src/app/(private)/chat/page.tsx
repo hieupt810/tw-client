@@ -6,6 +6,7 @@ import { Suspense, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useStore } from 'zustand';
 
+import MaxWidthContainer from '@/components/max-width-container';
 import { Button } from '@/components/ui/button';
 import { cn, formatDate } from '@/lib/utils';
 import { useChatStore } from '@/stores/chat';
@@ -50,10 +51,15 @@ export default function ChatPage() {
 
   return (
     <Suspense>
-      <div id='chat' className='flex h-[calc(100vh-3.5rem)] w-full grid-cols-4'>
-        <div className='relative hidden max-h-dvh basis-1/4 flex-col gap-2 overflow-x-hidden overflow-y-auto px-2 py-4 shadow-md md:flex'>
-          <div className='absolute top-0 left-0 z-10 flex w-full items-center justify-between gap-2 px-5 py-2.5'>
-            <h3 className='font-semibold tracking-wide'>History</h3>
+      <MaxWidthContainer
+        id='chat'
+        className='grid h-[calc(100svh-7.25rem)] w-full grid-cols-4 p-0'
+      >
+        <div className='border-grid relative col-span-1 hidden max-h-dvh w-full flex-col gap-2 overflow-x-hidden overflow-y-auto border-r md:flex'>
+          <div className='border-grid absolute top-0 left-0 z-10 flex w-full items-center justify-between gap-2 border-b px-4 py-2.5'>
+            <h3 className='ml-2 text-lg font-semibold tracking-tight select-none'>
+              History
+            </h3>
             <Button
               size='icon'
               variant='ghost'
@@ -64,7 +70,7 @@ export default function ChatPage() {
             </Button>
           </div>
 
-          <div className='mt-10 flex grow flex-col gap-1'>
+          <div className='mt-16 flex grow flex-col gap-1 px-3'>
             {isLoadingChatHistory && (
               <div className='flex grow items-center justify-center'>
                 <Loader2 size={36} className='text-primary animate-spin' />
@@ -79,7 +85,7 @@ export default function ChatPage() {
                   aria-label={`Open chat ${item.id}`}
                   onClick={() => router.replace(`/chat?id=${item.id}`)}
                   className={cn(
-                    'hover:bg-accent text-accent-foreground cursor-pointer truncate rounded-md px-3 py-1.5 text-justify text-sm select-none',
+                    'hover:bg-accent text-accent-foreground cursor-pointer truncate rounded-md px-3 py-1.5 text-justify text-sm tracking-tight select-none',
                     item.id === chatId && 'text-primary font-semibold',
                   )}
                 >
@@ -93,7 +99,7 @@ export default function ChatPage() {
           </div>
         </div>
         <ChatPanel />
-      </div>
+      </MaxWidthContainer>
     </Suspense>
   );
 }

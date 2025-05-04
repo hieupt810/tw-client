@@ -2,6 +2,7 @@ import { ArrowRight, Award } from 'lucide-react';
 import Link from 'next/link';
 
 import MaxWidthContainer from '@/components/max-width-container';
+import PlaceCarousel from '@/components/place-carousel';
 import { Button } from '@/components/ui/button';
 
 export default function HomePage() {
@@ -27,10 +28,23 @@ export default function HomePage() {
             adventure seamless and memorable.
           </p>
           <div className='pt-2'>
-            <Button size='sm'>Get Started</Button>
+            <Button size='sm' className='text-xs'>
+              Get Started
+            </Button>
           </div>
         </MaxWidthContainer>
       </section>
+      <MaxWidthContainer>
+        <PlaceCarousel
+          title="Stay at the Vietnam's top hotels"
+          description="2025's Travelers's Choice Awards"
+        />
+        <PlaceCarousel title='Recently viewed' />
+        <PlaceCarousel
+          title='You might like these'
+          description='More places to experience'
+        />
+      </MaxWidthContainer>
     </>
   );
 }

@@ -10,6 +10,7 @@ import { useStore } from 'zustand';
 import Message from '@/components/message';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth';
 import { useChatStore } from '@/stores/chat';
 
@@ -74,7 +75,7 @@ export default function ChatPanel() {
   return (
     <div
       ref={boxChatRef}
-      className='flex max-h-dvh w-full flex-col md:basis-3/4'
+      className='col-span-3 flex max-h-[calc(100svh-7.25rem)] w-full flex-col'
     >
       {isLoadingMessage && (
         <div className='flex grow items-center justify-center'>
@@ -82,7 +83,12 @@ export default function ChatPanel() {
         </div>
       )}
       {!isLoadingMessage && (
-        <div className='flex max-h-[calc(100vh-4rem)] grow flex-col-reverse gap-y-4 overflow-y-auto px-5 py-4'>
+        <div
+          className={cn(
+            'flex max-h-[calc(100vh-4rem)] grow flex-col-reverse gap-y-4 overflow-y-auto px-5 py-4',
+            messageHistory.length === 0 && 'justify-center',
+          )}
+        >
           {isLoadingResponse && <Message isLoading />}
 
           {messageHistory.length > 0 &&
@@ -91,7 +97,7 @@ export default function ChatPanel() {
             ))}
 
           {messageHistory.length === 0 && (
-            <div className='inline-flex items-center justify-center gap-1 text-2xl/relaxed font-semibold tracking-wide'>
+            <div className='inline-flex items-center justify-center gap-2 text-2xl leading-tight font-semibold tracking-tighter sm:text-3xl md:text-4xl lg:leading-[1.1]'>
               <span>Hello,</span>
               {me ? (
                 <span className='text-primary'>{me.name}</span>

@@ -1,3 +1,4 @@
+import AppFooter from '@/components/app-footer';
 import AppNavbar from '@/components/app-navbar';
 
 export default function PrivateLayout({
@@ -9,6 +10,7 @@ export default function PrivateLayout({
     <>
       <AppNavbar />
       <div className='grow'>{children}</div>
+      <AppFooter />
     </>
   );
 }
