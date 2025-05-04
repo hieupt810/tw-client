@@ -35,7 +35,7 @@ export default function AuthLayout({ children, image }: Props) {
             </Link>
           </MaxWidthContainer>
         </div>
-        <MaxWidthContainer className='border-grid h-full w-full overflow-y-auto'>
+        <MaxWidthContainer className='border-grid flex h-full w-full items-center justify-center overflow-y-auto'>
           {children}
         </MaxWidthContainer>
       </motion.div>
