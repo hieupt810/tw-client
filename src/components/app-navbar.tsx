@@ -3,12 +3,11 @@
 import { Bot } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { toast } from 'sonner';
+import { useStore } from 'zustand';
 
 import { NAVIGATION_MENU_ITEMS } from '@/constants';
-import { useAuthStore } from '@/stores/auth-store';
+import { useAuthStore } from '@/stores/auth';
 
 import AppLogo from './app-logo';
 import MaxWidthContainer from './max-width-container';
@@ -32,21 +31,22 @@ import {
 import { Skeleton } from './ui/skeleton';
 
 export default function AppNavbar() {
-  const router = useRouter();
-  const { isLoading, user, me, logOut } = useAuthStore();
+  const me = useStore(useAuthStore, (state) => state.me);
+  const isLoadingMe = useStore(useAuthStore, (state) => state.isLoadingMe);
+  const getMe = useStore(useAuthStore, (state) => state.getMe);
+  const setLogOutState = useStore(
+    useAuthStore,
+    (state) => state.setLogOutState,
+  );
 
-  function handleLogOut(e: React.MouseEvent<HTMLDivElement>) {
-    e.preventDefault();
-    logOut();
-    router.push('/');
-    toast.success('Logged out successfully.');
+  function logOut() {
+    setLogOutState();
+    window.location.href = '/';
   }
 
   useEffect(() => {
-    if (!user) {
-      me();
-    }
-  }, [user, me]);
+    getMe();
+  }, [getMe]);
 
   return (
     <header className='sticky top-0 z-40 w-full bg-white shadow-md'>
@@ -68,14 +68,13 @@ export default function AppNavbar() {
           </NavigationMenuList>
         </NavigationMenu>
         <div className='hidden flex-row items-center justify-end gap-3 md:flex'>
-          {isLoading ? (
-            <Skeleton className='h-9 w-[11rem]' />
-          ) : user ? (
+          {isLoadingMe && <Skeleton className='h-9 w-[11rem]' />}
+          {!isLoadingMe && me && (
             <>
               <Link href='/chat' aria-label='Chatbot' passHref>
                 <Button
-                  variant='ghost'
                   size='icon'
+                  variant='ghost'
                   title='Chatbot'
                   aria-label='Chatbot'
                 >
@@ -89,10 +88,10 @@ export default function AppNavbar() {
                     aria-label='User Avatar'
                   >
                     <Image
-                      src={user && user.avatar}
-                      alt={`${user.name} avatar`}
                       width={1000}
                       height={1000}
+                      alt={me.name}
+                      src={me.avatar}
                     />
                   </div>
                 </DropdownMenuTrigger>
@@ -105,7 +104,7 @@ export default function AppNavbar() {
                     </Link>
                     <DropdownMenuItem
                       variant='destructive'
-                      onClick={handleLogOut}
+                      onClick={() => logOut()}
                     >
                       Log out
                     </DropdownMenuItem>
@@ -113,7 +112,8 @@ export default function AppNavbar() {
                 </DropdownMenuContent>
               </DropdownMenu>
             </>
-          ) : (
+          )}
+          {!isLoadingMe && !me && (
             <>
               <Link href='/sign-in' passHref>
                 <Button variant='outline'>Sign in</Button>

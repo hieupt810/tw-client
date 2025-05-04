@@ -1,44 +1,50 @@
 'use client';
 
-import { SquarePen } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { Loader2, SquarePen } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect } from 'react';
-import { v4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
+import { useStore } from 'zustand';
 
 import { Button } from '@/components/ui/button';
-import { LOREM_IPSUM } from '@/constants';
-import { useChatStore } from '@/stores/chat-store';
+import { cn, formatDate } from '@/lib/utils';
+import { useChatStore } from '@/stores/chat';
 
 import ChatPanel from './components/chat-panel';
 
 export default function ChatPage() {
   const router = useRouter();
-  const { chat, newChat, getChatList } = useChatStore();
+  const searchParams = useSearchParams();
 
-  useEffect(() => {
-    getChatList();
-  }, [getChatList]);
+  // Get the chat id from the URL
+  const chatId = searchParams.get('id');
+
+  // Global states
+  const reset = useStore(useChatStore, (state) => state.reset);
+  const newChat = useStore(useChatStore, (state) => state.newChat);
+  const getChatHistory = useStore(
+    useChatStore,
+    (state) => state.getChatHistory,
+  );
+  const chatHistory = useStore(useChatStore, (state) => state.chatHistory);
+  const isLoadingChatHistory = useStore(
+    useChatStore,
+    (state) => state.isLoadingChatHistory,
+  );
 
   function handleNewChat(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     newChat();
-
-    // Generate a new chat ID
-    const newChatId = v4();
-    const params = new URLSearchParams(window.location.search);
-    params.set('id', newChatId);
-
-    // Update the URL with the new chat ID
-    router.replace(`/chat?${params.toString()}`);
+    router.replace(`/chat?id=${uuidv4()}&new=true`);
   }
 
-  function handleClickChat(id: string) {
-    const params = new URLSearchParams(window.location.search);
-    params.set('id', id);
+  useEffect(() => {
+    getChatHistory();
 
-    // Replace the current URL with the new one
-    router.replace(`/chat?${params.toString()}`);
-  }
+    return () => {
+      reset();
+    };
+  }, [getChatHistory]);
 
   return (
     <Suspense>
@@ -57,19 +63,30 @@ export default function ChatPage() {
           </div>
 
           <div className='mt-10 flex grow flex-col gap-1'>
-            {chat && chat.length > 0 ? (
-              chat.map((item) => (
+            {isLoadingChatHistory && (
+              <div className='flex grow items-center justify-center'>
+                <Loader2 size={36} className='text-primary animate-spin' />
+              </div>
+            )}
+
+            {!isLoadingChatHistory &&
+              chatHistory.length > 0 &&
+              chatHistory.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => handleClickChat(item.id)}
-                  aria-label={`Chat ${item.id}`}
-                  className='hover:bg-accent text-accent-foreground cursor-pointer truncate rounded-md px-3 py-1.5 text-sm select-none'
+                  aria-label={`Open chat ${item.id}`}
+                  onClick={() => router.replace(`/chat?id=${item.id}`)}
+                  className={cn(
+                    'hover:bg-accent text-accent-foreground cursor-pointer truncate rounded-md px-3 py-1.5 text-justify select-none',
+                    item.id === chatId && 'text-primary font-semibold',
+                  )}
                 >
-                  {LOREM_IPSUM}
+                  Conversation {formatDate(item.created_at)}
                 </button>
-              ))
-            ) : (
-              <p className='py-5 text-center text-sm'>No recent chat</p>
+              ))}
+
+            {!isLoadingChatHistory && chatHistory.length === 0 && (
+              <p className='py-5 text-center'>No recent chat</p>
             )}
           </div>
         </div>

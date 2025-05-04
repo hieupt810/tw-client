@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { HTTPError } from 'ky';
 import { Loader2, LogIn } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -10,31 +11,62 @@ import { toast } from 'sonner';
 import FormInput from '@/components/form-input';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import { useAuthStore } from '@/stores/auth-store';
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constants';
+import { AuthService } from '@/services/auth';
+import { useAuthStore } from '@/stores/auth';
+import { IError } from '@/types/IError';
 import { ISignInSchema, signInSchema } from '@/types/ISignInSchema';
+import { IValidationError } from '@/types/IValidationError';
 
 import AuthLayout from '../auth-layout';
 
 export default function SignInPage() {
   const router = useRouter();
-  const { signIn } = useAuthStore();
+  const setSignInState = useAuthStore((state) => state.setSignInState);
 
   const form = useForm<ISignInSchema>({
     resolver: zodResolver(signInSchema),
-    defaultValues: { email: '', password: '' },
+    defaultValues: { email: 'trunghieupham03@gmail.com', password: 'P@ssw0rd' },
   });
 
   async function onSubmit(values: ISignInSchema) {
-    await signIn(values);
-    const { isAuthenticated, error } = useAuthStore.getState();
-    if (isAuthenticated) {
-      toast.success('Signed in successfully.');
-      router.push('/');
-    }
+    try {
+      const resp = await AuthService.postSignIn(values);
 
-    if (error && typeof error === 'string') {
-      toast.error(error);
-      return;
+      // Store tokens in local storage
+      localStorage.setItem(ACCESS_TOKEN_KEY, resp.access_token);
+      localStorage.setItem(REFRESH_TOKEN_KEY, resp.refresh_token);
+
+      // Set sign-in state
+      setSignInState();
+
+      // Redirect to home
+      toast.success('Success');
+      router.push('/');
+    } catch (err) {
+      if (err instanceof HTTPError) {
+        const resp = await err.response.json<IValidationError | IError>();
+        if (err.response.status === 400 && typeof resp.error === 'object') {
+          Object.entries(resp.error).forEach(([field, messages]) => {
+            form.setError(
+              field as keyof ISignInSchema,
+              {
+                type: 'value',
+                message: messages.join(', '),
+              },
+              { shouldFocus: true },
+            );
+          });
+          return;
+        } else if (
+          err.response.status === 400 &&
+          typeof resp.error === 'string'
+        ) {
+          toast.error(resp.error);
+          return;
+        }
+      }
+      toast.error('Something went wrong');
     }
   }
 
@@ -50,7 +82,7 @@ export default function SignInPage() {
       <div className='w-full max-w-md'>
         <div className='flex items-center justify-center'>
           <div className='border-muted rounded-lg border p-2'>
-            <LogIn size={36} />
+            <LogIn size={28} />
           </div>
         </div>
         <h1 className='mt-2 text-center text-3xl font-bold'>Sign in</h1>
