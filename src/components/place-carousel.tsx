@@ -1,15 +1,13 @@
 'use client';
 
 import Autoplay from 'embla-carousel-autoplay';
+import { Heart } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
-import { Card, CardContent } from './ui/card';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from './ui/carousel';
+import Rating from './rating';
+import { AspectRatio } from './ui/aspect-ratio';
+import { Carousel, CarouselContent, CarouselItem } from './ui/carousel';
 
 type Props = {
   title: string;
@@ -29,28 +27,46 @@ export default function PlaceCarousel({ title, description }: Props) {
         <Carousel
           plugins={[Autoplay({ delay: 8000 })]}
           opts={{ align: 'start' }}
-          className='mx-auto w-[90%]'
+          className='mx-auto'
         >
           <CarouselContent>
-            {Array.from({ length: 5 }).map((_, index) => (
+            {Array.from({ length: 10 }).map((_, index) => (
               <CarouselItem
                 key={index}
-                className='basis-1/2 md:basis-1/3 lg:basis-1/4'
+                className='basis-1/2 md:basis-1/3 xl:basis-1/4'
               >
-                <div className='p-1'>
-                  <Card>
-                    <CardContent className='flex aspect-square items-center justify-center p-6'>
-                      <span className='text-3xl font-semibold'>
-                        {index + 1}
-                      </span>
-                    </CardContent>
-                  </Card>
-                </div>
+                <Link
+                  href={'/'}
+                  className='flex flex-col rounded-md p-0.5 hover:opacity-90'
+                >
+                  <AspectRatio ratio={4 / 3} className='relative'>
+                    <Image
+                      fill
+                      alt='Placeholder'
+                      src='https://placehold.co/4000x3000/png'
+                      className='h-full w-full rounded-md object-cover object-center'
+                    />
+                    <button
+                      aria-label='Bookmark this place'
+                      className='absolute top-1.5 right-1.5 inline-flex cursor-pointer items-center justify-center rounded-full bg-white p-1.5 hover:bg-neutral-50'
+                    >
+                      <Heart size={16} />
+                    </button>
+                  </AspectRatio>
+                  <h3 className='mt-2 text-lg leading-snug font-semibold tracking-tight'>
+                    Hoi An/ Da Nang - Ba Na Hills - Golden Bridge Deluxe Small
+                    group
+                  </h3>
+                  <div className='mt-1 inline-flex items-center gap-1.5'>
+                    <Rating rating={4.8} size='sm' />
+                    <span className='text-muted-foreground text-sm'>
+                      (1540)
+                    </span>
+                  </div>
+                </Link>
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselNext />
-          <CarouselPrevious />
         </Carousel>
       </div>
     </div>

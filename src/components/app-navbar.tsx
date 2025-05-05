@@ -42,7 +42,7 @@ export default function AppNavbar() {
   }, [getMe]);
 
   return (
-    <header className='border-grid sticky top-0 z-40 flex h-14 w-full border-b backdrop-blur-sm'>
+    <header className='bg-background/95 border-grid supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40 flex h-14 w-full border-b backdrop-blur-sm'>
       <MaxWidthContainer className='flex items-center justify-between gap-8'>
         <div className='flex items-center gap-4 lg:gap-6'>
           <Link href='/' passHref>
@@ -53,7 +53,7 @@ export default function AppNavbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className='hover:text-foreground/80 text-foreground/80 transition-colors'
+                className='hover:text-foreground/50 text-foreground/80 transition-colors'
               >
                 {item.label}
               </Link>
