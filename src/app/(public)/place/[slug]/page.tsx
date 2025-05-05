@@ -1,6 +1,8 @@
 'use client';
 
+import Autoplay from 'embla-carousel-autoplay';
 import { Heart, MapPin } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useMemo } from 'react';
 import { Label, Pie, PieChart } from 'recharts';
@@ -43,6 +45,10 @@ const MOCK_DATA: IHotel = {
   rating_histogram: [108, 83, 136, 355, 1508],
 };
 
+const MapComponent = dynamic(() => import('@/components/map-component'), {
+  ssr: false,
+});
+
 export default function PlaceDetailsPage() {
   const address =
     MOCK_DATA.address.street +
@@ -54,7 +60,7 @@ export default function PlaceDetailsPage() {
   const chartData = createChartData(MOCK_DATA.rating_histogram);
   const totalRatings = useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.number, 0);
-  }, []);
+  }, [chartData]);
 
   return (
     <>
@@ -91,7 +97,7 @@ export default function PlaceDetailsPage() {
         {/* Carousel */}
         <div className='border-grid col-span-2 border-r p-6 pl-0'>
           <Carousel
-            // plugins={[Autoplay({ delay: 8000 })]}
+            plugins={[Autoplay({ delay: 8000 })]}
             opts={{ align: 'start' }}
             className='mx-auto h-full w-[calc(100%-6rem)]'
           >
@@ -178,6 +184,10 @@ export default function PlaceDetailsPage() {
       <MaxWidthContainer className='grid grid-cols-3 border-b'>
         <div className='border-grid col-span-2 border-r p-6 pl-0'>About</div>
         <div className='p-6 pr-0'>Amenties</div>
+      </MaxWidthContainer>
+      <MaxWidthContainer className='border-b py-6'>
+        <h3>Map</h3>
+        <MapComponent />
       </MaxWidthContainer>
       <MaxWidthContainer className='py-6'>Reviews</MaxWidthContainer>
     </>
