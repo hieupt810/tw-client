@@ -23,19 +23,20 @@ import {
 } from './ui/dropdown-menu';
 import { Skeleton } from './ui/skeleton';
 
-export default function AppNavbar() {
+const AppNavbar = () => {
   const me = useStore(useAuthStore, (state) => state.me);
   const isLoadingMe = useStore(useAuthStore, (state) => state.isLoadingMe);
+
   const getMe = useStore(useAuthStore, (state) => state.getMe);
   const setLogOutState = useStore(
     useAuthStore,
     (state) => state.setLogOutState,
   );
 
-  function logOut() {
+  const logOut = () => {
     setLogOutState();
     window.location.href = '/';
-  }
+  };
 
   useEffect(() => {
     getMe();
@@ -43,17 +44,17 @@ export default function AppNavbar() {
 
   return (
     <header className='bg-background/95 border-grid supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40 flex h-14 w-full border-b backdrop-blur-sm'>
-      <MaxWidthContainer className='flex items-center justify-between gap-8'>
-        <div className='flex items-center gap-4 lg:gap-6'>
+      <MaxWidthContainer className='flex items-center justify-between gap-8 !py-0'>
+        <div className='flex items-center gap-4 md:gap-6 lg:gap-8'>
           <Link href='/' passHref>
             <AppLogo />
           </Link>
-          <div className='hidden items-center gap-4 text-sm md:flex xl:gap-6'>
+          <div className='text-foreground/70 hidden items-center gap-4 text-sm font-semibold md:flex md:gap-2 lg:gap-4 xl:gap-6'>
             {NAVIGATION_MENU_ITEMS.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className='hover:text-foreground/50 text-foreground/80 transition-colors'
+                className='hover:text-primary/90 transition'
               >
                 {item.label}
               </Link>
@@ -122,4 +123,6 @@ export default function AppNavbar() {
       </MaxWidthContainer>
     </header>
   );
-}
+};
+
+export default AppNavbar;

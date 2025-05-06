@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { useStore } from 'zustand';
 
 import FormInput from '@/components/form-input';
 import { Button } from '@/components/ui/button';
@@ -20,27 +21,22 @@ import { IValidationError } from '@/types/IValidationError';
 
 import AuthLayout from '../auth-layout';
 
-export default function SignInPage() {
+const SignInPage = () => {
   const router = useRouter();
-  const setSignInState = useAuthStore((state) => state.setSignInState);
+  const authStore = useStore(useAuthStore, (state) => state);
 
   const form = useForm<ISignInSchema>({
     resolver: zodResolver(signInSchema),
     defaultValues: { email: 'trunghieupham03@gmail.com', password: 'P@ssw0rd' },
   });
 
-  async function onSubmit(values: ISignInSchema) {
+  const onSubmit = async (values: ISignInSchema) => {
     try {
-      const resp = await AuthService.postSignIn(values);
-
-      // Store tokens in local storage
+      const resp = await AuthService.signIn(values);
       localStorage.setItem(ACCESS_TOKEN_KEY, resp.access_token);
       localStorage.setItem(REFRESH_TOKEN_KEY, resp.refresh_token);
+      authStore.setSignInState();
 
-      // Set sign-in state
-      setSignInState();
-
-      // Redirect to home
       toast.success('Success');
       router.push('/');
     } catch (err) {
@@ -68,32 +64,32 @@ export default function SignInPage() {
       }
       toast.error('Something went wrong');
     }
-  }
+  };
 
-  function handleOnKeyDown(e: React.KeyboardEvent<HTMLFormElement>) {
+  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       form.handleSubmit(onSubmit)();
     }
-  }
+  };
 
   return (
     <AuthLayout image='/sign-in.jpg'>
-      <div className='mx-auto w-full max-w-md py-10'>
+      <div className='mx-auto w-full max-w-md'>
         <div className='flex items-center justify-center'>
           <div className='border-muted rounded-lg border p-2'>
             <LogIn size={28} />
           </div>
         </div>
-        <h1 className='mt-2 text-center text-3xl font-bold'>Sign in</h1>
-        <p className='text-muted-foreground mt-1 text-center'>
+        <h1 className='mt-4 text-center text-3xl font-bold'>Sign in</h1>
+        <p className='text-muted-foreground mt-1.5 text-center'>
           Welcome back! Please sign in to your account.
         </p>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             onKeyDown={handleOnKeyDown}
-            className='mt-8 flex flex-col gap-3'
+            className='mt-8 flex flex-col gap-2.5'
           >
             <FormInput
               form={form}
@@ -136,4 +132,6 @@ export default function SignInPage() {
       </div>
     </AuthLayout>
   );
-}
+};
+
+export default SignInPage;

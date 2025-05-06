@@ -1,9 +1,7 @@
 import { Suspense } from 'react';
 
-export default function ChatLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <Suspense>{children}</Suspense>;
-}
+const ChatLayout = ({ children }: { children: React.ReactNode }) => (
+  <Suspense>{children}</Suspense>
+);
+
+export default ChatLayout;

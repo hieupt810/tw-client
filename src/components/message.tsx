@@ -8,17 +8,15 @@ import { useAuthStore } from '@/stores/auth';
 
 import Markdown from './markdown';
 
-type Props = {
-  text?: string;
-  isUser?: boolean;
-  isLoading?: boolean;
-};
-
-export default function Message({
+const Message = ({
   text = '',
   isUser = false,
   isLoading = false,
-}: Props) {
+}: {
+  text?: string;
+  isUser?: boolean;
+  isLoading?: boolean;
+}) => {
   const me = useStore(useAuthStore, (state) => state.me);
 
   return (
@@ -57,4 +55,6 @@ export default function Message({
       )}
     </div>
   );
-}
+};
+
+export default Message;

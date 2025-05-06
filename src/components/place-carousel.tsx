@@ -9,14 +9,15 @@ import Rating from './rating';
 import { AspectRatio } from './ui/aspect-ratio';
 import { Carousel, CarouselContent, CarouselItem } from './ui/carousel';
 
-type Props = {
+const PlaceCarousel = ({
+  title,
+  description,
+}: {
   title: string;
   description?: string;
-};
-
-export default function PlaceCarousel({ title, description }: Props) {
+}) => {
   return (
-    <div className='flex w-full flex-col py-6'>
+    <div className='flex w-full flex-col'>
       <div className='mb-4 space-y-1.5'>
         <h2 className='text-xl font-bold tracking-tight'>{title}</h2>
         {description && (
@@ -39,11 +40,13 @@ export default function PlaceCarousel({ title, description }: Props) {
                   href={'/'}
                   className='flex flex-col rounded-md p-0.5 hover:opacity-90'
                 >
-                  <AspectRatio ratio={4 / 3} className='relative'>
+                  <AspectRatio ratio={1 / 1} className='relative'>
                     <Image
                       fill
+                      priority
                       alt='Placeholder'
-                      src='https://placehold.co/4000x3000/png'
+                      sizes='(max-width: 768px) 100vw, 50vw'
+                      src='https://placehold.co/1000x1000/png'
                       className='h-full w-full rounded-md object-cover object-center'
                     />
                     <button
@@ -71,4 +74,6 @@ export default function PlaceCarousel({ title, description }: Props) {
       </div>
     </div>
   );
-}
+};
+
+export default PlaceCarousel;

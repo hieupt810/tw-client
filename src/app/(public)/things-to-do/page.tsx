@@ -1,37 +1,25 @@
+import React from 'react';
+
+import CustomBreadcrumb from '@/components/custom-breadcrumb';
 import HeroSection from '@/components/hero-section';
 import MaxWidthContainer from '@/components/max-width-container';
 import PlaceCarousel from '@/components/place-carousel';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
 
-export default function ThingsToDoPage() {
+const ThingsToDoPage = () => {
   return (
-    <>
+    <React.Fragment>
       <HeroSection
         title='Explore the best things to do in Vietnam'
         description='Discover unforgettable experiences and activities for your next adventure, whether you are traveling for leisure or business.'
         buttonHref='#suggestions'
       />
-      <div className='border-grid border-b'>
-        <MaxWidthContainer className='py-4'>
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href='/'>Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbPage>Things to Do</BreadcrumbPage>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </MaxWidthContainer>
-      </div>
-      <MaxWidthContainer id='suggestions'>
+      <CustomBreadcrumb
+        links={[{ label: 'Things to Do', href: '/things-to-do' }]}
+      />
+      <MaxWidthContainer
+        id='suggestions'
+        className='flex flex-col gap-12 md:gap-14 lg:gap-16'
+      >
         <PlaceCarousel
           title='Top entertainment places in Vietnam'
           description="2025's Travelers' Choice Awards"
@@ -42,6 +30,8 @@ export default function ThingsToDoPage() {
           description='More to experience'
         />
       </MaxWidthContainer>
-    </>
+    </React.Fragment>
   );
-}
+};
+
+export default ThingsToDoPage;

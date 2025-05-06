@@ -29,7 +29,7 @@ export const useChatStore = create<State & Action>()((set, get) => ({
   chatHistory: [],
   messageHistory: [],
 
-  reset: () => {
+  reset: () =>
     set((state) => ({
       ...state,
       error: '',
@@ -37,32 +37,24 @@ export const useChatStore = create<State & Action>()((set, get) => ({
       isLoadingResponse: false,
       isLoadingChatHistory: false,
       messageHistory: [],
-    }));
-  },
+    })),
 
-  newChat: () => {
-    set((state) => ({ ...state, messageHistory: [] }));
-  },
+  newChat: () => set((state) => ({ ...state, messageHistory: [] })),
 
-  async newMessage(text, id) {
+  newMessage: async (text, id) => {
     try {
-      set((state) => ({ ...state, isLoadingResponse: true }));
-
-      // Put the message to the top of the messages
       set((state) => ({
         ...state,
+        isLoadingResponse: true,
         messageHistory: [{ text, is_user: true }, ...state.messageHistory],
       }));
 
       // Send message to the server
       const resp = await ChatService.postMessage(text, id);
-
-      // Add response to the top of the messages
       set((state) => ({
         ...state,
         messageHistory: [resp, ...state.messageHistory],
       }));
-
       get().getChatHistory();
     } catch {
       set((state) => ({ ...state, error: 'Something went wrong' }));
@@ -71,7 +63,7 @@ export const useChatStore = create<State & Action>()((set, get) => ({
     }
   },
 
-  async getChatHistory() {
+  getChatHistory: async () => {
     set((state) => ({ ...state, isLoadingChatHistory: true }));
     try {
       const response = await ChatService.getChatList();
@@ -83,7 +75,7 @@ export const useChatStore = create<State & Action>()((set, get) => ({
     }
   },
 
-  async getMessageHistory(id) {
+  getMessageHistory: async (id) => {
     set((state) => ({ ...state, isLoadingMessage: true }));
     try {
       const response = await ChatService.getChatMessages(id);

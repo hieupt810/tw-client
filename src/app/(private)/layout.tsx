@@ -1,16 +1,14 @@
+import React from 'react';
+
 import AppFooter from '@/components/app-footer';
 import AppNavbar from '@/components/app-navbar';
 
-export default function PrivateLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <>
-      <AppNavbar />
-      <div className='grow'>{children}</div>
-      <AppFooter />
-    </>
-  );
-}
+const PrivateLayout = ({ children }: { children: React.ReactNode }) => (
+  <React.Fragment>
+    <AppNavbar />
+    <div className='grow'>{children}</div>
+    <AppFooter />
+  </React.Fragment>
+);
+
+export default PrivateLayout;

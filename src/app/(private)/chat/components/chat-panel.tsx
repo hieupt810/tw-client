@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth';
 import { useChatStore } from '@/stores/chat';
 
-export default function ChatPanel() {
+const ChatPanel = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -23,84 +23,66 @@ export default function ChatPanel() {
   const isNewChat = searchParams.get('new') === 'true';
 
   // Global states
-  const me = useStore(useAuthStore, (state) => state.me);
-  const error = useStore(useChatStore, (state) => state.error);
-  const messageHistory = useStore(
-    useChatStore,
-    (state) => state.messageHistory,
-  );
-  const isLoadingResponse = useStore(
-    useChatStore,
-    (state) => state.isLoadingResponse,
-  );
-  const isLoadingMessage = useStore(
-    useChatStore,
-    (state) => state.isLoadingMessage,
-  );
-  const getMessageHistory = useStore(
-    useChatStore,
-    (state) => state.getMessageHistory,
-  );
-  const newMessage = useStore(useChatStore, (state) => state.newMessage);
+  const authStore = useStore(useAuthStore, (state) => state);
+  const chatStore = useStore(useChatStore, (state) => state);
 
   // Local states
   const [text, setText] = useState<string>('');
   const boxChatRef = useRef<HTMLDivElement>(null);
 
-  function onInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setText(e.target.value);
-  }
+  };
 
-  async function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && text.trim() !== '') {
       e.preventDefault();
-      newMessage(text, id);
+      chatStore.newMessage(text, id);
       setText('');
     }
-  }
+  };
 
   useEffect(() => {
     if (!id) {
       router.replace(`/chat?id=${uuidv4()}&new=true`);
     } else if (!isNewChat) {
-      getMessageHistory(id);
+      chatStore.getMessageHistory(id);
     }
-  }, [id, isNewChat, getMessageHistory, router]);
+  }, [id, isNewChat, router, chatStore]);
 
   useEffect(() => {
+    const error = chatStore.error;
     if (error) toast.error(error);
-  }, [error]);
+  }, [chatStore.error]);
 
   return (
     <div
       ref={boxChatRef}
       className='col-span-3 flex max-h-[calc(100svh-7.25rem)] w-full flex-col'
     >
-      {isLoadingMessage && (
+      {chatStore.isLoadingMessage && (
         <div className='flex grow items-center justify-center'>
           <Loader2 size={36} className='text-primary animate-spin' />
         </div>
       )}
-      {!isLoadingMessage && (
+      {!chatStore.isLoadingMessage && (
         <div
           className={cn(
             'flex max-h-[calc(100vh-4rem)] grow flex-col-reverse gap-y-4 overflow-y-auto px-5 py-4',
-            messageHistory.length === 0 && 'justify-center',
+            chatStore.messageHistory.length === 0 && 'justify-center',
           )}
         >
-          {isLoadingResponse && <Message isLoading />}
-
-          {messageHistory.length > 0 &&
-            messageHistory.map((item, index) => (
+          {chatStore.isLoadingResponse && <Message isLoading />}
+          {chatStore.messageHistory.length > 0 &&
+            chatStore.messageHistory.map((item, index) => (
               <Message key={index} text={item.text} isUser={item.is_user} />
             ))}
-
-          {messageHistory.length === 0 && (
+          {chatStore.messageHistory.length === 0 && (
             <div className='inline-flex items-center justify-center gap-2 text-2xl leading-tight font-semibold tracking-tighter sm:text-3xl md:text-4xl lg:leading-[1.1]'>
               <span>Hello,</span>
-              {me ? (
-                <span className='text-primary'>{me.name}</span>
+              {authStore.me ? (
+                <span className='text-primary'>{authStore.me.name}</span>
               ) : (
                 <Skeleton className='ml-1 h-8 w-48' />
               )}
@@ -108,7 +90,6 @@ export default function ChatPanel() {
           )}
         </div>
       )}
-
       <div className='px-5 py-3'>
         <Input
           type='text'
@@ -117,9 +98,11 @@ export default function ChatPanel() {
           onChange={onInputChange}
           aria-label='Type your message'
           placeholder='Ask something...'
-          disabled={isLoadingMessage || isLoadingResponse}
+          disabled={chatStore.isLoadingMessage || chatStore.isLoadingResponse}
         />
       </div>
     </div>
   );
-}
+};
+
+export default ChatPanel;

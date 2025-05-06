@@ -6,6 +6,7 @@ import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 delete (L.Icon.Default.prototype as any)._getIconUrl;
+
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
     'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -13,7 +14,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
-export default function MapComponent() {
+const MapComponent = () => {
   const position: LatLngExpression = [15.99745459676201, 107.98828965975703];
 
   return (
@@ -30,4 +31,6 @@ export default function MapComponent() {
       </Marker>
     </MapContainer>
   );
-}
+};
+
+export default MapComponent;

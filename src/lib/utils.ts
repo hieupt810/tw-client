@@ -4,20 +4,20 @@ import { twMerge } from 'tailwind-merge';
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constants';
 import { IChartData } from '@/types/IChartData';
 
-export function cn(...inputs: ClassValue[]) {
+export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
-}
+};
 
-export function getTokenPair() {
+export const getTokenPair = () => {
   if (typeof window === 'undefined') return null;
 
   const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
   const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
   if (!accessToken || !refreshToken) return null;
   return { accessToken, refreshToken };
-}
+};
 
-export function formatDate(isodate: string) {
+export const formatDate = (isodate: string) => {
   const date = new Date(isodate);
   return date.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -27,9 +27,9 @@ export function formatDate(isodate: string) {
     minute: '2-digit',
     hour12: true,
   });
-}
+};
 
-export function createChartData(histogram: number[]) {
+export const createChartData = (histogram: number[]) => {
   if (histogram.length !== 5) {
     throw new Error('Invalid rating histogram data');
   }
@@ -63,4 +63,4 @@ export function createChartData(histogram: number[]) {
   ];
 
   return chartData;
-}
+};

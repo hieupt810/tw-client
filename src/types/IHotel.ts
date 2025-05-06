@@ -1,5 +1,4 @@
 export type IHotel = {
-  name: string;
   address: {
     street: string;
     city: {
@@ -8,8 +7,11 @@ export type IHotel = {
     };
   };
   description: string;
-  longitude: number;
   latitude: number;
+  longitude: number;
+  name: string;
+  phone: string;
+  photos: string[];
   rating: number;
   rating_histogram: number[];
 };

@@ -2,12 +2,13 @@ import { cn } from '@/lib/utils';
 
 import CircleRating from './icons/circle-rating';
 
-type Props = {
+const Rating = ({
+  rating,
+  size = 'md',
+}: {
   rating: number;
   size?: 'sm' | 'md';
-};
-
-export default function Rating({ rating, size = 'md' }: Props) {
+}) => {
   const quotient = Math.floor(rating);
   const decimal = parseFloat((rating % 1).toFixed(1)) * 10;
 
@@ -33,4 +34,6 @@ export default function Rating({ rating, size = 'md' }: Props) {
       </div>
     </div>
   );
-}
+};
+
+export default Rating;

@@ -13,41 +13,25 @@ import { useChatStore } from '@/stores/chat';
 
 import ChatPanel from './components/chat-panel';
 
-export default function ChatPage() {
+const ChatPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  // Get the chat id from the URL
   const chatId = searchParams.get('id');
 
-  // Global states
-  const reset = useStore(useChatStore, (state) => state.reset);
-  const newChat = useStore(useChatStore, (state) => state.newChat);
-  const getChatHistory = useStore(
-    useChatStore,
-    (state) => state.getChatHistory,
-  );
-  const chatHistory = useStore(useChatStore, (state) => state.chatHistory);
-  const isLoadingChatHistory = useStore(
-    useChatStore,
-    (state) => state.isLoadingChatHistory,
-  );
+  const chatStore = useStore(useChatStore, (state) => state);
 
-  function handleNewChat(e: React.MouseEvent<HTMLButtonElement>) {
+  const handleNewChat = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    newChat();
+    chatStore.newChat();
     router.replace(`/chat?id=${uuidv4()}&new=true`);
-  }
+  };
 
   useEffect(() => {
-    if (chatHistory.length === 0) {
-      getChatHistory();
-    }
-
+    if (chatStore.chatHistory.length === 0) chatStore.getChatHistory();
     return () => {
-      reset();
+      chatStore.reset();
     };
-  }, [getChatHistory, chatHistory.length, reset]);
+  }, [chatStore]);
 
   return (
     <MaxWidthContainer
@@ -70,15 +54,15 @@ export default function ChatPage() {
         </div>
 
         <div className='mt-16 flex grow flex-col gap-1 px-3'>
-          {isLoadingChatHistory && (
+          {chatStore.isLoadingChatHistory && (
             <div className='flex grow items-center justify-center'>
               <Loader2 size={36} className='text-primary animate-spin' />
             </div>
           )}
 
-          {!isLoadingChatHistory &&
-            chatHistory.length > 0 &&
-            chatHistory.map((item) => (
+          {!chatStore.isLoadingChatHistory &&
+            chatStore.chatHistory.length > 0 &&
+            chatStore.chatHistory.map((item) => (
               <button
                 key={item.id}
                 aria-label={`Open chat ${item.id}`}
@@ -92,12 +76,15 @@ export default function ChatPage() {
               </button>
             ))}
 
-          {!isLoadingChatHistory && chatHistory.length === 0 && (
-            <p className='py-5 text-center'>No recent chat</p>
-          )}
+          {!chatStore.isLoadingChatHistory &&
+            chatStore.chatHistory.length === 0 && (
+              <p className='py-5 text-center'>No recent chat</p>
+            )}
         </div>
       </div>
       <ChatPanel />
     </MaxWidthContainer>
   );
-}
+};
+
+export default ChatPage;

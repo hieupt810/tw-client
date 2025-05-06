@@ -1,16 +1,9 @@
+import CustomBreadcrumb from '@/components/custom-breadcrumb';
 import HeroSection from '@/components/hero-section';
 import MaxWidthContainer from '@/components/max-width-container';
 import PlaceCarousel from '@/components/place-carousel';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
 
-export default function HotelsPage() {
+const HotelsPage = () => {
   return (
     <>
       <HeroSection
@@ -18,19 +11,7 @@ export default function HotelsPage() {
         description='Discover the perfect place to stay for your next unforgettable trip, whether you are traveling for leisure or business.'
         buttonHref='#suggestions'
       />
-      <div className='border-grid border-b'>
-        <MaxWidthContainer className='py-4'>
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href='/'>Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbPage>Hotels</BreadcrumbPage>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </MaxWidthContainer>
-      </div>
+      <CustomBreadcrumb links={[{ label: 'Hotels', href: '/hotels' }]} />
       <MaxWidthContainer id='suggestions'>
         <PlaceCarousel
           title="Stay at the Vietnam's top hotels"
@@ -44,4 +25,6 @@ export default function HotelsPage() {
       </MaxWidthContainer>
     </>
   );
-}
+};
+
+export default HotelsPage;

@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import React from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -12,19 +12,27 @@ import {
   BreadcrumbSeparator,
 } from './ui/breadcrumb';
 
-type Props = {
-  links: { label: string; href: string }[];
-  className?: string;
+type ILink = {
+  href?: string;
+  label?: string;
 };
 
-export default function CustomBreadcrumb({ links, className = '' }: Props) {
+const CustomBreadcrumb = ({
+  links = [],
+  className = '',
+}: {
+  links?: ILink[];
+  className?: string;
+}) => {
+  links.unshift({ label: 'Home', href: '/' });
+
   return (
     <div className={cn('border-grid border-b', className)}>
-      <MaxWidthContainer className='py-4'>
+      <MaxWidthContainer>
         <Breadcrumb>
           <BreadcrumbList>
             {links.map((link, index) => (
-              <Fragment key={index}>
+              <React.Fragment key={index}>
                 {index === links.length - 1 ? (
                   <BreadcrumbPage>{link.label}</BreadcrumbPage>
                 ) : (
@@ -37,11 +45,13 @@ export default function CustomBreadcrumb({ links, className = '' }: Props) {
                     <BreadcrumbSeparator />
                   </>
                 )}
-              </Fragment>
+              </React.Fragment>
             ))}
           </BreadcrumbList>
         </Breadcrumb>
       </MaxWidthContainer>
     </div>
   );
-}
+};
+
+export default CustomBreadcrumb;

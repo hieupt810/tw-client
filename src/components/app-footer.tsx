@@ -1,13 +1,9 @@
-import MaxWidthContainer from './max-width-container';
+const AppFooter = () => (
+  <footer className='border-grid flex h-14 items-center justify-center border-t'>
+    <p className='text-muted-foreground text-center text-sm text-balance'>
+      &copy; {new Date().getFullYear()} TripWise. All rights reserved.
+    </p>
+  </footer>
+);
 
-export default function AppFooter() {
-  return (
-    <footer className='border-grid h-[3.75rem] border-t'>
-      <MaxWidthContainer className='p-4'>
-        <p className='text-muted-foreground text-center text-sm leading-loose text-balance'>
-          &copy; {new Date().getFullYear()} TripWise. All rights reserved.
-        </p>
-      </MaxWidthContainer>
-    </footer>
-  );
-}
+export default AppFooter;

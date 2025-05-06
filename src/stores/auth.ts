@@ -13,8 +13,8 @@ type State = {
 
 type Action = {
   getMe: () => Promise<void>;
-  setSignInState: () => void;
-  setLogOutState: () => void;
+  signIn: () => void;
+  logOut: () => void;
 };
 
 export const useAuthStore = create<State & Action>()(
@@ -24,11 +24,11 @@ export const useAuthStore = create<State & Action>()(
       isLoadingMe: true,
       isAuthenticated: false,
 
-      async getMe() {
+      getMe: async () => {
         try {
           if (!get().isAuthenticated) return;
           set((state) => ({ ...state, isLoadingMe: true }));
-          const resp = await AuthService.getMe();
+          const resp = await AuthService.me();
           set((state) => ({ ...state, me: resp }));
         } catch {
           localStorage.removeItem(ACCESS_TOKEN_KEY);
@@ -38,13 +38,10 @@ export const useAuthStore = create<State & Action>()(
         }
       },
 
-      setSignInState() {
-        set((state) => ({ ...state, isAuthenticated: true }));
-      },
+      signIn: () => set((state) => ({ ...state, isAuthenticated: true })),
 
-      setLogOutState() {
-        set((state) => ({ ...state, isAuthenticated: false, me: null }));
-      },
+      logOut: () =>
+        set((state) => ({ ...state, isAuthenticated: false, me: null })),
     }),
     {
       name: 'auth',

@@ -6,23 +6,18 @@ import { ISignUpSchema } from '@/types/ISignUpSchema';
 import { ITokenPair } from '@/types/IToken';
 
 export class AuthService {
-  static async postSignIn(values: ISignInSchema) {
-    const response = await api
-      .post(AuthRoutes.SIGN_IN, { json: values })
-      .json<ITokenPair>();
-    return response;
-  }
+  static signIn = (values: ISignInSchema) => {
+    return api.post(AuthRoutes.SIGN_IN, { json: values }).json<ITokenPair>();
+  };
 
-  static async postSignUp(values: ISignUpSchema) {
+  static signUp = (values: ISignUpSchema) => {
     const { name, email, password } = values;
-    const response = await api
+    return api
       .post(AuthRoutes.SIGN_UP, { json: { name, email, password } })
       .json();
-    return response;
-  }
+  };
 
-  static async getMe() {
-    const response = await api.get(AuthRoutes.ME).json<IMe>();
-    return response;
-  }
+  static me = () => {
+    return api.get(AuthRoutes.ME).json<IMe>();
+  };
 }
