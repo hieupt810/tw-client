@@ -31,9 +31,6 @@ const ChatPanel = () => {
     getMessageHistoryAction,
   } = useStore(useChatStore, (state) => state);
 
-  console.log('isLoadingMessage', isLoadingMessage);
-  console.log('messageHistory', messageHistory);
-
   const [text, setText] = useState<string>('');
   const boxChatRef = useRef<HTMLDivElement>(null);
 

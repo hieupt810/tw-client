@@ -24,10 +24,10 @@ const ThingsToDoPage = () => {
           title='Top entertainment places in Vietnam'
           description="2025's Travelers' Choice Awards"
         />
-        <PlaceCarousel title='Recently explored' />
+        <PlaceCarousel title='Recently viewed' />
         <PlaceCarousel
-          title='You might enjoy these'
-          description='More to experience'
+          title='You might like these'
+          description='More places to experience'
         />
       </MaxWidthContainer>
     </React.Fragment>

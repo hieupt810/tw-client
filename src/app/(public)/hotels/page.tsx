@@ -12,7 +12,10 @@ const HotelsPage = () => {
         buttonHref='#suggestions'
       />
       <CustomBreadcrumb links={[{ label: 'Hotels', href: '/hotels' }]} />
-      <MaxWidthContainer id='suggestions'>
+      <MaxWidthContainer
+        id='suggestions'
+        className='flex flex-col gap-12 md:gap-14 lg:gap-16'
+      >
         <PlaceCarousel
           title="Stay at the Vietnam's top hotels"
           description="2025's Travelers's Choice Awards"

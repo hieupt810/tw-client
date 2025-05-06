@@ -29,6 +29,7 @@ const ThumbnailsCarousel = ({
                 <Image
                   fill
                   alt='Placeholder'
+                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                   src='https://placehold.co/1800x1000/png'
                   className='overflow-hidden rounded-md object-cover object-center'
                 />
