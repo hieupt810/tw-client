@@ -30,8 +30,8 @@ type State = {
 };
 
 type Action = {
-  reset: () => void;
-  getHotel: (id: string) => Promise<void>;
+  resetAction: () => void;
+  getHotelAction: (id: string) => Promise<void>;
 };
 
 export const useHotelStore = create<State & Action>((set) => ({
@@ -39,7 +39,7 @@ export const useHotelStore = create<State & Action>((set) => ({
   hotel: null,
   isLoadingHotel: true,
 
-  reset: () =>
+  resetAction: () =>
     set((state) => ({
       ...state,
       error: '',
@@ -47,7 +47,7 @@ export const useHotelStore = create<State & Action>((set) => ({
       isLoadingHotel: false,
     })),
 
-  getHotel: async (id) => {
+  getHotelAction: async (id) => {
     console.log('getHotel', id);
     try {
       set((state) => ({

@@ -24,23 +24,19 @@ import {
 import { Skeleton } from './ui/skeleton';
 
 const AppNavbar = () => {
-  const me = useStore(useAuthStore, (state) => state.me);
-  const isLoadingMe = useStore(useAuthStore, (state) => state.isLoadingMe);
-
-  const getMe = useStore(useAuthStore, (state) => state.getMe);
-  const setLogOutState = useStore(
+  const { me, isLoadingMe, meAction, logOutAction } = useStore(
     useAuthStore,
-    (state) => state.setLogOutState,
+    (state) => state,
   );
 
   const logOut = () => {
-    setLogOutState();
+    logOutAction();
     window.location.href = '/';
   };
 
   useEffect(() => {
-    getMe();
-  }, [getMe]);
+    meAction();
+  }, [meAction]);
 
   return (
     <header className='bg-background/95 border-grid supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40 flex h-14 w-full border-b backdrop-blur-sm'>

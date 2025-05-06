@@ -4,10 +4,10 @@ import { IChat } from '@/types/IChat';
 import { IChatMessage } from '@/types/IChatMessage';
 
 export class ChatService {
-  static postMessage = (text: string, conversation_id: string) => {
+  static postMessage = (id: string, text: string) => {
     return api
       .post(ChatRoutes.DEFAULT, {
-        json: { text, conversation_id },
+        json: { id, text },
         timeout: 20000,
       })
       .json<IChatMessage>();

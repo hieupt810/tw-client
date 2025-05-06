@@ -15,23 +15,30 @@ import ChatPanel from './components/chat-panel';
 
 const ChatPage = () => {
   const router = useRouter();
+
   const searchParams = useSearchParams();
   const chatId = searchParams.get('id');
 
-  const chatStore = useStore(useChatStore, (state) => state);
+  const {
+    chatHistory,
+    isLoadingChatHistory,
+    resetAction,
+    postChatAction,
+    getChatHistoryAction,
+  } = useStore(useChatStore, (state) => state);
 
   const handleNewChat = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    chatStore.newChat();
+    postChatAction();
     router.replace(`/chat?id=${uuidv4()}&new=true`);
   };
 
   useEffect(() => {
-    if (chatStore.chatHistory.length === 0) chatStore.getChatHistory();
+    if (chatHistory.length === 0) getChatHistoryAction();
     return () => {
-      chatStore.reset();
+      resetAction();
     };
-  }, [chatStore]);
+  }, [chatHistory.length, getChatHistoryAction, resetAction]);
 
   return (
     <MaxWidthContainer
@@ -54,15 +61,15 @@ const ChatPage = () => {
         </div>
 
         <div className='mt-16 flex grow flex-col gap-1 px-3'>
-          {chatStore.isLoadingChatHistory && (
+          {isLoadingChatHistory && (
             <div className='flex grow items-center justify-center'>
               <Loader2 size={36} className='text-primary animate-spin' />
             </div>
           )}
 
-          {!chatStore.isLoadingChatHistory &&
-            chatStore.chatHistory.length > 0 &&
-            chatStore.chatHistory.map((item) => (
+          {!isLoadingChatHistory &&
+            chatHistory.length > 0 &&
+            chatHistory.map((item) => (
               <button
                 key={item.id}
                 aria-label={`Open chat ${item.id}`}
@@ -76,10 +83,9 @@ const ChatPage = () => {
               </button>
             ))}
 
-          {!chatStore.isLoadingChatHistory &&
-            chatStore.chatHistory.length === 0 && (
-              <p className='py-5 text-center'>No recent chat</p>
-            )}
+          {!isLoadingChatHistory && chatHistory.length === 0 && (
+            <p className='py-5 text-center'>No recent chat</p>
+          )}
         </div>
       </div>
       <ChatPanel />

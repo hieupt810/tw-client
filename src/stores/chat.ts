@@ -6,30 +6,30 @@ import { IChatMessage } from '@/types/IChatMessage';
 
 type State = {
   error: string;
+  chatHistory: IChat[];
   isLoadingMessage: boolean;
   isLoadingResponse: boolean;
   isLoadingChatHistory: boolean;
-  chatHistory: IChat[];
   messageHistory: IChatMessage[];
 };
 
 type Action = {
-  reset: () => void;
-  newChat: () => void;
-  newMessage: (text: string, id: string) => Promise<void>;
-  getChatHistory: () => Promise<void>;
-  getMessageHistory: (id: string) => Promise<void>;
+  resetAction: () => void;
+  postChatAction: () => void;
+  postMessageAction: (id: string, text: string) => Promise<void>;
+  getChatHistoryAction: () => Promise<void>;
+  getMessageHistoryAction: (id: string) => Promise<void>;
 };
 
 export const useChatStore = create<State & Action>()((set, get) => ({
   error: '',
+  chatHistory: [],
+  messageHistory: [],
   isLoadingMessage: false,
   isLoadingResponse: false,
   isLoadingChatHistory: true,
-  chatHistory: [],
-  messageHistory: [],
 
-  reset: () =>
+  resetAction: () =>
     set((state) => ({
       ...state,
       error: '',
@@ -38,10 +38,8 @@ export const useChatStore = create<State & Action>()((set, get) => ({
       isLoadingChatHistory: false,
       messageHistory: [],
     })),
-
-  newChat: () => set((state) => ({ ...state, messageHistory: [] })),
-
-  newMessage: async (text, id) => {
+  postChatAction: () => set((state) => ({ ...state, messageHistory: [] })),
+  postMessageAction: async (id, text) => {
     try {
       set((state) => ({
         ...state,
@@ -50,20 +48,19 @@ export const useChatStore = create<State & Action>()((set, get) => ({
       }));
 
       // Send message to the server
-      const resp = await ChatService.postMessage(text, id);
+      const resp = await ChatService.postMessage(id, text);
       set((state) => ({
         ...state,
         messageHistory: [resp, ...state.messageHistory],
       }));
-      get().getChatHistory();
+      get().getChatHistoryAction();
     } catch {
       set((state) => ({ ...state, error: 'Something went wrong' }));
     } finally {
       set((state) => ({ ...state, isLoadingResponse: false }));
     }
   },
-
-  getChatHistory: async () => {
+  getChatHistoryAction: async () => {
     set((state) => ({ ...state, isLoadingChatHistory: true }));
     try {
       const response = await ChatService.getChatList();
@@ -74,8 +71,7 @@ export const useChatStore = create<State & Action>()((set, get) => ({
       set((state) => ({ ...state, isLoadingChatHistory: false }));
     }
   },
-
-  getMessageHistory: async (id) => {
+  getMessageHistoryAction: async (id) => {
     set((state) => ({ ...state, isLoadingMessage: true }));
     try {
       const response = await ChatService.getChatMessages(id);

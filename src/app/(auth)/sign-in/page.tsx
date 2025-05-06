@@ -23,7 +23,7 @@ import AuthLayout from '../auth-layout';
 
 const SignInPage = () => {
   const router = useRouter();
-  const authStore = useStore(useAuthStore, (state) => state);
+  const signInAction = useStore(useAuthStore, (state) => state.signInAction);
 
   const form = useForm<ISignInSchema>({
     resolver: zodResolver(signInSchema),
@@ -35,7 +35,7 @@ const SignInPage = () => {
       const resp = await AuthService.signIn(values);
       localStorage.setItem(ACCESS_TOKEN_KEY, resp.access_token);
       localStorage.setItem(REFRESH_TOKEN_KEY, resp.refresh_token);
-      authStore.setSignInState();
+      signInAction();
 
       toast.success('Success');
       router.push('/');

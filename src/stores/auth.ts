@@ -12,9 +12,9 @@ type State = {
 };
 
 type Action = {
-  getMe: () => Promise<void>;
-  signIn: () => void;
-  logOut: () => void;
+  signInAction: () => void;
+  logOutAction: () => void;
+  meAction: () => Promise<void>;
 };
 
 export const useAuthStore = create<State & Action>()(
@@ -24,7 +24,10 @@ export const useAuthStore = create<State & Action>()(
       isLoadingMe: true,
       isAuthenticated: false,
 
-      getMe: async () => {
+      signInAction: () => set((state) => ({ ...state, isAuthenticated: true })),
+      logOutAction: () =>
+        set((state) => ({ ...state, isAuthenticated: false, me: null })),
+      meAction: async () => {
         try {
           if (!get().isAuthenticated) return;
           set((state) => ({ ...state, isLoadingMe: true }));
@@ -37,11 +40,6 @@ export const useAuthStore = create<State & Action>()(
           set((state) => ({ ...state, isLoadingMe: false }));
         }
       },
-
-      signIn: () => set((state) => ({ ...state, isAuthenticated: true })),
-
-      logOut: () =>
-        set((state) => ({ ...state, isAuthenticated: false, me: null })),
     }),
     {
       name: 'auth',
