@@ -62,9 +62,6 @@ const PlaceCarousel = ({
                   </h3>
                   <div className='mt-1 inline-flex items-center gap-1.5'>
                     <Rating rating={4.8} size='sm' />
-                    <span className='text-muted-foreground text-sm'>
-                      (1540)
-                    </span>
                   </div>
                 </Link>
               </CarouselItem>

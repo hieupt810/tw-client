@@ -11,6 +11,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from './ui/breadcrumb';
+import { Skeleton } from './ui/skeleton';
 
 type ILink = {
   href?: string;
@@ -34,7 +35,11 @@ const CustomBreadcrumb = ({
             {links.map((link, index) => (
               <React.Fragment key={index}>
                 {index === links.length - 1 ? (
-                  <BreadcrumbPage>{link.label}</BreadcrumbPage>
+                  link.label ? (
+                    <BreadcrumbPage>{link.label}</BreadcrumbPage>
+                  ) : (
+                    <Skeleton className='h-5 w-80' />
+                  )
                 ) : (
                   <>
                     <BreadcrumbItem>
