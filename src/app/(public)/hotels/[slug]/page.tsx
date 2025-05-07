@@ -79,7 +79,7 @@ const PlaceDetailsPage = () => {
         <div className='flex items-center gap-1'>
           <MapPin size={24} />
           <span className='text-base'>
-            {`${hotel.address.street}, ${hotel.address.city.name} ${hotel.address.city.postalCode}`}
+            {`${hotel.address.street}, ${hotel.address.city.name} ${hotel.address.city.postalCode} Vietnam`}
           </span>
         </div>
       </MaxWidthContainer>

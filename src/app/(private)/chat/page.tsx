@@ -75,8 +75,8 @@ const ChatPage = () => {
                 aria-label={`Open chat ${item.id}`}
                 onClick={() => router.replace(`/chat?id=${item.id}`)}
                 className={cn(
-                  'hover:bg-accent text-accent-foreground cursor-pointer truncate rounded-md px-3 py-1.5 text-justify text-sm tracking-tight select-none',
-                  item.id === chatId && 'text-primary font-semibold',
+                  'hover:bg-accent text-accent-foreground cursor-pointer truncate rounded-md px-3 py-1.5 text-justify tracking-tight select-none',
+                  item.id === chatId && 'text-primary !bg-violet-50/80',
                 )}
               >
                 Conversation {formatDate(item.created_at)}
