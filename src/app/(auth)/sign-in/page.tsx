@@ -21,7 +21,7 @@ import { IValidationError } from '@/types/IValidationError';
 
 import AuthLayout from '../auth-layout';
 
-const SignInPage = () => {
+export default function SignInPage() {
   const router = useRouter();
   const signInAction = useStore(useAuthStore, (state) => state.signInAction);
 
@@ -30,7 +30,7 @@ const SignInPage = () => {
     defaultValues: { email: 'trunghieupham03@gmail.com', password: 'P@ssw0rd' },
   });
 
-  const onSubmit = async (values: ISignInSchema) => {
+  async function onSubmit(values: ISignInSchema) {
     try {
       const resp = await AuthService.signIn(values);
       localStorage.setItem(ACCESS_TOKEN_KEY, resp.access_token);
@@ -64,14 +64,14 @@ const SignInPage = () => {
       }
       toast.error('Something went wrong');
     }
-  };
+  }
 
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+  function handleOnKeyDown(e: React.KeyboardEvent<HTMLFormElement>) {
     if (e.key === 'Enter') {
       e.preventDefault();
       form.handleSubmit(onSubmit)();
     }
-  };
+  }
 
   return (
     <AuthLayout image='/sign-in.jpg'>
@@ -132,6 +132,4 @@ const SignInPage = () => {
       </div>
     </AuthLayout>
   );
-};
-
-export default SignInPage;
+}

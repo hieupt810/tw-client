@@ -29,7 +29,7 @@ export const useChatStore = create<State & Action>()((set, get) => ({
   isLoadingResponse: false,
   isLoadingChatHistory: true,
 
-  resetAction: () =>
+  resetAction() {
     set((state) => ({
       ...state,
       error: '',
@@ -37,9 +37,14 @@ export const useChatStore = create<State & Action>()((set, get) => ({
       isLoadingResponse: false,
       isLoadingChatHistory: false,
       messageHistory: [],
-    })),
-  postChatAction: () => set((state) => ({ ...state, messageHistory: [] })),
-  postMessageAction: async (id, text) => {
+    }));
+  },
+
+  postChatAction() {
+    set((state) => ({ ...state, messageHistory: [] }));
+  },
+
+  async postMessageAction(id, text) {
     try {
       set((state) => ({
         ...state,
@@ -60,7 +65,8 @@ export const useChatStore = create<State & Action>()((set, get) => ({
       set((state) => ({ ...state, isLoadingResponse: false }));
     }
   },
-  getChatHistoryAction: async () => {
+
+  async getChatHistoryAction() {
     set((state) => ({ ...state, isLoadingChatHistory: true }));
     try {
       const response = await ChatService.getChatList();
@@ -71,7 +77,8 @@ export const useChatStore = create<State & Action>()((set, get) => ({
       set((state) => ({ ...state, isLoadingChatHistory: false }));
     }
   },
-  getMessageHistoryAction: async (id) => {
+
+  async getMessageHistoryAction(id) {
     set((state) => ({ ...state, isLoadingMessage: true }));
     try {
       const response = await ChatService.getChatMessages(id);

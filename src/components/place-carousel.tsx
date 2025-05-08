@@ -1,7 +1,7 @@
 'use client';
 
 import Autoplay from 'embla-carousel-autoplay';
-import { Heart } from 'lucide-react';
+import { Heart, ListPlus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -9,37 +9,37 @@ import Rating from './rating';
 import { AspectRatio } from './ui/aspect-ratio';
 import { Carousel, CarouselContent, CarouselItem } from './ui/carousel';
 
-const PlaceCarousel = ({
-  title,
-  description,
-}: {
+type Props = {
   title: string;
+  autoplay?: boolean;
   description?: string;
-}) => {
+  autoplayDelay?: number;
+};
+
+export default function PlaceCarousel({
+  title,
+  autoplay = false,
+  description,
+  autoplayDelay = 8000,
+}: Props) {
   return (
     <div className='flex w-full flex-col'>
       <div className='mb-4 space-y-1.5'>
-        <h2 className='text-xl font-bold tracking-tight'>{title}</h2>
-        {description && (
-          <p className='text-muted-foreground text-sm'>{description}</p>
-        )}
+        <h2 className='text-lg font-bold tracking-tight md:text-xl lg:text-2xl'>
+          {title}
+        </h2>
+        {description && <p className='text-muted-foreground'>{description}</p>}
       </div>
       <div className='w-full'>
         <Carousel
-          plugins={[Autoplay({ delay: 8000 })]}
+          plugins={autoplay ? [Autoplay({ delay: autoplayDelay })] : []}
           opts={{ align: 'start' }}
           className='mx-auto'
         >
           <CarouselContent>
             {Array.from({ length: 10 }).map((_, index) => (
-              <CarouselItem
-                key={index}
-                className='basis-1/2 md:basis-1/3 xl:basis-1/4'
-              >
-                <Link
-                  href={'/'}
-                  className='flex flex-col rounded-md p-0.5 hover:opacity-90'
-                >
+              <CarouselItem key={index} className='max-w-3xs md:max-w-2xs'>
+                <Link href={'/'} className='flex flex-col hover:opacity-90'>
                   <AspectRatio ratio={1 / 1} className='relative'>
                     <Image
                       fill
@@ -47,22 +47,28 @@ const PlaceCarousel = ({
                       alt='Placeholder'
                       sizes='(max-width: 768px) 100vw, 50vw'
                       src='https://placehold.co/1000x1000/png'
-                      className='h-full w-full rounded-md object-cover object-center'
+                      className='h-full w-full rounded-xl object-cover object-center'
                     />
-                    <button
-                      aria-label='Bookmark this place'
-                      className='absolute top-1.5 right-1.5 inline-flex cursor-pointer items-center justify-center rounded-full bg-white p-1.5 hover:bg-neutral-50'
-                    >
-                      <Heart size={16} />
-                    </button>
+                    <div className='absolute top-1.5 right-1.5 flex items-center gap-1'>
+                      <button
+                        aria-label='Bookmark this place'
+                        className='inline-flex cursor-pointer items-center justify-center rounded-full bg-white p-1.5 hover:bg-neutral-50'
+                      >
+                        <ListPlus size={16} />
+                      </button>
+                      <button
+                        aria-label='Bookmark this place'
+                        className='inline-flex cursor-pointer items-center justify-center rounded-full bg-white p-1.5 hover:bg-neutral-50'
+                      >
+                        <Heart size={16} />
+                      </button>
+                    </div>
                   </AspectRatio>
-                  <h3 className='mt-2 text-lg leading-snug font-semibold tracking-tight'>
+                  <h3 className='mt-2 text-base leading-snug font-semibold tracking-tight md:text-lg'>
                     Hoi An/ Da Nang - Ba Na Hills - Golden Bridge Deluxe Small
                     group
                   </h3>
-                  <div className='mt-1 inline-flex items-center gap-1.5'>
-                    <Rating rating={4.8} size='sm' />
-                  </div>
+                  <Rating rating={4.8} className='mt-0.5' />
                 </Link>
               </CarouselItem>
             ))}
@@ -71,6 +77,4 @@ const PlaceCarousel = ({
       </div>
     </div>
   );
-};
-
-export default PlaceCarousel;
+}

@@ -6,18 +6,18 @@ import { ISignUpSchema } from '@/types/ISignUpSchema';
 import { ITokenPair } from '@/types/IToken';
 
 export class AuthService {
-  static signIn = (values: ISignInSchema) => {
+  static signIn(values: ISignInSchema) {
     return api.post(AuthRoutes.SIGN_IN, { json: values }).json<ITokenPair>();
-  };
+  }
 
-  static signUp = (values: ISignUpSchema) => {
+  static signUp(values: ISignUpSchema) {
     const { name, email, password } = values;
     return api
       .post(AuthRoutes.SIGN_UP, { json: { name, email, password } })
       .json();
-  };
+  }
 
-  static me = () => {
+  static me() {
     return api.get(AuthRoutes.ME).json<IMe>();
-  };
+  }
 }

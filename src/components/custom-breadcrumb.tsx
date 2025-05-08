@@ -13,18 +13,18 @@ import {
 } from './ui/breadcrumb';
 import { Skeleton } from './ui/skeleton';
 
-type ILink = {
-  href?: string;
-  label?: string;
+type Props = {
+  links?: {
+    href?: string;
+    label?: string;
+  }[];
+  className?: string;
 };
 
-const CustomBreadcrumb = ({
+export default function CustomBreadcrumb({
   links = [],
   className = '',
-}: {
-  links?: ILink[];
-  className?: string;
-}) => {
+}: Props) {
   links.unshift({ label: 'Home', href: '/' });
 
   return (
@@ -57,6 +57,4 @@ const CustomBreadcrumb = ({
       </MaxWidthContainer>
     </div>
   );
-};
-
-export default CustomBreadcrumb;
+}

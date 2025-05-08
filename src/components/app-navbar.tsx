@@ -23,34 +23,34 @@ import {
 } from './ui/dropdown-menu';
 import { Skeleton } from './ui/skeleton';
 
-const AppNavbar = () => {
+export default function AppNavbar() {
   const { me, isLoadingMe, meAction, logOutAction } = useStore(
     useAuthStore,
     (state) => state,
   );
 
-  const logOut = () => {
+  function logOut() {
     logOutAction();
     window.location.href = '/';
-  };
+  }
 
   useEffect(() => {
     meAction();
   }, [meAction]);
 
   return (
-    <header className='bg-background/95 border-grid supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40 flex h-14 w-full border-b backdrop-blur-sm'>
-      <MaxWidthContainer className='flex items-center justify-between gap-8 !py-0'>
-        <div className='flex items-center gap-4 md:gap-6 lg:gap-8'>
+    <header className='bg-background border-grid sticky top-0 z-40 flex h-14 w-full border-b'>
+      <MaxWidthContainer className='flex items-center justify-between gap-8 py-0'>
+        <div className='flex items-center gap-2 md:gap-4 lg:gap-6'>
           <Link href='/' passHref>
             <AppLogo />
           </Link>
-          <div className='text-foreground/70 hidden items-center gap-4 text-sm font-semibold md:flex md:gap-2 lg:gap-4 xl:gap-6'>
+          <div className='text-muted-foreground hidden items-center gap-1 font-semibold md:flex'>
             {NAVIGATION_MENU_ITEMS.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className='hover:text-primary/90 transition'
+                className='hover:text-primary px-3 py-1.5'
               >
                 {item.label}
               </Link>
@@ -119,6 +119,4 @@ const AppNavbar = () => {
       </MaxWidthContainer>
     </header>
   );
-};
-
-export default AppNavbar;
+}

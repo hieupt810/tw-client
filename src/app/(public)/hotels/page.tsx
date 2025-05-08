@@ -3,7 +3,7 @@ import HeroSection from '@/components/hero-section';
 import MaxWidthContainer from '@/components/max-width-container';
 import PlaceCarousel from '@/components/place-carousel';
 
-const HotelsPage = () => {
+export default function HotelsPage() {
   return (
     <>
       <HeroSection
@@ -28,6 +28,4 @@ const HotelsPage = () => {
       </MaxWidthContainer>
     </>
   );
-};
-
-export default HotelsPage;
+}

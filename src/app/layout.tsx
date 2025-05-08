@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { ReactNode } from 'react';
 
 import { Toaster } from '@/components/ui/sonner';
 import { APP_DESCRIPTION, APP_NAME } from '@/constants';
@@ -22,22 +23,27 @@ export const metadata: Metadata = {
   description: APP_DESCRIPTION,
 };
 
-const RootLayout = ({ children }: { children: React.ReactNode }) => (
-  <html lang='en'>
-    <body
-      className={cn(
-        geistSans.variable,
-        geistMono.variable,
-        'min-h-svh font-sans antialiased',
-      )}
-      suppressHydrationWarning={true}
-    >
-      <main className='bg-background relative flex min-h-svh flex-col'>
-        <div className='border-grid flex grow flex-col'>{children}</div>
-      </main>
-      <Toaster richColors closeButton position='bottom-right' duration={2000} />
-    </body>
-  </html>
-);
-
-export default RootLayout;
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang='en'>
+      <body
+        className={cn(
+          geistSans.variable,
+          geistMono.variable,
+          'min-h-svh font-sans antialiased',
+        )}
+        suppressHydrationWarning
+      >
+        <main className='bg-background relative flex min-h-svh flex-col'>
+          <div className='border-grid flex grow flex-col'>{children}</div>
+        </main>
+        <Toaster
+          richColors
+          closeButton
+          position='bottom-right'
+          duration={2000}
+        />
+      </body>
+    </html>
+  );
+}

@@ -14,9 +14,8 @@ import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth';
 import { useChatStore } from '@/stores/chat';
 
-const ChatPanel = () => {
+export default function ChatPanel() {
   const router = useRouter();
-
   const searchParams = useSearchParams();
   const id = searchParams.get('id') || '';
   const isNewChat = searchParams.get('new') === 'true';
@@ -34,18 +33,18 @@ const ChatPanel = () => {
   const [text, setText] = useState<string>('');
   const boxChatRef = useRef<HTMLDivElement>(null);
 
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function onInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setText(e.target.value);
-  };
+  }
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter' && text.trim() !== '') {
       e.preventDefault();
       postMessageAction(id, text);
       setText('');
     }
-  };
+  }
 
   useEffect(() => {
     if (!id) {
@@ -106,6 +105,4 @@ const ChatPanel = () => {
       </div>
     </div>
   );
-};
-
-export default ChatPanel;
+}

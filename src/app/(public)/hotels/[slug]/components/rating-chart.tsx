@@ -9,7 +9,11 @@ import {
 import { CHART_CONFIG } from '@/constants/chart-config';
 import { IChartData } from '@/types/IChartData';
 
-const RatingChart = ({ histogram }: { histogram: number[] }) => {
+type Props = {
+  histogram: number[];
+};
+
+export default function RatingChart({ histogram }: Props) {
   const data: IChartData[] = [
     {
       rating: 'Excellent',
@@ -92,6 +96,4 @@ const RatingChart = ({ histogram }: { histogram: number[] }) => {
       </ChartContainer>
     </div>
   );
-};
-
-export default RatingChart;
+}

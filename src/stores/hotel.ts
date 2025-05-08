@@ -22,15 +22,16 @@ export const useHotelStore = create<State & Action>((set) => ({
   hotel: null,
   isLoadingHotel: true,
 
-  resetAction: () =>
+  resetAction() {
     set((state) => ({
       ...state,
       error: '',
       hotel: null,
       isLoadingHotel: false,
-    })),
+    }));
+  },
 
-  getHotelAction: async (id) => {
+  async getHotelAction(id) {
     console.log('getHotel', id);
     try {
       set((state) => ({

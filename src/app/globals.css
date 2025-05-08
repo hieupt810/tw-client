@@ -123,5 +123,5 @@
 }
 
 @utility border-grid {
-  @apply border-dashed border-violet-100;
+  @apply border-dashed border-violet-200;
 }

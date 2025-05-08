@@ -12,7 +12,7 @@ const MaxWidthContainer = ({
   <div
     id={id}
     className={cn(
-      'border-grid container mx-auto max-w-[1534px] overflow-hidden border-x px-6 py-4',
+      'border-grid container mx-auto max-w-7xl overflow-hidden border-x px-6 py-4',
       className,
     )}
   >

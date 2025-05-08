@@ -4,22 +4,22 @@ import { IChat } from '@/types/IChat';
 import { IChatMessage } from '@/types/IChatMessage';
 
 export class ChatService {
-  static postMessage = (id: string, text: string) => {
+  static postMessage(id: string, text: string) {
     return api
       .post(ChatRoutes.DEFAULT, {
         json: { id, text },
         timeout: 20000,
       })
       .json<IChatMessage>();
-  };
+  }
 
-  static getChatList = () => {
+  static getChatList() {
     return api.get(ChatRoutes.DEFAULT).json<IChat[]>();
-  };
+  }
 
-  static getChatMessages = (id: string) => {
+  static getChatMessages(id: string) {
     return api
       .get(ChatRoutes.MESSAGES, { searchParams: { id } })
       .json<IChatMessage[]>();
-  };
+  }
 }

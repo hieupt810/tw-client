@@ -22,7 +22,7 @@ const SingleMarkerMap = dynamic(
   },
 );
 
-const PlaceDetailsPage = () => {
+export default function PlaceDetailsPage() {
   const { slug } = useParams();
   const { hotel, resetAction, getHotelAction } = useStore(
     useHotelStore,
@@ -130,6 +130,4 @@ const PlaceDetailsPage = () => {
       </MaxWidthContainer>
     </>
   );
-};
-
-export default PlaceDetailsPage;
+}

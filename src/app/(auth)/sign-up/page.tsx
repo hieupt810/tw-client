@@ -19,7 +19,7 @@ import { IValidationError } from '@/types/IValidationError';
 
 import AuthLayout from '../auth-layout';
 
-const SignUpPage = () => {
+export default function SignUpPage() {
   const router = useRouter();
   const form = useForm<ISignUpSchema>({
     resolver: zodResolver(signUpSchema),
@@ -33,7 +33,7 @@ const SignUpPage = () => {
     },
   });
 
-  const onSubmit = async (values: ISignUpSchema) => {
+  async function onSubmit(values: ISignUpSchema) {
     try {
       await AuthService.signUp(values);
       toast.success('Signed up successfully.');
@@ -63,14 +63,14 @@ const SignUpPage = () => {
       }
       toast.error('An unexpected error occurred. Please try again later.');
     }
-  };
+  }
 
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+  function handleOnKeyDown(e: React.KeyboardEvent<HTMLFormElement>) {
     if (e.key === 'Enter') {
       e.preventDefault();
       form.handleSubmit(onSubmit)();
     }
-  };
+  }
 
   return (
     <AuthLayout image='/sign-up.jpg'>
@@ -146,6 +146,4 @@ const SignUpPage = () => {
       </div>
     </AuthLayout>
   );
-};
-
-export default SignUpPage;
+}

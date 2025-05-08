@@ -17,17 +17,14 @@ const VIOLET_MARKER = new L.Icon({
   popupAnchor: [1, -34],
 });
 
-const SingleMarkerMap = ({
-  name,
-  latitude,
-  longitude,
-}: {
+type Props = {
   name: string;
   latitude: number;
   longitude: number;
-}) => {
-  const position: LatLngExpression = [latitude, longitude];
+};
 
+export default function SingleMarkerMap({ name, latitude, longitude }: Props) {
+  const position: LatLngExpression = [latitude, longitude];
   return (
     <MapContainer
       zoom={15}
@@ -42,6 +39,4 @@ const SingleMarkerMap = ({
       </Marker>
     </MapContainer>
   );
-};
-
-export default SingleMarkerMap;
+}

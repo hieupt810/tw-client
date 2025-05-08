@@ -15,7 +15,7 @@ const api = ky.create({
   },
   hooks: {
     beforeRequest: [
-      (request) => {
+      function (request) {
         const tokenPair = getTokenPair();
         if (tokenPair) {
           request.headers.set(
@@ -26,7 +26,7 @@ const api = ky.create({
       },
     ],
     afterResponse: [
-      async (request, _options, response) => {
+      async function (request, _options, response) {
         const tokenPair = getTokenPair();
 
         // Handle 401 Unauthorized

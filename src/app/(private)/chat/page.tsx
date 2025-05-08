@@ -13,12 +13,10 @@ import { useChatStore } from '@/stores/chat';
 
 import ChatPanel from './components/chat-panel';
 
-const ChatPage = () => {
+export default function ChatPage() {
   const router = useRouter();
-
   const searchParams = useSearchParams();
   const chatId = searchParams.get('id');
-
   const {
     chatHistory,
     isLoadingChatHistory,
@@ -27,11 +25,11 @@ const ChatPage = () => {
     getChatHistoryAction,
   } = useStore(useChatStore, (state) => state);
 
-  const handleNewChat = (e: React.MouseEvent<HTMLButtonElement>) => {
+  function handleNewChat(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     postChatAction();
     router.replace(`/chat?id=${uuidv4()}&new=true`);
-  };
+  }
 
   useEffect(() => {
     if (chatHistory.length === 0) getChatHistoryAction();
@@ -79,7 +77,7 @@ const ChatPage = () => {
                   item.id === chatId && 'text-primary !bg-violet-50/80',
                 )}
               >
-                Conversation {formatDate(item.created_at)}
+                Conversation at {formatDate(item.created_at)}
               </button>
             ))}
 
@@ -91,6 +89,4 @@ const ChatPage = () => {
       <ChatPanel />
     </MaxWidthContainer>
   );
-};
-
-export default ChatPage;
+}

@@ -5,7 +5,7 @@ import HeroSection from '@/components/hero-section';
 import MaxWidthContainer from '@/components/max-width-container';
 import PlaceCarousel from '@/components/place-carousel';
 
-const RestaurantsPage = () => {
+export default function RestaurantsPage() {
   return (
     <React.Fragment>
       <HeroSection
@@ -32,6 +32,4 @@ const RestaurantsPage = () => {
       </MaxWidthContainer>
     </React.Fragment>
   );
-};
-
-export default RestaurantsPage;
+}

@@ -24,10 +24,15 @@ export const useAuthStore = create<State & Action>()(
       isLoadingMe: true,
       isAuthenticated: false,
 
-      signInAction: () => set((state) => ({ ...state, isAuthenticated: true })),
-      logOutAction: () =>
-        set((state) => ({ ...state, isAuthenticated: false, me: null })),
-      meAction: async () => {
+      signInAction() {
+        set((state) => ({ ...state, isAuthenticated: true }));
+      },
+
+      logOutAction() {
+        set((state) => ({ ...state, isAuthenticated: false, me: null }));
+      },
+
+      async meAction() {
         try {
           if (!get().isAuthenticated) return;
           set((state) => ({ ...state, isLoadingMe: true }));

@@ -5,7 +5,7 @@ import HeroSection from '@/components/hero-section';
 import MaxWidthContainer from '@/components/max-width-container';
 import PlaceCarousel from '@/components/place-carousel';
 
-const ThingsToDoPage = () => {
+export default function ThingsToDoPage() {
   return (
     <React.Fragment>
       <HeroSection
@@ -32,6 +32,4 @@ const ThingsToDoPage = () => {
       </MaxWidthContainer>
     </React.Fragment>
   );
-};
-
-export default ThingsToDoPage;
+}
