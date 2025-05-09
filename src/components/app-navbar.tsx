@@ -45,7 +45,7 @@ export default function AppNavbar() {
           <Link href='/' passHref>
             <AppLogo />
           </Link>
-          <div className='text-muted-foreground hidden items-center gap-1 font-semibold md:flex'>
+          <div className='text-muted-foreground hidden items-center gap-1 font-medium md:flex'>
             {NAVIGATION_MENU_ITEMS.map((item) => (
               <Link
                 key={item.href}

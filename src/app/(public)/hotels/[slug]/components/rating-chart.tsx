@@ -48,7 +48,7 @@ export default function RatingChart({ histogram }: Props) {
   );
 
   return (
-    <div className='mx-auto aspect-square h-full max-h-64'>
+    <div className='mx-auto aspect-square h-full max-h-60 w-auto'>
       <ChartContainer config={CHART_CONFIG} className='aspect-square'>
         <PieChart>
           <ChartTooltip

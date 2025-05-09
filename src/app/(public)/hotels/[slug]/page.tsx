@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { useStore } from 'zustand';
 
+import Amentity from '@/components/amentity';
 import CustomBreadcrumb from '@/components/custom-breadcrumb';
 import MaxWidthContainer from '@/components/max-width-container';
 import Rating from '@/components/rating';
@@ -57,61 +58,55 @@ export default function PlaceDetailsPage() {
   return (
     <>
       <CustomBreadcrumb
-        links={[
-          { label: 'Hotels', href: '/hotels' },
-          { label: hotel.name, href: `/hotels` },
-        ]}
+        links={[{ label: 'Hotels', href: '/hotels' }, { label: hotel.name }]}
       />
-
-      <MaxWidthContainer className='flex flex-col gap-1 border-b'>
-        <div className='flex flex-row items-center justify-between'>
-          <h1 className='text-2xl leading-tight font-bold tracking-tighter sm:text-3xl md:text-4xl lg:leading-[1.1]'>
-            {hotel.name}
-          </h1>
-          <Button variant='outline'>
-            <Heart />
-            Save
-          </Button>
-        </div>
-        <div className='text-muted-foreground inline-flex items-center gap-2'>
-          <Rating rating={hotel.rating} totalRatings={totalRatings} />
-        </div>
-        <div className='flex items-center gap-1'>
-          <MapPin size={24} />
-          <span className='text-base'>
-            {`${hotel.address.street}, ${hotel.address.city.name} ${hotel.address.city.postalCode} Vietnam`}
-          </span>
-        </div>
-      </MaxWidthContainer>
-
-      <MaxWidthContainer className='grid grid-cols-2 border-b p-0 md:grid-cols-3'>
-        <div className='col-span-2'>
-          <ThumbnailsCarousel
-            images={hotel.photos}
-            className='border-grid border-b px-6 py-4'
-          />
-          <div className='grid grid-cols-1 lg:grid-cols-3'>
-            <div className='flex items-center justify-center'>
-              <RatingChart histogram={hotel.ratingHistogram} />
+      <MaxWidthContainer className='grid grid-cols-1 p-0 md:grid-cols-4'>
+        <div className='border-grid col-span-3 flex flex-col gap-4 border-r border-b px-6 py-4'>
+          <div className='flex flex-col gap-1'>
+            <div className='flex flex-row items-center justify-between'>
+              <h1 className='text-2xl leading-tight font-bold tracking-tighter sm:text-3xl md:text-4xl lg:leading-[1.1]'>
+                {hotel.name}
+              </h1>
+              <Button variant='outline'>
+                <Heart />
+                Save
+              </Button>
             </div>
-            <div className='border-grid border-l px-6 py-4 md:col-span-2'>
-              <h4 className='mb-1 text-xl leading-relaxed font-bold tracking-tight md:text-2xl md:leading-loose'>
-                About
-              </h4>
-              <p className='text-justify leading-relaxed'>
-                {hotel.description}
-              </p>
+            <Rating rating={hotel.rating} totalRatings={totalRatings} />
+            <div className='flex items-center gap-1'>
+              <MapPin size={24} />
+              <span className='text-base'>
+                {`${hotel.address.street}, ${hotel.address.city.name} ${hotel.address.city.postalCode} Vietnam`}
+              </span>
             </div>
           </div>
+          <ThumbnailsCarousel images={hotel.photos} />
         </div>
-
-        <div className='border-grid col-span-2 border-t border-l px-6 py-4 md:col-span-1 md:border-t-0'>
+        <div className='border-grid hidden border-b px-6 py-4 md:block'>
           <h4 className='mb-1 text-xl leading-relaxed font-bold tracking-tight md:text-2xl md:leading-loose'>
-            Amenties
+            Popular
           </h4>
         </div>
       </MaxWidthContainer>
-
+      <MaxWidthContainer className='grid grid-cols-4 border-b p-0'>
+        <div className='border-grid col-span-4 grid border-r md:col-span-3'>
+          <div className='border-grid border-r-0 border-b px-6 py-4 md:border-r md:border-b-0'>
+            <h4 className='mb-1 text-xl leading-relaxed font-bold tracking-tight md:text-2xl md:leading-loose'>
+              About
+            </h4>
+            <p className='text-justify leading-relaxed'>{hotel.description}</p>
+          </div>
+          <div className='px-6 py-4'>
+            <h4 className='mb-1 text-xl leading-relaxed font-bold tracking-tight md:text-2xl md:leading-loose'>
+              Amentities
+            </h4>
+            <Amentity amentities={hotel.amenities} />
+          </div>
+        </div>
+        <div className='border-grid col-span-4 flex min-h-10 items-center justify-center border-t md:col-span-1 md:border-t-0'>
+          <RatingChart histogram={hotel.ratingHistogram} />
+        </div>
+      </MaxWidthContainer>
       <MaxWidthContainer className='border-b'>
         <h4 className='mb-1 text-xl leading-relaxed font-bold tracking-tight md:text-2xl md:leading-loose'>
           Map
@@ -122,7 +117,6 @@ export default function PlaceDetailsPage() {
           longitude={hotel.longitude}
         />
       </MaxWidthContainer>
-
       <MaxWidthContainer>
         <h4 className='mb-1 text-xl leading-relaxed font-bold tracking-tight md:text-2xl md:leading-loose'>
           Reviews

@@ -10,23 +10,22 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 
-const ThumbnailsCarousel = ({
-  images,
-  className,
-}: {
+type Props = {
   images: string[];
   className?: React.HTMLAttributes<HTMLDivElement>['className'];
-}) => (
-  <div className={className}>
-    <Carousel
-      plugins={[Autoplay({ delay: 5000 })]}
-      opts={{ align: 'start' }}
-      className='mx-auto h-full w-[calc(100%-6rem)]'
-    >
-      <CarouselContent>
-        {images.map((image, index) => (
-          <CarouselItem key={index}>
-            <div className='p-1'>
+};
+
+export default function ThumbnailsCarousel({ images, className }: Props) {
+  return (
+    <div className={className}>
+      <Carousel
+        opts={{ align: 'start' }}
+        plugins={[Autoplay({ delay: 5000 })]}
+        className='mx-auto h-full w-[calc(100%-6rem)] max-w-lg md:max-w-3xl'
+      >
+        <CarouselContent>
+          {images.map((image, index) => (
+            <CarouselItem key={index}>
               <AspectRatio ratio={1.8 / 1}>
                 <Image
                   fill
@@ -34,17 +33,15 @@ const ThumbnailsCarousel = ({
                   alt='Placeholder'
                   sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                   src={image}
-                  className='overflow-hidden rounded-md object-cover object-center'
+                  className='overflow-hidden rounded-lg object-cover object-center'
                 />
               </AspectRatio>
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselNext />
-      <CarouselPrevious />
-    </Carousel>
-  </div>
-);
-
-export default ThumbnailsCarousel;
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselNext />
+        <CarouselPrevious />
+      </Carousel>
+    </div>
+  );
+}

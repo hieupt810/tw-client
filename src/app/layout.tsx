@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter, Roboto_Mono } from 'next/font/google';
 import { ReactNode } from 'react';
 
 import { Toaster } from '@/components/ui/sonner';
@@ -8,13 +8,13 @@ import { cn } from '@/lib/utils';
 
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const fontSans = Inter({
   subsets: ['latin'],
+  variable: '--font-inter-sans',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const fontMono = Roboto_Mono({
+  variable: '--font-roboto-mono',
   subsets: ['latin'],
 });
 
@@ -28,8 +28,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang='en'>
       <body
         className={cn(
-          geistSans.variable,
-          geistMono.variable,
+          fontSans.variable,
+          fontMono.variable,
           'min-h-svh font-sans antialiased',
         )}
         suppressHydrationWarning
