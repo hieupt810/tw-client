@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { Regex } from '@/constants/regex';
+import { Constant } from '@/constants';
 
 export const signInSchema = z.object({
   email: z
@@ -11,7 +11,7 @@ export const signInSchema = z.object({
     .string()
     .min(8, 'Password must be at least 8 characters long.')
     .max(32, 'Password must be at most 32 characters long.')
-    .regex(Regex.PASSWORD, {
+    .regex(Constant.REGEX.PASSWORD, {
       message:
         'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
     }),
