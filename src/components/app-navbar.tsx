@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import { useStore } from 'zustand';
 
-import { NAVIGATION_MENU_ITEMS } from '@/constants';
+import { Constant } from '@/constants';
 import { useAuthStore } from '@/stores/auth';
 
 import AppLogo from './app-logo';
@@ -46,7 +46,7 @@ export default function AppNavbar() {
             <AppLogo />
           </Link>
           <div className='text-muted-foreground hidden items-center gap-1 font-medium md:flex'>
-            {NAVIGATION_MENU_ITEMS.map((item) => (
+            {Constant.NAVIGATION_MENU_ITEMS.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}

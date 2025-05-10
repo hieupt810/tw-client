@@ -3,7 +3,7 @@ import { Inter, Roboto_Mono } from 'next/font/google';
 import { ReactNode } from 'react';
 
 import { Toaster } from '@/components/ui/sonner';
-import { APP_DESCRIPTION, APP_NAME } from '@/constants';
+import { Constant } from '@/constants';
 import { cn } from '@/lib/utils';
 
 import './globals.css';
@@ -19,8 +19,8 @@ const fontMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  title: APP_NAME,
-  description: APP_DESCRIPTION,
+  title: Constant.APP_NAME,
+  description: Constant.APP_DESCRIPTION,
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { useStore } from 'zustand';
 
-import Amentity from '@/components/amentity';
+import Amenity from '@/components/amenity';
 import CustomBreadcrumb from '@/components/custom-breadcrumb';
 import MaxWidthContainer from '@/components/max-width-container';
 import Rating from '@/components/rating';
@@ -98,9 +98,9 @@ export default function PlaceDetailsPage() {
           </div>
           <div className='px-6 py-4'>
             <h4 className='mb-1 text-xl leading-relaxed font-bold tracking-tight md:text-2xl md:leading-loose'>
-              Amentities
+              Amenities
             </h4>
-            <Amentity amentities={hotel.amenities} />
+            <Amenity amenities={hotel.amenities} />
           </div>
         </div>
         <div className='border-grid col-span-4 flex min-h-10 items-center justify-center border-t md:col-span-1 md:border-t-0'>

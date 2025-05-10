@@ -5,14 +5,14 @@ import HeroSection from '@/components/hero-section';
 import MaxWidthContainer from '@/components/max-width-container';
 import PlaceCarousel from '@/components/place-carousel';
 
+const HERO_TITLE = 'Explore the best things to do in Vietnam';
+const HERO_DESCRIPTION =
+  'Discover unforgettable experiences and activities for your next adventure, whether you are traveling for leisure or business.';
+
 export default function RestaurantsPage() {
   return (
     <React.Fragment>
-      <HeroSection
-        title='Discover the best dining experiences'
-        description='From street food to fine dining, explore millions of restaurant reviews and photos shared by our global travel community.'
-        buttonHref='#suggestions'
-      />
+      <HeroSection title={HERO_TITLE} description={HERO_DESCRIPTION} />
       <CustomBreadcrumb
         links={[{ label: 'Restaurants', href: '/restaurants' }]}
       />

@@ -3,12 +3,16 @@ import React from 'react';
 import AppFooter from '@/components/app-footer';
 import AppNavbar from '@/components/app-navbar';
 
-const PublicLayout = ({ children }: { children: React.ReactNode }) => (
-  <React.Fragment>
-    <AppNavbar />
-    <div className='flex grow flex-col'>{children}</div>
-    <AppFooter />
-  </React.Fragment>
-);
+type Props = {
+  children: React.ReactNode;
+};
 
-export default PublicLayout;
+export default function PublicLayout({ children }: Props) {
+  return (
+    <>
+      <AppNavbar />
+      <div className='flex grow flex-col'>{children}</div>
+      <AppFooter />
+    </>
+  );
+}

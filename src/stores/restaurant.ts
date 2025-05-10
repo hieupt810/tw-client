@@ -2,42 +2,38 @@ import { HTTPError } from 'ky';
 import { create } from 'zustand';
 
 import { IError } from '@/types/IError';
-import { IHotel } from '@/types/IHotel';
-
-import { HOTEL_MOCK_DATA } from './mock/hotel-mock-data';
 
 type State = {
   error: string;
-  hotel: IHotel | null;
-  isLoadingHotel: boolean;
+  restaurant: null;
+  isLoadingRestaurant: boolean;
 };
 
 type Action = {
   resetAction: () => void;
-  getHotelAction: (id: string) => Promise<void>;
+  getRestaurantAction: (id: string) => Promise<void>;
 };
 
-export const useHotelStore = create<State & Action>((set) => ({
+export const useRestaurantStore = create<State & Action>((set) => ({
   error: '',
-  hotel: null,
-  isLoadingHotel: true,
+  restaurant: null,
+  isLoadingRestaurant: true,
 
   resetAction() {
     set((state) => ({
       ...state,
       error: '',
-      hotel: null,
-      isLoadingHotel: true,
+      restaurant: null,
+      isLoadingRestaurant: true,
     }));
   },
 
-  async getHotelAction(id) {
-    console.log('getHotel', id);
+  async getRestaurantAction(id) {
+    console.log('getRestaurant', id);
     try {
-      set((state) => ({ ...state, isLoadingHotel: true }));
+      set((state) => ({ ...state, isLoadingRestaurant: true }));
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      set((state) => ({ ...state, hotel: HOTEL_MOCK_DATA }));
     } catch (err) {
       if (err instanceof HTTPError) {
         const resp = await err.response.json<IError>();
@@ -46,7 +42,7 @@ export const useHotelStore = create<State & Action>((set) => ({
       }
       set((state) => ({ ...state, error: 'Something went wrong' }));
     } finally {
-      set((state) => ({ ...state, isLoadingHotel: false }));
+      set((state) => ({ ...state, isLoadingRestaurant: false }));
     }
   },
 }));

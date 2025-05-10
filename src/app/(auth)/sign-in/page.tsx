@@ -12,7 +12,7 @@ import { useStore } from 'zustand';
 import FormInput from '@/components/form-input';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constants';
+import { Constant } from '@/constants';
 import { AuthService } from '@/services/auth';
 import { useAuthStore } from '@/stores/auth';
 import { IError } from '@/types/IError';
@@ -27,16 +27,21 @@ export default function SignInPage() {
 
   const form = useForm<ISignInSchema>({
     resolver: zodResolver(signInSchema),
-    defaultValues: { email: 'trunghieupham03@gmail.com', password: 'P@ssw0rd' },
+    defaultValues: { email: '', password: '' },
   });
 
   async function onSubmit(values: ISignInSchema) {
     try {
       const resp = await AuthService.signIn(values);
-      localStorage.setItem(ACCESS_TOKEN_KEY, resp.access_token);
-      localStorage.setItem(REFRESH_TOKEN_KEY, resp.refresh_token);
+      localStorage.setItem(
+        Constant.LOCAL_STORAGE_KEY.ACCESS_TOKEN_KEY,
+        resp.access_token,
+      );
+      localStorage.setItem(
+        Constant.LOCAL_STORAGE_KEY.REFRESH_TOKEN_KEY,
+        resp.refresh_token,
+      );
       signInAction();
-
       toast.success('Success');
       router.push('/');
     } catch (err) {
@@ -121,8 +126,8 @@ export default function SignInPage() {
             </Button>
           </form>
         </Form>
-        <p className='text-muted-foreground mt-8 text-center text-sm'>
-          Don&apos;t have an account?{' '}
+        <p className='text-muted-foreground mt-8 inline-flex items-center justify-center gap-1 text-center text-sm'>
+          <span>Don&apos;t have an account?</span>
           <Link href='/sign-up' passHref>
             <Button variant='link' className='!h-auto !p-0'>
               Click to sign up

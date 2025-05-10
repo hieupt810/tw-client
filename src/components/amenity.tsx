@@ -13,10 +13,6 @@ import {
   Wine,
 } from 'lucide-react';
 
-type Props = {
-  amentities: string[];
-};
-
 function getIcon(content: string) {
   const lowerContent = content.toLowerCase();
   switch (true) {
@@ -48,11 +44,13 @@ function getIcon(content: string) {
   return null;
 }
 
-export default function Amentity({ amentities }: Props) {
-  const amenitiesWithIcons = amentities.filter(
-    (item) => getIcon(item) !== null,
-  );
-  const amenitiesWithoutIcons = amentities.filter(
+type Props = {
+  amenities: string[];
+};
+
+export default function Amenity({ amenities }: Props) {
+  const amenitiesWithIcons = amenities.filter((item) => getIcon(item) !== null);
+  const amenitiesWithoutIcons = amenities.filter(
     (item) => getIcon(item) === null,
   );
 

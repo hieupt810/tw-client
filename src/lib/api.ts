@@ -1,17 +1,17 @@
 import ky from 'ky';
 
-import { ACCESS_TOKEN_KEY, API_URL } from '@/constants';
+import { Constant } from '@/constants';
 import { AuthRoutes } from '@/constants/routes';
 import { IAccessToken } from '@/types/IToken';
 
 import { getTokenPair } from './utils';
 
 const api = ky.create({
-  prefixUrl: API_URL,
+  prefixUrl: Constant.API_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': API_URL,
+    'Access-Control-Allow-Origin': Constant.API_URL,
   },
   hooks: {
     beforeRequest: [
@@ -31,24 +31,37 @@ const api = ky.create({
 
         // Handle 401 Unauthorized
         if (tokenPair && response.status === 401) {
-          const response = await ky
-            .post(API_URL + AuthRoutes.REFRESH_TOKEN, {
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${tokenPair.refreshToken}`,
-              },
-            })
-            .json<IAccessToken>();
+          try {
+            const response = await ky
+              .post(Constant.API_URL + AuthRoutes.REFRESH_TOKEN, {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${tokenPair.refreshToken}`,
+                },
+              })
+              .json<IAccessToken>();
 
-          // Update the access token in local storage
-          localStorage.setItem(ACCESS_TOKEN_KEY, response.access_token);
+            // Update the access token in local storage
+            localStorage.setItem(
+              Constant.LOCAL_STORAGE_KEY.ACCESS_TOKEN_KEY,
+              response.access_token,
+            );
 
-          // Request the original request again with the new access token
-          request.headers.set(
-            'Authorization',
-            `Bearer ${response.access_token}`,
-          );
-          return ky(request);
+            // Request the original request again with the new access token
+            request.headers.set(
+              'Authorization',
+              `Bearer ${response.access_token}`,
+            );
+            return ky(request);
+          } catch {
+            localStorage.removeItem(
+              Constant.LOCAL_STORAGE_KEY.ACCESS_TOKEN_KEY,
+            );
+            localStorage.removeItem(
+              Constant.LOCAL_STORAGE_KEY.REFRESH_TOKEN_KEY,
+            );
+            window.location.href = '/sign-in';
+          }
         }
       },
     ],
