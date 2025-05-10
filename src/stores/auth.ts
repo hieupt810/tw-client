@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constants';
+import { Constant } from '@/constants';
 import { AuthService } from '@/services/auth';
 import { IMe } from '@/types/IMe';
 
@@ -39,8 +39,8 @@ export const useAuthStore = create<State & Action>()(
           const resp = await AuthService.me();
           set((state) => ({ ...state, me: resp }));
         } catch {
-          localStorage.removeItem(ACCESS_TOKEN_KEY);
-          localStorage.removeItem(REFRESH_TOKEN_KEY);
+          localStorage.removeItem(Constant.LOCAL_STORAGE_KEY.ACCESS_TOKEN_KEY);
+          localStorage.removeItem(Constant.LOCAL_STORAGE_KEY.REFRESH_TOKEN_KEY);
         } finally {
           set((state) => ({ ...state, isLoadingMe: false }));
         }
