@@ -64,7 +64,7 @@ export default function PlaceDetailsPage() {
         <div className='border-grid col-span-3 flex flex-col gap-4 border-r border-b px-6 py-4'>
           <div className='flex flex-col gap-1'>
             <div className='flex flex-row items-center justify-between'>
-              <h1 className='text-2xl leading-tight font-bold tracking-tighter sm:text-3xl md:text-4xl lg:leading-[1.1]'>
+              <h1 className='text-2xl leading-tight font-semibold tracking-tighter sm:text-3xl md:text-4xl lg:leading-[1.1]'>
                 {hotel.name}
               </h1>
               <Button variant='outline'>
@@ -83,32 +83,46 @@ export default function PlaceDetailsPage() {
           <ThumbnailsCarousel images={hotel.photos} />
         </div>
         <div className='border-grid hidden border-b px-6 py-4 md:block'>
-          <h4 className='mb-1 text-xl leading-relaxed font-bold tracking-tight md:text-2xl md:leading-loose'>
+          <h4 className='mb-1 text-xl font-semibold tracking-tight md:text-2xl md:leading-loose'>
             Popular
           </h4>
         </div>
       </MaxWidthContainer>
-      <MaxWidthContainer className='grid grid-cols-4 border-b p-0'>
-        <div className='border-grid col-span-4 grid border-r md:col-span-3'>
-          <div className='border-grid border-r-0 border-b px-6 py-4 md:border-r md:border-b-0'>
-            <h4 className='mb-1 text-xl leading-relaxed font-bold tracking-tight md:text-2xl md:leading-loose'>
-              About
-            </h4>
-            <p className='text-justify leading-relaxed'>{hotel.description}</p>
-          </div>
-          <div className='px-6 py-4'>
-            <h4 className='mb-1 text-xl leading-relaxed font-bold tracking-tight md:text-2xl md:leading-loose'>
-              Amenities
-            </h4>
-            <Amenity amenities={hotel.amenities} />
-          </div>
+      <MaxWidthContainer className='grid grid-cols-3 grid-rows-2 p-0'>
+        <div className='border-grid col-span-2 border-r border-b px-6 py-4'>
+          <h4 className='mb-1 text-xl font-semibold tracking-tight md:text-2xl md:leading-loose'>
+            About
+          </h4>
+          <p className='text-justify'>{hotel.description}</p>
         </div>
-        <div className='border-grid col-span-4 flex min-h-10 items-center justify-center border-t md:col-span-1 md:border-t-0'>
+
+        {/* Amenities */}
+        <div className='border-grid border-b px-6 py-4'>
+          <h4 className='mb-1 text-xl font-semibold tracking-tight md:text-2xl md:leading-loose'>
+            Amenities
+          </h4>
+          <Amenity amenities={hotel.amenities} />
+        </div>
+
+        {/* AI Summary Review */}
+        <div className='border-grid col-span-2 border-r border-b px-6 py-4'>
+          <h4 className='mb-1 text-xl font-semibold tracking-tight md:text-2xl md:leading-loose'>
+            AI Reviews Summary
+          </h4>
+          <p className='text-justify'>{hotel.aiReviewsSummary}</p>
+        </div>
+
+        {/* Rating */}
+        <div className='border-grid flex flex-col justify-center border-b px-6 py-4'>
+          <h4 className='mb-1 text-xl font-semibold tracking-tight md:text-2xl md:leading-loose'>
+            Overall Rating
+          </h4>
           <RatingChart histogram={hotel.ratingHistogram} />
         </div>
       </MaxWidthContainer>
+
       <MaxWidthContainer className='border-b'>
-        <h4 className='mb-1 text-xl leading-relaxed font-bold tracking-tight md:text-2xl md:leading-loose'>
+        <h4 className='mb-1 text-xl font-semibold tracking-tight md:text-2xl md:leading-loose'>
           Map
         </h4>
         <SingleMarkerMap
@@ -118,7 +132,7 @@ export default function PlaceDetailsPage() {
         />
       </MaxWidthContainer>
       <MaxWidthContainer>
-        <h4 className='mb-1 text-xl leading-relaxed font-bold tracking-tight md:text-2xl md:leading-loose'>
+        <h4 className='mb-1 text-xl font-semibold tracking-tight md:text-2xl md:leading-loose'>
           Reviews
         </h4>
       </MaxWidthContainer>

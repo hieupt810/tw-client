@@ -27,7 +27,7 @@ export default function SingleMarkerMap({ name, latitude, longitude }: Props) {
   const position: LatLngExpression = [latitude, longitude];
   return (
     <MapContainer
-      zoom={15}
+      zoom={17}
       minZoom={10}
       maxZoom={25}
       center={position}

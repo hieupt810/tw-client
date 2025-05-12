@@ -39,14 +39,17 @@ export default function PlaceCarousel({
           <CarouselContent>
             {Array.from({ length: 10 }).map((_, index) => (
               <CarouselItem key={index} className='max-w-3xs md:max-w-2xs'>
-                <Link href={'/'} className='flex flex-col hover:opacity-90'>
+                <Link
+                  href={'/hotels/1'}
+                  className='flex flex-col hover:opacity-90'
+                >
                   <AspectRatio ratio={1 / 1} className='relative'>
                     <Image
                       fill
                       priority
                       alt='Placeholder'
                       sizes='(max-width: 768px) 100vw, 50vw'
-                      src='https://placehold.co/1000x1000/png'
+                      src={'/home.jpg'}
                       className='h-full w-full rounded-xl object-cover object-center'
                     />
                     <div className='absolute top-1.5 right-1.5 flex items-center gap-1'>

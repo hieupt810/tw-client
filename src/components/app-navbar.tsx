@@ -45,12 +45,12 @@ export default function AppNavbar() {
           <Link href='/' passHref>
             <AppLogo />
           </Link>
-          <div className='text-muted-foreground hidden items-center gap-1 font-medium md:flex'>
+          <div className='text-muted-foreground hidden items-center gap-1 md:flex'>
             {Constant.NAVIGATION_MENU_ITEMS.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className='hover:text-primary px-3 py-1.5'
+                className='hover:text-primary p-1.5'
               >
                 {item.label}
               </Link>

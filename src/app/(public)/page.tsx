@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 import HeroSection from '@/components/hero-section';
@@ -18,6 +19,17 @@ export default function HomePage() {
           description="2025's Travelers's Choice Awards"
         />
         <PlaceCarousel title='Recently viewed' />
+      </MaxWidthContainer>
+      <MaxWidthContainer className='px-0 pb-0'>
+        <Image
+          width={4500}
+          height={1503}
+          loading='lazy'
+          src='/home-banner.jpg'
+          alt='Welcome to Vietnam'
+        />
+      </MaxWidthContainer>
+      <MaxWidthContainer>
         <PlaceCarousel
           title='You might like these'
           description='More places to experience'

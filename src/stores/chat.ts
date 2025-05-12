@@ -21,7 +21,7 @@ type Action = {
   getMessageHistoryAction: (id: string) => Promise<void>;
 };
 
-export const useChatStore = create<State & Action>()((set, get) => ({
+export const useChatStore = create<State & Action>()((set) => ({
   error: '',
   chatHistory: [],
   messageHistory: [],
@@ -58,7 +58,6 @@ export const useChatStore = create<State & Action>()((set, get) => ({
         ...state,
         messageHistory: [resp, ...state.messageHistory],
       }));
-      get().getChatHistoryAction();
     } catch {
       set((state) => ({ ...state, error: 'Something went wrong' }));
     } finally {

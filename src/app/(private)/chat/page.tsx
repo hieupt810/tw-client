@@ -41,7 +41,7 @@ export default function ChatPage() {
   return (
     <MaxWidthContainer
       id='chat'
-      className='grid h-[calc(100svh-7.25rem)] w-full grid-cols-4 p-0'
+      className='grid h-[calc(100svh-7rem)] w-full grid-cols-4 p-0'
     >
       <div className='border-grid relative col-span-1 hidden max-h-dvh w-full flex-col gap-2 overflow-x-hidden overflow-y-auto border-r md:flex'>
         <div className='border-grid absolute top-0 left-0 z-10 flex w-full items-center justify-between gap-2 border-b px-4 py-2.5'>
@@ -73,7 +73,7 @@ export default function ChatPage() {
                 aria-label={`Open chat ${item.id}`}
                 onClick={() => router.replace(`/chat?id=${item.id}`)}
                 className={cn(
-                  'hover:bg-accent text-accent-foreground cursor-pointer truncate rounded-md px-3 py-1.5 text-justify tracking-tight select-none',
+                  'hover:bg-accent text-accent-foreground cursor-pointer truncate rounded-md px-3 py-1.5 text-justify text-sm select-none',
                   item.id === chatId && 'text-primary !bg-violet-50/80',
                 )}
               >

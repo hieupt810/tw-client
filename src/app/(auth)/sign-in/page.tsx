@@ -126,8 +126,8 @@ export default function SignInPage() {
             </Button>
           </form>
         </Form>
-        <p className='text-muted-foreground mt-8 inline-flex items-center justify-center gap-1 text-center text-sm'>
-          <span>Don&apos;t have an account?</span>
+        <p className='text-muted-foreground mt-8 text-center text-sm'>
+          Don&apos;t have an account?{' '}
           <Link href='/sign-up' passHref>
             <Button variant='link' className='!h-auto !p-0'>
               Click to sign up

@@ -5,9 +5,9 @@ import HeroSection from '@/components/hero-section';
 import MaxWidthContainer from '@/components/max-width-container';
 import PlaceCarousel from '@/components/place-carousel';
 
-const HERO_TITLE = 'Explore the best things to do in Vietnam';
+const HERO_TITLE = 'Discover amazing dining options';
 const HERO_DESCRIPTION =
-  'Discover unforgettable experiences and activities for your next adventure, whether you are traveling for leisure or business.';
+  'Discover the best restaurants, cafes, and bars in your area. Indulge in a variety of cuisines and dining experiences tailored to your taste.';
 
 export default function RestaurantsPage() {
   return (

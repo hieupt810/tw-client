@@ -11,7 +11,7 @@ export default function PrivateLayout({ children }: Props) {
   return (
     <>
       <AppNavbar />
-      <div className='grow'>{children}</div>
+      <div className='h-full grow'>{children}</div>
       <AppFooter />
     </>
   );

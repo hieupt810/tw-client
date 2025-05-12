@@ -8,6 +8,7 @@ export class Constant {
   static LOCAL_STORAGE_KEY = {
     ACCESS_TOKEN_KEY: 'access_token',
     REFRESH_TOKEN_KEY: 'refresh_token',
+    RECENTLY_VIEWED_KEY: 'recently_viewed',
   };
 
   static NAVIGATION_MENU_ITEMS: { label: string; href: string }[] = [

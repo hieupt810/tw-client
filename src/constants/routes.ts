@@ -14,3 +14,7 @@ export class UserRoutes {
   static DEFAULT = 'users';
   static PROFILE = 'users/profile';
 }
+
+export class HotelRoutes {
+  static DEFAULT = 'hotels';
+}

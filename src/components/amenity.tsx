@@ -1,13 +1,16 @@
 import {
   AirVent,
+  Bath,
   Cigarette,
   CigaretteOff,
   CircleEllipsis,
+  Coffee,
   ConciergeBell,
   Dumbbell,
   Plane,
   Refrigerator,
   SquareParking,
+  Tv,
   Utensils,
   Wifi,
   Wine,
@@ -40,6 +43,12 @@ function getIcon(content: string) {
       return Plane;
     case lowerContent.includes('air conditioning'):
       return AirVent;
+    case lowerContent.includes('coffee'):
+      return Coffee;
+    case lowerContent.includes('bath'):
+      return Bath;
+    case lowerContent.includes('tv'):
+      return Tv;
   }
   return null;
 }
@@ -57,7 +66,7 @@ export default function Amenity({ amenities }: Props) {
   const prioritizedAmenities = [
     ...amenitiesWithIcons,
     ...amenitiesWithoutIcons,
-  ].slice(0, 26);
+  ].slice(0, 18);
 
   return (
     <div className='grid grid-cols-2 gap-2'>
@@ -66,7 +75,7 @@ export default function Amenity({ amenities }: Props) {
         return (
           <div key={item} className='inline-flex items-center space-x-2'>
             <Icon size={20} strokeWidth={1.75} />
-            <p className='max-w-36 truncate text-sm tracking-tight'>{item}</p>
+            <p className='max-w-48 truncate text-sm tracking-tight'>{item}</p>
           </div>
         );
       })}

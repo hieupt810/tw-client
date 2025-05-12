@@ -12,7 +12,7 @@ export default function MaxWidthContainer({
   return (
     <div
       className={cn(
-        'border-grid container mx-auto max-w-7xl overflow-hidden border-x px-6 py-4',
+        'border-grid container mx-auto h-full max-w-7xl overflow-hidden border-x px-6 py-4',
         className,
       )}
       {...props}
