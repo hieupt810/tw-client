@@ -58,24 +58,14 @@ type Props = {
 };
 
 export default function Amenity({ amenities }: Props) {
-  const amenitiesWithIcons = amenities.filter((item) => getIcon(item) !== null);
-  const amenitiesWithoutIcons = amenities.filter(
-    (item) => getIcon(item) === null,
-  );
-
-  const prioritizedAmenities = [
-    ...amenitiesWithIcons,
-    ...amenitiesWithoutIcons,
-  ].slice(0, 18);
-
   return (
-    <div className='grid grid-cols-2 gap-2'>
-      {prioritizedAmenities.map((item) => {
+    <div className='grid grid-cols-2 gap-1.5'>
+      {amenities.slice(0, 18).map((item) => {
         const Icon = getIcon(item) || CircleEllipsis;
         return (
-          <div key={item} className='inline-flex items-center space-x-2'>
-            <Icon size={20} strokeWidth={1.75} />
-            <p className='max-w-48 truncate text-sm tracking-tight'>{item}</p>
+          <div key={item} className='inline-flex items-center space-x-1.5'>
+            <Icon size={18} />
+            <p className='max-w-48 truncate'>{item}</p>
           </div>
         );
       })}

@@ -9,12 +9,12 @@ export default function ProfilePage() {
   return (
     <>
       <MaxWidthContainer className='grow border-b'>
-        <h2 className='mb-1 text-xl leading-relaxed font-semibold tracking-tight md:text-2xl md:leading-loose'>
+        <h2 className='mb-1 text-xl font-semibold tracking-tight md:text-2xl'>
           Profile
         </h2>
       </MaxWidthContainer>
       <MaxWidthContainer className='border-b'>
-        <h2 className='mb-1 text-xl leading-relaxed font-semibold tracking-tight md:text-2xl md:leading-loose'>
+        <h2 className='mb-1 text-xl font-semibold tracking-tight md:text-2xl'>
           Favorites
         </h2>
         <div className='flex flex-row items-center gap-6 overflow-hidden rounded-md bg-violet-50 px-4 py-2.5'>
@@ -38,7 +38,7 @@ export default function ProfilePage() {
         </div>
       </MaxWidthContainer>
       <MaxWidthContainer className='border-b'>
-        <h2 className='mb-1 text-xl leading-relaxed font-semibold tracking-tight md:text-2xl md:leading-loose'>
+        <h2 className='mb-1 text-xl font-semibold tracking-tight md:text-2xl'>
           Trips
         </h2>
       </MaxWidthContainer>

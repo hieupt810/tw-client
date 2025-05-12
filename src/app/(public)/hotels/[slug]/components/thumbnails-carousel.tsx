@@ -6,8 +6,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from '@/components/ui/carousel';
 
 type Props = {
@@ -19,9 +17,8 @@ export default function ThumbnailsCarousel({ images, className }: Props) {
   return (
     <div className={className}>
       <Carousel
-        opts={{ align: 'start' }}
-        plugins={[Autoplay({ delay: 5000 })]}
-        className='mx-auto h-full w-[calc(100%-6rem)] max-w-lg md:max-w-3xl'
+        plugins={[Autoplay({ delay: 7000 })]}
+        className='mx-auto h-full w-full max-w-lg md:max-w-4xl'
       >
         <CarouselContent>
           {images.map((image, index) => (
@@ -31,16 +28,15 @@ export default function ThumbnailsCarousel({ images, className }: Props) {
                   fill
                   priority
                   alt='Placeholder'
-                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                   src={image}
+                  quality={100}
+                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                   className='overflow-hidden rounded-lg object-cover object-center'
                 />
               </AspectRatio>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselNext />
-        <CarouselPrevious />
       </Carousel>
     </div>
   );

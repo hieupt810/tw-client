@@ -54,8 +54,8 @@ export const useHotelStore = create<State & Action>((set) => ({
   async getHotelsAction() {
     try {
       set((state) => ({ ...state, isLoadingHotel: true }));
-
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const resp = await HotelService.getAll();
+      set((state) => ({ ...state, hotels: resp.data }));
     } catch (err) {
       if (err instanceof HTTPError) {
         const resp = await err.response.json<IError>();

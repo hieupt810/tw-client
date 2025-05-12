@@ -16,16 +16,15 @@ export default function RestaurantsPage() {
       <CustomBreadcrumb
         links={[{ label: 'Restaurants', href: '/restaurants' }]}
       />
-      <MaxWidthContainer
-        id='suggestions'
-        className='flex flex-col gap-12 md:gap-14 lg:gap-16'
-      >
+      <MaxWidthContainer className='flex flex-col gap-12 md:gap-14 lg:gap-16'>
         <PlaceCarousel
+          items={[]}
           title='Best restaurants'
           description='Popular types of food & restaurants near you'
         />
-        <PlaceCarousel title='Recently viewed' />
+        <PlaceCarousel items={[]} title='Recently viewed' />
         <PlaceCarousel
+          items={[]}
           title='You might like these'
           description='More places to experience'
         />

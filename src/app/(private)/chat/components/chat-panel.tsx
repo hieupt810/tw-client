@@ -81,7 +81,7 @@ export default function ChatPanel() {
               <Message key={index} text={item.text} isUser={item.is_user} />
             ))}
           {messageHistory.length === 0 && (
-            <div className='inline-flex items-center justify-center gap-2 text-2xl leading-tight font-semibold tracking-tighter sm:text-3xl md:text-4xl lg:leading-[1.1]'>
+            <div className='inline-flex items-center justify-center gap-2 text-2xl font-semibold tracking-tighter sm:text-3xl md:text-4xl'>
               <span>Hello,</span>
               {me ? (
                 <span className='text-primary'>{me.name}</span>

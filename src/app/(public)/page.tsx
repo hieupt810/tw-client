@@ -15,10 +15,11 @@ export default function HomePage() {
       <HeroSection title={HERO_TITLE} description={HERO_DESCRIPTION} />
       <MaxWidthContainer className='flex flex-col gap-12 md:gap-14 lg:gap-16'>
         <PlaceCarousel
+          items={[]}
           title="Explore Vietnam's top destinations"
           description="2025's Travelers's Choice Awards"
         />
-        <PlaceCarousel title='Recently viewed' />
+        <PlaceCarousel items={[]} title='Recently viewed' />
       </MaxWidthContainer>
       <MaxWidthContainer className='px-0 pb-0'>
         <Image
@@ -31,6 +32,7 @@ export default function HomePage() {
       </MaxWidthContainer>
       <MaxWidthContainer>
         <PlaceCarousel
+          items={[]}
           title='You might like these'
           description='More places to experience'
         />

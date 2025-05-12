@@ -16,16 +16,15 @@ export default function ThingsToDoPage() {
       <CustomBreadcrumb
         links={[{ label: 'Things to Do', href: '/things-to-do' }]}
       />
-      <MaxWidthContainer
-        id='suggestions'
-        className='flex flex-col gap-12 md:gap-14 lg:gap-16'
-      >
+      <MaxWidthContainer className='flex flex-col gap-12 md:gap-14 lg:gap-16'>
         <PlaceCarousel
+          items={[]}
           title='Top entertainment places in Vietnam'
           description="2025's Travelers' Choice Awards"
         />
-        <PlaceCarousel title='Recently viewed' />
+        <PlaceCarousel items={[]} title='Recently viewed' />
         <PlaceCarousel
+          items={[]}
           title='You might like these'
           description='More places to experience'
         />

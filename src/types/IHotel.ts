@@ -1,3 +1,5 @@
+import { IBaseItem } from './IBaseItem';
+
 export type IHotel = {
   address: {
     city: {
@@ -11,17 +13,14 @@ export type IHotel = {
   description: string;
   email: string;
   hotelClasses: string[];
-  image: string;
   latitude: number;
   longitude: number;
-  name: string;
   numberOfRooms: number;
   phone?: string;
   photos: string[];
   priceLevels: string[];
-  rating: number;
   ratingHistogram: number[];
   rawRating: number;
   travelerChoiceAward: boolean;
   website?: string;
-};
+} & IBaseItem;
