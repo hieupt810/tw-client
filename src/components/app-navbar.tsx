@@ -24,13 +24,14 @@ import {
 import { Skeleton } from './ui/skeleton';
 
 export default function AppNavbar() {
-  const { me, isLoadingMe, meAction, logOutAction } = useStore(
-    useAuthStore,
-    (state) => state,
-  );
+  const { me, isLoading, meAction } = useStore(useAuthStore, (state) => state);
 
   function logOut() {
-    logOutAction();
+    // Clear the user data from the store
+    localStorage.removeItem(Constant.LOCAL_STORAGE_KEY.ACCESS_TOKEN_KEY);
+    localStorage.removeItem(Constant.LOCAL_STORAGE_KEY.REFRESH_TOKEN_KEY);
+
+    // Redirect to the home page
     window.location.href = '/';
   }
 
@@ -58,8 +59,8 @@ export default function AppNavbar() {
           </div>
         </div>
         <div className='hidden flex-row items-center justify-end gap-2 md:flex'>
-          {isLoadingMe && <Skeleton className='h-9 w-[9.5rem]' />}
-          {!isLoadingMe && me && (
+          {isLoading && <Skeleton className='h-9 w-[9.5rem]' />}
+          {!isLoading && me && (
             <>
               <Link href='/chat' aria-label='Chatbot' passHref>
                 <Button
@@ -78,10 +79,10 @@ export default function AppNavbar() {
                     aria-label='User Avatar'
                   >
                     <Image
-                      width={1000}
-                      height={1000}
-                      alt={me.name}
-                      src={me.avatar}
+                      width={5000}
+                      height={5000}
+                      src={me.avatar || '/fallback-avatar.jpg'}
+                      alt={me.fullName}
                     />
                   </div>
                 </DropdownMenuTrigger>
@@ -103,7 +104,7 @@ export default function AppNavbar() {
               </DropdownMenu>
             </>
           )}
-          {!isLoadingMe && !me && (
+          {!isLoading && !me && (
             <>
               <Link href='/sign-in' passHref>
                 <Button size='sm' variant='outline'>

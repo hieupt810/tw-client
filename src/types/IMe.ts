@@ -1,5 +1,5 @@
-export type IMe = {
+export interface IMe {
+  avatar: string | null;
+  fullName: string;
   id: string;
-  name: string;
-  avatar: string;
-};
+}

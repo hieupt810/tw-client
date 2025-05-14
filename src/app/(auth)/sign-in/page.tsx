@@ -7,23 +7,19 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { useStore } from 'zustand';
 
 import FormInput from '@/components/form-input';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Constant } from '@/constants';
 import { AuthService } from '@/services/auth';
-import { useAuthStore } from '@/stores/auth';
-import { IError } from '@/types/IError';
+import { IValidationError } from '@/types/IError';
 import { ISignInSchema, signInSchema } from '@/types/ISignInSchema';
-import { IValidationError } from '@/types/IValidationError';
 
 import AuthLayout from '../auth-layout';
 
 export default function SignInPage() {
   const router = useRouter();
-  const signInAction = useStore(useAuthStore, (state) => state.signInAction);
 
   const form = useForm<ISignInSchema>({
     resolver: zodResolver(signInSchema),
@@ -32,23 +28,30 @@ export default function SignInPage() {
 
   async function onSubmit(values: ISignInSchema) {
     try {
-      const resp = await AuthService.signIn(values);
+      const data = await AuthService.signIn(values);
+
+      // Store the tokens in local storage
       localStorage.setItem(
         Constant.LOCAL_STORAGE_KEY.ACCESS_TOKEN_KEY,
-        resp.access_token,
+        data.accessToken,
       );
       localStorage.setItem(
         Constant.LOCAL_STORAGE_KEY.REFRESH_TOKEN_KEY,
-        resp.refresh_token,
+        data.refreshToken,
       );
-      signInAction();
+
+      // Toast success message
       toast.success('Success');
+
+      // Redirect to the home page
       router.push('/');
-    } catch (err) {
-      if (err instanceof HTTPError) {
-        const resp = await err.response.json<IValidationError | IError>();
-        if (err.response.status === 400 && typeof resp.error === 'object') {
-          Object.entries(resp.error).forEach(([field, messages]) => {
+    } catch (error) {
+      if (error instanceof HTTPError) {
+        const data = await error.response.json<IValidationError>();
+
+        // Handle validation errors
+        if (error.response.status === 400 && typeof data.error === 'object') {
+          Object.entries(data.error).forEach(([field, messages]) => {
             form.setError(
               field as keyof ISignInSchema,
               {
@@ -60,10 +63,10 @@ export default function SignInPage() {
           });
           return;
         } else if (
-          err.response.status === 400 &&
-          typeof resp.error === 'string'
+          error.response.status === 400 &&
+          typeof data.error === 'string'
         ) {
-          toast.error(resp.error);
+          toast.error(data.error);
           return;
         }
       }

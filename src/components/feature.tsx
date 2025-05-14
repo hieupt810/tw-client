@@ -54,17 +54,19 @@ function getIcon(content: string) {
 }
 
 type Props = {
-  amenities: string[];
+  features: string[];
 };
 
-export default function Amenity({ amenities }: Props) {
+export default function Feature({ features }: Props) {
   return (
     <div className='grid grid-cols-2 gap-1.5'>
-      {amenities.slice(0, 18).map((item) => {
+      {features.slice(0, 18).map((item) => {
         const Icon = getIcon(item) || CircleEllipsis;
         return (
           <div key={item} className='inline-flex items-center space-x-1.5'>
-            <Icon size={18} />
+            <div>
+              <Icon size={18} />
+            </div>
             <p className='max-w-48 truncate'>{item}</p>
           </div>
         );

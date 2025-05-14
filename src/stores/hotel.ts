@@ -2,69 +2,77 @@ import { HTTPError } from 'ky';
 import { create } from 'zustand';
 
 import { HotelService } from '@/services/hotel';
+import { IAttraction } from '@/types/IAttraction';
 import { IError } from '@/types/IError';
 import { IHotel } from '@/types/IHotel';
 
 type State = {
   error: string;
   hotel: IHotel | null;
-  hotels: IHotel[];
-  isLoadingHotel: boolean;
+  hotels: IAttraction[];
+  totalPages: number;
+  totalHotels: number;
+  isLoading: boolean;
 };
 
 type Action = {
   resetAction: () => void;
-  getHotelAction: (id: string) => Promise<void>;
-  getHotelsAction: () => Promise<void>;
+  listHotelAction: (page?: number, size?: number) => Promise<void>;
+  detailHotelAction: (id: string) => Promise<void>;
 };
 
 export const useHotelStore = create<State & Action>((set) => ({
   error: '',
   hotel: null,
   hotels: [],
-  isLoadingHotel: true,
+  totalPages: 1,
+  totalHotels: 1,
+  isLoading: true,
 
   resetAction() {
     set((state) => ({
       ...state,
       error: '',
       hotel: null,
-      isLoadingHotel: true,
+      hotels: [],
+      totalPages: 1,
+      totalHotels: 1,
+      isLoading: true,
     }));
   },
 
-  async getHotelAction(id) {
+  async listHotelAction(page = 1, size = 10) {
+    set((state) => ({ ...state, isLoading: true }));
     try {
-      set((state) => ({ ...state, isLoadingHotel: true }));
-      const resp = await HotelService.getById(id);
-      set((state) => ({ ...state, hotel: resp }));
-    } catch (err) {
-      console.log(err);
-      if (err instanceof HTTPError) {
-        const resp = await err.response.json<IError>();
-        set((state) => ({ ...state, error: resp.error }));
-        return;
-      }
-      set((state) => ({ ...state, error: 'Something went wrong' }));
+      const data = await HotelService.list(page, size);
+      set((state) => ({
+        ...state,
+        hotels: data.data,
+        totalPages: data.paging.pageCount,
+        totalHotels: data.paging.totalCount,
+      }));
+    } catch (error) {
+      if (error instanceof HTTPError) {
+        const data = await error.response.json<IError>();
+        set((state) => ({ ...state, error: data.error }));
+      } else set((state) => ({ ...state, error: 'Something went wrong' }));
     } finally {
-      set((state) => ({ ...state, isLoadingHotel: false }));
+      set((state) => ({ ...state, isLoading: false }));
     }
   },
 
-  async getHotelsAction() {
+  async detailHotelAction(id) {
+    set((state) => ({ ...state, isLoading: true }));
     try {
-      set((state) => ({ ...state, isLoadingHotel: true }));
-      const resp = await HotelService.getAll();
-      set((state) => ({ ...state, hotels: resp.data }));
-    } catch (err) {
-      if (err instanceof HTTPError) {
-        const resp = await err.response.json<IError>();
-        set((state) => ({ ...state, error: resp.error }));
-        return;
-      }
-      set((state) => ({ ...state, error: 'Something went wrong' }));
+      const data = await HotelService.details(id);
+      set((state) => ({ ...state, hotel: data }));
+    } catch (error) {
+      if (error instanceof HTTPError) {
+        const data = await error.response.json<IError>();
+        set((state) => ({ ...state, error: data.error }));
+      } else set((state) => ({ ...state, error: 'Something went wrong' }));
     } finally {
-      set((state) => ({ ...state, isLoadingHotel: false }));
+      set((state) => ({ ...state, isLoading: false }));
     }
   },
 }));

@@ -13,9 +13,8 @@ import FormInput from '@/components/form-input';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { AuthService } from '@/services/auth';
-import { IError } from '@/types/IError';
+import { IValidationError } from '@/types/IError';
 import { ISignUpSchema, signUpSchema } from '@/types/ISignUpSchema';
-import { IValidationError } from '@/types/IValidationError';
 
 import AuthLayout from '../auth-layout';
 
@@ -25,8 +24,8 @@ export default function SignUpPage() {
     resolver: zodResolver(signUpSchema),
     reValidateMode: 'onChange',
     defaultValues: {
-      name: '',
       email: '',
+      fullName: '',
       password: '',
       confirmPassword: '',
       acceptTerms: false,
@@ -40,12 +39,11 @@ export default function SignUpPage() {
       router.push('/sign-in');
     } catch (error) {
       if (error instanceof HTTPError) {
-        const response = await error.response.json<IValidationError | IError>();
-        if (
-          error.response.status === 400 &&
-          typeof response.error === 'object'
-        ) {
-          Object.entries(response.error).forEach(([field, messages]) => {
+        const data = await error.response.json<IValidationError>();
+
+        // Handle validation errors
+        if (error.response.status === 400 && typeof data.error === 'object') {
+          Object.entries(data.error).forEach(([field, messages]) => {
             form.setError(
               field as keyof ISignUpSchema,
               {
@@ -56,12 +54,12 @@ export default function SignUpPage() {
             );
           });
           return;
-        } else if (typeof response.error === 'string') {
-          toast.error(response.error);
+        } else if (typeof data.error === 'string') {
+          toast.error(data.error);
           return;
         }
       }
-      toast.error('An unexpected error occurred. Please try again later.');
+      toast.error('Something went wrong');
     }
   }
 
@@ -92,7 +90,7 @@ export default function SignUpPage() {
           >
             <FormInput
               form={form}
-              name='name'
+              name='fullName'
               label='Full name'
               placeholder='Enter your full name'
             />

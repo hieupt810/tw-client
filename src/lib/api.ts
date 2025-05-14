@@ -27,10 +27,20 @@ const api = ky.create({
     ],
     afterResponse: [
       async function (request, _options, response) {
-        const tokenPair = getTokenPair();
+        if (response.status === 401) {
+          const tokenPair = getTokenPair();
+          if (!tokenPair) {
+            localStorage.removeItem(
+              Constant.LOCAL_STORAGE_KEY.ACCESS_TOKEN_KEY,
+            );
+            localStorage.removeItem(
+              Constant.LOCAL_STORAGE_KEY.REFRESH_TOKEN_KEY,
+            );
+            window.location.href = '/sign-in';
+            return;
+          }
 
-        // Handle 401 Unauthorized
-        if (tokenPair && response.status === 401) {
+          // Refresh the access token
           try {
             const response = await ky
               .post(Constant.API_URL + AuthRoutes.REFRESH_TOKEN, {
@@ -44,13 +54,13 @@ const api = ky.create({
             // Update the access token in local storage
             localStorage.setItem(
               Constant.LOCAL_STORAGE_KEY.ACCESS_TOKEN_KEY,
-              response.access_token,
+              response.accessToken,
             );
 
             // Request the original request again with the new access token
             request.headers.set(
               'Authorization',
-              `Bearer ${response.access_token}`,
+              `Bearer ${response.accessToken}`,
             );
             return ky(request);
           } catch {

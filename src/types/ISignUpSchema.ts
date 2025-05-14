@@ -4,7 +4,7 @@ import { Constant } from '@/constants';
 
 export const signUpSchema = z
   .object({
-    name: z.string().min(1, { message: 'This field is required.' }),
+    fullName: z.string().min(1, { message: 'This field is required.' }),
     email: z
       .string()
       .min(1, { message: 'This field is required.' })

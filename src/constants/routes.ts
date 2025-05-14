@@ -1,20 +1,18 @@
 export class AuthRoutes {
-  static ME = 'auth/me';
-  static SIGN_IN = 'auth/sign-in';
-  static SIGN_UP = 'auth/sign-up';
-  static REFRESH_TOKEN = 'auth/refresh';
-}
-
-export class ChatRoutes {
-  static DEFAULT = 'chat';
-  static MESSAGES = 'chat/messages';
-}
-
-export class UserRoutes {
-  static DEFAULT = 'users';
-  static PROFILE = 'users/profile';
+  static ME = 'auth/me/';
+  static SIGN_IN = 'auth/sign-in/';
+  static SIGN_UP = 'auth/sign-up/';
+  static REFRESH_TOKEN = 'auth/refresh/';
 }
 
 export class HotelRoutes {
-  static DEFAULT = 'hotels';
+  static DEFAULT = 'hotels/';
+}
+
+export class RestaurantRoutes {
+  static DEFAULT = 'restaurants/';
+}
+
+export class ThingToDoRoutes {
+  static DEFAULT = 'things-to-do/';
 }

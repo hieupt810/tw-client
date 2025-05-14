@@ -1,6 +1,7 @@
-export type ITokenPair = {
-  access_token: string;
-  refresh_token: string;
-};
+export interface IAccessToken {
+  accessToken: string;
+}
 
-export type IAccessToken = Omit<ITokenPair, 'refresh_token'>;
+export interface ITokenPair extends IAccessToken {
+  refreshToken: string;
+}
