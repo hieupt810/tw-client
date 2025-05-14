@@ -59,7 +59,7 @@ type Props = {
 
 export default function Feature({ features }: Props) {
   return (
-    <div className='grid grid-cols-2 gap-1.5'>
+    <div className='grid grid-cols-2 gap-2.5'>
       {features.slice(0, 18).map((item) => {
         const Icon = getIcon(item) || CircleEllipsis;
         return (
@@ -67,7 +67,7 @@ export default function Feature({ features }: Props) {
             <div>
               <Icon size={18} />
             </div>
-            <p className='max-w-48 truncate'>{item}</p>
+            <p className='max-w-full truncate text-sm md:text-base'>{item}</p>
           </div>
         );
       })}

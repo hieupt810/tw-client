@@ -7,10 +7,10 @@ import Link from 'next/link';
 
 import { IAttraction } from '@/types/IAttraction';
 
+import Loading from './loading';
 import Rating from './rating';
 import { AspectRatio } from './ui/aspect-ratio';
 import { Carousel, CarouselContent, CarouselItem } from './ui/carousel';
-import { Skeleton } from './ui/skeleton';
 
 type Props = {
   title: string;
@@ -27,6 +27,10 @@ export default function PlaceCarousel({
   description,
   autoplayDelay = 8000,
 }: Props) {
+  if (!items || items.length === 0) {
+    return <Loading />;
+  }
+
   return (
     <div className='flex w-full flex-col'>
       <div className='mb-4 space-y-1.5'>
@@ -42,56 +46,49 @@ export default function PlaceCarousel({
           className='mx-auto'
         >
           <CarouselContent>
-            {items.length === 0
-              ? Array.from({ length: 10 }).map((_, index) => (
-                  <CarouselItem key={index} className='max-w-3xs md:max-w-2xs'>
-                    <Skeleton className='h-[15rem] w-[15rem] rounded-xl md:h-[17rem] md:w-[17rem]' />
-                    <Skeleton className='mt-1.5 h-[4.6rem] w-full rounded-xl' />
-                  </CarouselItem>
-                ))
-              : items.map((item) => (
-                  <CarouselItem
-                    key={item.elementId}
-                    className='max-w-3xs md:max-w-2xs'
-                  >
-                    <AspectRatio ratio={1 / 1} className='relative'>
-                      <Image
-                        fill
-                        priority
-                        src={item.image}
-                        alt='Placeholder'
-                        sizes='(max-width: 768px) 100vw, 50vw'
-                        className='h-full w-full rounded-xl object-cover object-center'
-                      />
-                      <div className='absolute top-1.5 right-1.5 flex items-center gap-1'>
-                        <button
-                          aria-label='Bookmark this place'
-                          className='inline-flex cursor-pointer items-center justify-center rounded-full bg-white p-1.5 hover:bg-neutral-50'
-                        >
-                          <ListPlus size={16} />
-                        </button>
-                        <button
-                          aria-label='Bookmark this place'
-                          className='inline-flex cursor-pointer items-center justify-center rounded-full bg-white p-1.5'
-                        >
-                          <Heart size={16} />
-                        </button>
-                      </div>
-                    </AspectRatio>
-                    <Link
-                      href={`/${item.type.toLowerCase()}/${item.elementId}`}
-                      className='flex flex-col hover:opacity-90'
+            {items.map((item) => (
+              <CarouselItem
+                key={item.elementId}
+                className='max-w-3xs md:max-w-2xs'
+              >
+                <AspectRatio ratio={1 / 1} className='relative'>
+                  <Image
+                    fill
+                    priority
+                    src={item.image}
+                    alt='Placeholder'
+                    sizes='100vw'
+                    className='h-full w-full rounded-xl object-cover object-center'
+                  />
+                  <div className='absolute top-1.5 right-1.5 flex items-center gap-1'>
+                    <button
+                      aria-label='Bookmark this place'
+                      className='inline-flex cursor-pointer items-center justify-center rounded-full bg-white p-1.5 hover:bg-neutral-50'
                     >
-                      <h3 className='mt-1.5 text-base leading-snug font-semibold tracking-tight underline-offset-4 hover:underline md:text-lg'>
-                        {item.name}
-                      </h3>
-                      <Rating
-                        rating={item.rating}
-                        ratingHistorgram={item.ratingHistogram}
-                      />
-                    </Link>
-                  </CarouselItem>
-                ))}
+                      <ListPlus size={16} />
+                    </button>
+                    <button
+                      aria-label='Bookmark this place'
+                      className='inline-flex cursor-pointer items-center justify-center rounded-full bg-white p-1.5'
+                    >
+                      <Heart size={16} />
+                    </button>
+                  </div>
+                </AspectRatio>
+                <Link
+                  href={`/${item.type.toLowerCase()}/${item.elementId}`}
+                  className='flex flex-col hover:opacity-90'
+                >
+                  <h3 className='mt-1.5 text-base leading-snug font-semibold tracking-tight underline-offset-4 hover:underline md:text-lg'>
+                    {item.name}
+                  </h3>
+                  <Rating
+                    rating={item.rating}
+                    ratingHistorgram={item.ratingHistogram}
+                  />
+                </Link>
+              </CarouselItem>
+            ))}
           </CarouselContent>
         </Carousel>
       </div>

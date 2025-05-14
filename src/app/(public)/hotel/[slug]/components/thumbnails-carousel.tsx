@@ -18,7 +18,7 @@ export default function ThumbnailsCarousel({ images, className }: Props) {
     <div className={className}>
       <Carousel
         plugins={[Autoplay({ delay: 7000 })]}
-        className='mx-auto h-full w-full max-w-lg md:max-w-4xl'
+        className='mx-auto h-full w-full max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl'
       >
         <CarouselContent>
           {images.map((image, index) => (
@@ -30,7 +30,7 @@ export default function ThumbnailsCarousel({ images, className }: Props) {
                   alt='Placeholder'
                   src={image}
                   quality={100}
-                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                  sizes='100vw'
                   className='overflow-hidden rounded-lg object-cover object-center'
                 />
               </AspectRatio>

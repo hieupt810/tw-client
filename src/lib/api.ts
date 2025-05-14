@@ -4,7 +4,7 @@ import { Constant } from '@/constants';
 import { AuthRoutes } from '@/constants/routes';
 import { IAccessToken } from '@/types/IToken';
 
-import { getTokenPair } from './utils';
+import { getTokenPair, removeTokenPair } from './utils';
 
 const api = ky.create({
   prefixUrl: Constant.API_URL,
@@ -30,13 +30,7 @@ const api = ky.create({
         if (response.status === 401) {
           const tokenPair = getTokenPair();
           if (!tokenPair) {
-            localStorage.removeItem(
-              Constant.LOCAL_STORAGE_KEY.ACCESS_TOKEN_KEY,
-            );
-            localStorage.removeItem(
-              Constant.LOCAL_STORAGE_KEY.REFRESH_TOKEN_KEY,
-            );
-            window.location.href = '/sign-in';
+            removeTokenPair();
             return;
           }
 
@@ -64,12 +58,7 @@ const api = ky.create({
             );
             return ky(request);
           } catch {
-            localStorage.removeItem(
-              Constant.LOCAL_STORAGE_KEY.ACCESS_TOKEN_KEY,
-            );
-            localStorage.removeItem(
-              Constant.LOCAL_STORAGE_KEY.REFRESH_TOKEN_KEY,
-            );
+            removeTokenPair();
             window.location.href = '/sign-in';
           }
         }

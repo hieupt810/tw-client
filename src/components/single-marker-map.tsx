@@ -31,7 +31,7 @@ export default function SingleMarkerMap({ name, latitude, longitude }: Props) {
       minZoom={10}
       maxZoom={25}
       center={position}
-      style={{ height: '25rem', width: '100%', borderRadius: '0.65rem' }}
+      style={{ height: '35rem', width: '100%', borderRadius: '0.65rem' }}
     >
       <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
       <Marker position={position} icon={VIOLET_MARKER}>

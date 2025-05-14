@@ -19,6 +19,12 @@ export function getTokenPair() {
   return { accessToken, refreshToken };
 }
 
+export function removeTokenPair() {
+  if (typeof window === 'undefined') return null;
+  localStorage.removeItem(Constant.LOCAL_STORAGE_KEY.ACCESS_TOKEN_KEY);
+  localStorage.removeItem(Constant.LOCAL_STORAGE_KEY.REFRESH_TOKEN_KEY);
+}
+
 export function formatDate(isodate: string) {
   const date = new Date(isodate);
   return date.toLocaleDateString('en-US', {

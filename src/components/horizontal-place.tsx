@@ -62,7 +62,7 @@ export default function HorizontalPlace({
             href={`/${place.type.toLowerCase()}/${place.elementId}`}
             className='group col-span-2 ml-4 flex flex-col justify-center md:col-span-3 md:justify-start md:py-8'
           >
-            <span className='text-xl leading-snug font-bold tracking-tight underline-offset-2 group-hover:underline sm:text-2xl lg:text-3xl'>
+            <span className='text-xl leading-snug font-bold tracking-tight underline-offset-2 group-hover:underline sm:text-2xl'>
               {place.name}
             </span>
             <Address
@@ -71,7 +71,7 @@ export default function HorizontalPlace({
               postalCode={place.city.postalCode}
             />
             <Rating
-              className='mt-1.5 sm:mt-2'
+              className='mt-1.5 sm:mt-2 md:mt-4'
               rating={place.rating}
               ratingHistorgram={place.ratingHistogram}
             />

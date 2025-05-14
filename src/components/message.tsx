@@ -29,12 +29,16 @@ export default function Message({
       )}
     >
       <div className='size-8 overflow-hidden rounded-full shadow-md'>
-        <Image
-          src={isUser && me ? me.avatar : '/robot.jpeg'}
-          alt={isUser && me ? me.name : 'Assistant'}
-          width={1000}
-          height={1000}
-        />
+        {isUser ? (
+          <Image
+            src={me && me.avatar ? me.avatar : '/fallback-avatar.jpg'}
+            alt={me ? me.fullName : 'User'}
+            width={1000}
+            height={1000}
+          />
+        ) : (
+          <Image src='/robot.jpeg' alt='Assistant' width={1000} height={1000} />
+        )}
       </div>
 
       {isLoading && (

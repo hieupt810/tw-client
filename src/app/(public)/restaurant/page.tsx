@@ -2,7 +2,6 @@
 
 import React from 'react';
 
-import CustomBreadcrumb from '@/components/custom-breadcrumb';
 import HeroSection from '@/components/hero-section';
 
 const HERO_TITLE = 'Discover amazing dining options';
@@ -13,9 +12,6 @@ export default function RestaurantsPage() {
   return (
     <React.Fragment>
       <HeroSection title={HERO_TITLE} description={HERO_DESCRIPTION} />
-      <CustomBreadcrumb
-        links={[{ label: 'Restaurants', href: '/restaurants' }]}
-      />
     </React.Fragment>
   );
 }

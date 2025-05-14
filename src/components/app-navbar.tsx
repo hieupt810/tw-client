@@ -7,10 +7,10 @@ import { useEffect } from 'react';
 import { useStore } from 'zustand';
 
 import { Constant } from '@/constants';
+import { removeTokenPair } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth';
 
 import AppLogo from './app-logo';
-import MaxWidthContainer from './max-width-container';
 import { Button } from './ui/button';
 import {
   DropdownMenu,
@@ -27,11 +27,7 @@ export default function AppNavbar() {
   const { me, isLoading, meAction } = useStore(useAuthStore, (state) => state);
 
   function logOut() {
-    // Clear the user data from the store
-    localStorage.removeItem(Constant.LOCAL_STORAGE_KEY.ACCESS_TOKEN_KEY);
-    localStorage.removeItem(Constant.LOCAL_STORAGE_KEY.REFRESH_TOKEN_KEY);
-
-    // Redirect to the home page
+    removeTokenPair();
     window.location.href = '/';
   }
 
@@ -40,8 +36,8 @@ export default function AppNavbar() {
   }, [meAction]);
 
   return (
-    <header className='bg-background border-grid sticky top-0 z-40 flex h-14 w-full border-b'>
-      <MaxWidthContainer className='flex items-center justify-between gap-8 py-0'>
+    <header className='bg-background border-grid sticky top-0 right-0 left-0 z-30 flex h-14 w-full border-b'>
+      <div className='mx-auto flex w-full max-w-7xl justify-between px-6'>
         <div className='flex items-center gap-2 md:gap-4 lg:gap-6'>
           <Link href='/' passHref>
             <AppLogo />
@@ -51,7 +47,7 @@ export default function AppNavbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className='hover:text-primary p-1.5'
+                className='hover:text-primary p-2'
               >
                 {item.label}
               </Link>
@@ -107,17 +103,15 @@ export default function AppNavbar() {
           {!isLoading && !me && (
             <>
               <Link href='/sign-in' passHref>
-                <Button size='sm' variant='outline'>
-                  Sign in
-                </Button>
+                <Button variant='outline'>Sign in</Button>
               </Link>
               <Link href='/sign-up' passHref>
-                <Button size='sm'>Sign up</Button>
+                <Button>Sign up</Button>
               </Link>
             </>
           )}
         </div>
-      </MaxWidthContainer>
+      </div>
     </header>
   );
 }

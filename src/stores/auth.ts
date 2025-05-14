@@ -21,6 +21,8 @@ export const useAuthStore = create<State & Action>()((set) => ({
     try {
       const data = await AuthService.me();
       set((state) => ({ ...state, me: data }));
+    } catch {
+      set((state) => ({ ...state, me: null }));
     } finally {
       set((state) => ({ ...state, isLoading: false }));
     }

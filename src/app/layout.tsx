@@ -34,8 +34,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         )}
         suppressHydrationWarning
       >
-        <main className='bg-background relative flex min-h-svh flex-col'>
-          <div className='flex grow flex-col'>{children}</div>
+        <main className='relative bg-violet-50'>
+          <div className='flex min-h-dvh flex-col'>{children}</div>
         </main>
         <Toaster
           richColors

@@ -7,7 +7,6 @@ import Link from 'next/link';
 
 import AppFooter from '@/components/app-footer';
 import AppLogo from '@/components/app-logo';
-import MaxWidthContainer from '@/components/max-width-container';
 import { Button } from '@/components/ui/button';
 
 type Props = {
@@ -23,22 +22,20 @@ export default function AuthLayout({ image, children }: Props) {
         animate={{ x: 0 }}
         exit={{ x: '-100%' }}
         transition={{ type: 'tween', duration: 0.5 }}
-        className='absolute top-0 left-0 flex h-full w-full flex-col md:max-w-1/2'
+        className='bg-background absolute top-0 left-0 flex h-full w-full flex-col md:max-w-1/2'
       >
-        <div className='border-grid border-b'>
-          <MaxWidthContainer className='flex h-14 items-center justify-between'>
-            <AppLogo />
-            <Link href='/' passHref>
-              <Button variant='ghost'>
-                <ArrowLeft />
-                Back to home
-              </Button>
-            </Link>
-          </MaxWidthContainer>
+        <div className='border-grid flex h-14 items-center justify-between border-b px-6'>
+          <AppLogo />
+          <Link href='/' passHref>
+            <Button variant='ghost'>
+              <ArrowLeft />
+              Back to home
+            </Button>
+          </Link>
         </div>
-        <MaxWidthContainer className='border-grid flex w-full grow items-center justify-center overflow-y-auto'>
+        <div className='border-grid flex w-full grow items-center justify-center overflow-y-auto'>
           {children}
-        </MaxWidthContainer>
+        </div>
         <AppFooter />
       </motion.div>
       <motion.div
@@ -55,7 +52,7 @@ export default function AuthLayout({ image, children }: Props) {
           src={image}
           loading='eager'
           className='object-cover object-center'
-          sizes='(max-width: 768px) 100vw, (min-width: 768px) 50vw'
+          sizes='100vw'
         />
       </motion.div>
     </div>
