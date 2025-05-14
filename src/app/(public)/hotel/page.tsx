@@ -2,7 +2,7 @@
 
 import { HTTPError } from 'ky';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import HeroSection from '@/components/hero-section';
@@ -26,30 +26,33 @@ export default function HotelsPage() {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [hotels, setHotels] = useState<IAttraction[]>([]);
 
-  async function fetchHotels(page: number, size: number) {
-    try {
-      const data = await HotelService.list(page, size);
-      setHotels(data.data);
-      setTotalPages(data.paging.pageCount);
-    } catch (error) {
-      if (error instanceof HTTPError) {
-        const data = await error.response.json<IError>();
-        toast.error(data.error);
-      } else toast.error('Something went wrong');
-      router.push('/hotel');
-    }
-  }
+  const fetchHotels = useCallback(
+    async function (page: number, size: number) {
+      try {
+        const data = await HotelService.list(page, size);
+        setHotels(data.data);
+        setTotalPages(data.paging.pageCount);
+      } catch (error) {
+        if (error instanceof HTTPError) {
+          const data = await error.response.json<IError>();
+          toast.error(data.error);
+        } else toast.error('Something went wrong');
+        router.push('/hotel');
+      }
+    },
+    [router],
+  );
 
   useEffect(() => {
     fetchHotels(page, size);
-  }, [page, size]);
+  }, [fetchHotels, page, size]);
 
   if (hotels.length === 0) {
     return <Loading />;
   }
 
   return (
-    <Suspense fallback={<Loading />}>
+    <>
       <HeroSection title={HERO_TITLE} description={HERO_DESCRIPTION} />
       <div className='grid grid-cols-4 gap-4 pt-10'>
         {/* Filter */}
@@ -64,6 +67,6 @@ export default function HotelsPage() {
           className='col-span-4 flex flex-col pr-6 md:col-span-3'
         />
       </div>
-    </Suspense>
+    </>
   );
 }

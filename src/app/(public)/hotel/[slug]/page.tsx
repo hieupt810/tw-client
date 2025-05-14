@@ -3,7 +3,7 @@
 import { HTTPError } from 'ky';
 import dynamic from 'next/dynamic';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import Address from '@/components/address';
@@ -34,23 +34,26 @@ export default function PlaceDetailsPage() {
 
   const [hotel, setHotel] = useState<IHotel | null>(null);
 
-  async function fetchHotel(elementId: string) {
-    try {
-      const data = await HotelService.details(elementId);
-      setHotel(data);
-    } catch (error) {
-      if (error instanceof HTTPError) {
-        const data = await error.response.json<IError>();
-        toast.error(data.error);
-      } else toast.error('Something went wrong');
-      router.push('/hotel');
-    }
-  }
+  const fetchHotel = useCallback(
+    async function (elementId: string) {
+      try {
+        const data = await HotelService.details(elementId);
+        setHotel(data);
+      } catch (error) {
+        if (error instanceof HTTPError) {
+          const data = await error.response.json<IError>();
+          toast.error(data.error);
+        } else toast.error('Something went wrong');
+        router.push('/hotel');
+      }
+    },
+    [router],
+  );
 
   useEffect(() => {
     if (!slug || typeof slug !== 'string') return;
     fetchHotel(slug);
-  }, [slug, router]);
+  }, [slug, fetchHotel]);
 
   if (!hotel) {
     return <Loading />;

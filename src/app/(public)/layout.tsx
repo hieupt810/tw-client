@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import AppFooter from '@/components/app-footer';
 import AppNavbar from '@/components/app-navbar';
+import Loading from '@/components/loading';
 import MaxWidthContainer from '@/components/max-width-container';
 
 type Props = {
@@ -10,10 +11,10 @@ type Props = {
 
 export default function PublicLayout({ children }: Props) {
   return (
-    <>
+    <Suspense fallback={<Loading />}>
       <AppNavbar />
       <MaxWidthContainer className='grow'>{children}</MaxWidthContainer>
       <AppFooter />
-    </>
+    </Suspense>
   );
 }
