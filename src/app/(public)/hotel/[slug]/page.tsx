@@ -81,8 +81,8 @@ export default function PlaceDetailsPage() {
         <ThumbnailsCarousel images={hotel.photos} className='my-4 px-6' />
       </div>
 
-      <div className='grid grid-cols-1 lg:grid-cols-4 lg:gap-12'>
-        <div className='col-span-3'>
+      <div className='grid grid-cols-1 lg:grid-cols-4'>
+        <div className='border-grid col-span-3 lg:border-r'>
           {/* AI Review Summary */}
           <TextSection
             title='AI Review Summary'
@@ -99,7 +99,7 @@ export default function PlaceDetailsPage() {
             </div>
 
             {/* Amenities */}
-            <div className='col-span-1 flex flex-col p-6'>
+            <div className='border-grid col-span-1 flex flex-col p-6'>
               <SectionTitle text='Amenities' />
               <Feature features={hotel.features} />
             </div>
@@ -119,7 +119,7 @@ export default function PlaceDetailsPage() {
         </div>
 
         {/* Popular */}
-        <div className='border-grid col-span-1 flex flex-col border-t px-6 py-6 lg:pl-0'>
+        <div className='border-grid col-span-1 flex flex-col border-t p-6 lg:border-t-0'>
           <SectionTitle text='Popular' />
           <VerticalRecommend />
         </div>

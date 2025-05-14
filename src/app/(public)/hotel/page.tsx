@@ -2,7 +2,7 @@
 
 import { HTTPError } from 'ky';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import HeroSection from '@/components/hero-section';
@@ -49,7 +49,7 @@ export default function HotelsPage() {
   }
 
   return (
-    <>
+    <Suspense fallback={<Loading />}>
       <HeroSection title={HERO_TITLE} description={HERO_DESCRIPTION} />
       <div className='grid grid-cols-4 gap-4 pt-10'>
         {/* Filter */}
@@ -64,6 +64,6 @@ export default function HotelsPage() {
           className='col-span-4 flex flex-col pr-6 md:col-span-3'
         />
       </div>
-    </>
+    </Suspense>
   );
 }
