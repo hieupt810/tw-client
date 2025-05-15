@@ -21,12 +21,9 @@ import { IHotel } from '@/types/IHotel';
 import RatingChart from './components/rating-chart';
 import ThumbnailsCarousel from './components/thumbnails-carousel';
 
-const SingleMarkerMap = dynamic(
-  () => import('@/components/single-marker-map'),
-  {
-    ssr: false,
-  },
-);
+const MarkerMap = dynamic(() => import('@/components/marker-map'), {
+  ssr: false,
+});
 
 export default function PlaceDetailsPage() {
   const router = useRouter();
@@ -89,7 +86,10 @@ export default function PlaceDetailsPage() {
           {/* AI Review Summary */}
           <TextSection
             title='AI Review Summary'
-            text={hotel.aiReviewsSummary}
+            text={
+              hotel.aiReviewsSummary ||
+              'Do not have enough reviews for AI summary.'
+            }
             className='border-t-0'
           />
 
@@ -109,15 +109,14 @@ export default function PlaceDetailsPage() {
           </div>
 
           {/* Description */}
-          <TextSection title='Description' text={hotel.description} />
+          <TextSection
+            title='Description'
+            text={hotel.description || 'No description.'}
+          />
 
           <div className='border-grid flex flex-col border-t p-6'>
             <SectionTitle text='Map' />
-            <SingleMarkerMap
-              name={hotel.name}
-              latitude={hotel.latitude}
-              longitude={hotel.longitude}
-            />
+            <MarkerMap items={[hotel]} />
           </div>
         </div>
 

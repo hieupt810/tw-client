@@ -12,9 +12,9 @@ export default function HomePage() {
     <React.Fragment>
       <HeroSection title={HERO_TITLE} description={HERO_DESCRIPTION} />
       <Image
+        priority
         width={4500}
         height={1503}
-        loading='lazy'
         className='rounded-lg'
         src='/home-banner.jpg'
         alt='Welcome to Vietnam'

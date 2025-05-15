@@ -29,8 +29,8 @@ export default function VerticalRecommend({ className }: Props) {
                 priority
                 alt='Placeholder'
                 quality={100}
-                sizes='100vw'
                 src={'/fallback-avatar.jpg'}
+                sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                 className='overflow-hidden rounded-lg object-cover object-center'
               />
             </AspectRatio>

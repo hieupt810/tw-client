@@ -51,9 +51,10 @@ export default function HorizontalPlace({
             <AspectRatio ratio={1 / 1}>
               <Image
                 fill
-                src={place.image}
                 alt={place.name}
+                src={place.image}
                 className='rounded-md object-cover object-center'
+                sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
               />
             </AspectRatio>
           </div>

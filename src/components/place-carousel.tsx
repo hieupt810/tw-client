@@ -57,7 +57,7 @@ export default function PlaceCarousel({
                     priority
                     src={item.image}
                     alt='Placeholder'
-                    sizes='100vw'
+                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                     className='h-full w-full rounded-xl object-cover object-center'
                   />
                   <div className='absolute top-1.5 right-1.5 flex items-center gap-1'>

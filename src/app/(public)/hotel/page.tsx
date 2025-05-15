@@ -27,7 +27,7 @@ export default function HotelsPage() {
   const [hotels, setHotels] = useState<IAttraction[]>([]);
 
   const fetchHotels = useCallback(
-    async function (page: number, size: number) {
+    async function (page: number = 1, size: number = 10) {
       try {
         const data = await HotelService.list(page, size);
         setHotels(data.data);
@@ -37,7 +37,7 @@ export default function HotelsPage() {
           const data = await error.response.json<IError>();
           toast.error(data.error);
         } else toast.error('Something went wrong');
-        router.push('/hotel');
+        router.push('/');
       }
     },
     [router],
