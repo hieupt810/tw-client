@@ -19,7 +19,6 @@ const MarkerMap = dynamic(() => import('@/components/marker-map'), {
 
 export default function TripPage() {
   const router = useRouter();
-
   const [items, setItems] = useState<IAttraction[]>([]);
 
   const fetchHotels = useCallback(
@@ -32,7 +31,7 @@ export default function TripPage() {
           const data = await error.response.json<IError>();
           toast.error(data.error);
         } else toast.error('Something went wrong');
-        router.push('/trip');
+        router.push('/');
       }
     },
     [router],
@@ -46,8 +45,8 @@ export default function TripPage() {
 
   return (
     <>
-      <DraggableList baseItems={items} className='px-6 pb-6' />
-      <div className='border-grid flex flex-col border-t px-6 pt-6'>
+      <DraggableList baseItems={items} className='p-10 pt-0' />
+      <div className='border-grid flex flex-col border-t px-10 pt-10'>
         <SectionTitle text='Map' />
         <MarkerMap items={items} />
       </div>

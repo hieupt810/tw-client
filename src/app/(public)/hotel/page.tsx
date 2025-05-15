@@ -23,14 +23,14 @@ export default function HotelsPage() {
   const page = parseInt(searchParams.get('page') || '1');
   const size = parseInt(searchParams.get('size') || '5');
 
+  const [items, setItems] = useState<IAttraction[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const [hotels, setHotels] = useState<IAttraction[]>([]);
 
-  const fetchHotels = useCallback(
+  const fetchItems = useCallback(
     async function (page: number = 1, size: number = 10) {
       try {
         const data = await HotelService.list(page, size);
-        setHotels(data.data);
+        setItems(data.data);
         setTotalPages(data.paging.pageCount);
       } catch (error) {
         if (error instanceof HTTPError) {
@@ -44,27 +44,27 @@ export default function HotelsPage() {
   );
 
   useEffect(() => {
-    fetchHotels(page, size);
-  }, [fetchHotels, page, size]);
+    fetchItems(page, size);
+  }, [fetchItems, page, size]);
 
-  if (hotels.length === 0) {
+  if (items.length === 0) {
     return <Loading />;
   }
 
   return (
     <>
       <HeroSection title={HERO_TITLE} description={HERO_DESCRIPTION} />
-      <div className='grid grid-cols-4 gap-4 pt-10'>
+      <div className='grid grid-cols-4 pt-10'>
         {/* Filter */}
-        <div className='col-span-1 hidden flex-col pl-6 md:flex'>
+        <div className='col-span-1 hidden flex-col pl-10 md:flex'>
           <SectionTitle text='Filter' />
         </div>
 
         {/* List */}
         <HorizontalPlace
-          places={hotels}
+          places={items}
           totalPages={totalPages}
-          className='col-span-4 flex flex-col pr-6 md:col-span-3'
+          className='col-span-4 flex flex-col px-10 md:col-span-3'
         />
       </div>
     </>

@@ -24,7 +24,7 @@ export default function AuthLayout({ image, children }: Props) {
         transition={{ type: 'tween', duration: 0.5 }}
         className='bg-background absolute top-0 left-0 flex h-full w-full flex-col md:max-w-1/2'
       >
-        <div className='border-grid flex h-14 items-center justify-between border-b px-6'>
+        <div className='border-grid flex h-14 items-center justify-between border-b px-10'>
           <AppLogo />
           <Link href='/' passHref>
             <Button variant='ghost'>

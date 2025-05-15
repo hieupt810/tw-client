@@ -13,7 +13,7 @@ export default function VerticalRecommend({ className }: Props) {
   return (
     <div
       className={cn(
-        'grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-1 lg:gap-8',
+        'grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-1 lg:gap-10',
         className,
       )}
     >

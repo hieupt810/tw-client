@@ -36,7 +36,7 @@ export default function AppNavbar() {
   }, [meAction]);
 
   return (
-    <header className='bg-background border-grid sticky top-0 right-0 left-0 z-30 flex h-14 w-full border-b'>
+    <header className='bg-background border-grid sticky top-0 right-0 left-0 z-[9998] flex h-14 w-full border-b'>
       <div className='mx-auto flex w-full max-w-7xl justify-between px-6'>
         <div className='flex items-center gap-2 md:gap-4 lg:gap-6'>
           <Link href='/' passHref>

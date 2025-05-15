@@ -59,8 +59,8 @@ export default function PlaceDetailsPage() {
   return (
     <>
       {/* Main */}
-      <div className='border-grid border-b'>
-        <div className='mb-1 flex flex-row justify-between px-6'>
+      <div className='border-grid border-b px-10 pb-10'>
+        <div className='mb-1 flex flex-row justify-between'>
           <div className='flex grow flex-col gap-1'>
             <span className='text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>
               {hotel.name}
@@ -76,9 +76,8 @@ export default function PlaceDetailsPage() {
           street={hotel.street}
           city={hotel.city.name}
           postalCode={hotel.city.postalCode}
-          className='px-6'
         />
-        <ThumbnailsCarousel images={hotel.photos} className='my-4 px-6' />
+        <ThumbnailsCarousel images={hotel.photos} className='mt-6' />
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-4'>
@@ -94,15 +93,15 @@ export default function PlaceDetailsPage() {
           />
 
           {/* Rating and Amenities */}
-          <div className='border-grid grid grid-cols-2 border-t'>
+          <div className='border-grid grid grid-cols-1 border-t md:grid-cols-2'>
             {/* Rating Chart */}
-            <div className='border-grid col-span-1 flex flex-col border-r p-6'>
+            <div className='border-grid col-span-1 flex flex-col border-r p-10'>
               <SectionTitle text='Rating Distribution' />
               <RatingChart histogram={hotel.ratingHistogram} />
             </div>
 
             {/* Amenities */}
-            <div className='border-grid col-span-1 flex flex-col p-6'>
+            <div className='border-grid col-span-1 flex flex-col border-t p-10 md:border-t-0'>
               <SectionTitle text='Amenities' />
               <Feature features={hotel.features} />
             </div>
@@ -114,20 +113,20 @@ export default function PlaceDetailsPage() {
             text={hotel.description || 'No description.'}
           />
 
-          <div className='border-grid flex flex-col border-t p-6'>
+          <div className='border-grid flex flex-col border-t p-10'>
             <SectionTitle text='Map' />
             <MarkerMap items={[hotel]} />
           </div>
         </div>
 
         {/* Popular */}
-        <div className='border-grid col-span-1 flex flex-col border-t p-6 lg:border-t-0'>
+        <div className='border-grid col-span-1 flex flex-col border-t p-10 lg:border-t-0'>
           <SectionTitle text='Popular' />
           <VerticalRecommend />
         </div>
       </div>
 
-      <div className='border-grid border-t p-6'>
+      <div className='border-grid border-t p-10'>
         <SectionTitle text='Reviews' />
       </div>
     </>
@@ -144,7 +143,7 @@ function TextSection({
   className?: React.HTMLProps<HTMLDivElement>['className'];
 }) {
   return (
-    <div className={cn('border-grid flex flex-col border-t p-6', className)}>
+    <div className={cn('border-grid flex flex-col border-t p-10', className)}>
       <SectionTitle text={title} />
       <p className='text-justify leading-relaxed'>{text}</p>
     </div>
