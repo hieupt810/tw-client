@@ -13,7 +13,9 @@ export default function PublicLayout({ children }: Props) {
   return (
     <Suspense fallback={<Loading />}>
       <AppNavbar />
-      <MaxWidthContainer className='grow'>{children}</MaxWidthContainer>
+      <MaxWidthContainer className='flex grow flex-col'>
+        {children}
+      </MaxWidthContainer>
       <AppFooter />
     </Suspense>
   );

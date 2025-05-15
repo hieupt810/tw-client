@@ -24,7 +24,8 @@ function RoutingMachine({ items }: { items: IAttraction[] }) {
   const transparentIcon = useMemo(
     () =>
       L.icon({
-        iconSize: [1, 1],
+        iconSize: [0, 0],
+        shadowSize: [0, 0],
         iconAnchor: [0, 0],
         popupAnchor: [0, 0],
         iconUrl: Constant.MARKER_ICON_URL.VIOLET,
@@ -113,7 +114,7 @@ export default function MarkerMap({ items }: { items?: IAttraction[] }) {
 
   return (
     <MapContainer
-      zoom={14}
+      zoom={13}
       minZoom={10}
       maxZoom={25}
       center={centerPosition}
@@ -125,9 +126,9 @@ export default function MarkerMap({ items }: { items?: IAttraction[] }) {
           const position: LatLngExpression = [item.latitude, item.longitude];
           const icon =
             idx === 0
-              ? GREEN_MARKER
+              ? VIOLET_MARKER
               : idx != items.length - 1
-                ? VIOLET_MARKER
+                ? GREEN_MARKER
                 : RED_MARKER;
           return (
             <Marker key={item.elementId} position={position} icon={icon}>

@@ -19,6 +19,11 @@ const nextConfig: NextConfig = {
         hostname: 'media-cdn.tripadvisor.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        port: '',
+      },
     ],
   },
 };
