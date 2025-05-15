@@ -13,7 +13,7 @@ import Rating from '@/components/rating';
 import SavePlaceButton from '@/components/save-place-button';
 import SectionTitle from '@/components/section-title';
 import VerticalRecommend from '@/components/vertical-recommend';
-import { cn } from '@/lib/utils';
+import { cn, saveRecentlyViewed } from '@/lib/utils';
 import { HotelService } from '@/services/hotel';
 import { IError } from '@/types/IError';
 import { IHotel } from '@/types/IHotel';
@@ -36,6 +36,7 @@ export default function PlaceDetailsPage() {
       try {
         const data = await HotelService.details(elementId);
         setHotel(data);
+        saveRecentlyViewed(elementId);
       } catch (error) {
         if (error instanceof HTTPError) {
           const data = await error.response.json<IError>();
@@ -52,9 +53,7 @@ export default function PlaceDetailsPage() {
     fetchHotel(slug);
   }, [slug, fetchHotel]);
 
-  if (!hotel) {
-    return <Loading />;
-  }
+  if (!hotel) return <Loading />;
 
   return (
     <>

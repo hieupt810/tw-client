@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import HeroSection from '@/components/hero-section';
 import HorizontalPlace from '@/components/horizontal-place';
 import Loading from '@/components/loading';
+import RecentlyViewedItems from '@/components/recently-viewed-items';
 import SectionTitle from '@/components/section-title';
 import { HotelService } from '@/services/hotel';
 import { IAttraction } from '@/types/IAttraction';
@@ -47,14 +48,12 @@ export default function HotelsPage() {
     fetchItems(page, size);
   }, [fetchItems, page, size]);
 
-  if (items.length === 0) {
-    return <Loading />;
-  }
+  if (items.length === 0) return <Loading />;
 
   return (
     <>
       <HeroSection title={HERO_TITLE} description={HERO_DESCRIPTION} />
-      <div className='grid grid-cols-4 pt-10'>
+      <div className='grid grid-cols-4 py-10'>
         {/* Filter */}
         <div className='col-span-1 hidden flex-col pl-10 md:flex'>
           <SectionTitle text='Filter' />
@@ -67,6 +66,7 @@ export default function HotelsPage() {
           className='col-span-4 flex flex-col px-10 md:col-span-3'
         />
       </div>
+      <RecentlyViewedItems className='border-grid border-t p-10 pb-0' />
     </>
   );
 }

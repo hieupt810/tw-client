@@ -5,6 +5,7 @@ import { Heart, ListPlus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { cn } from '@/lib/utils';
 import { IAttraction } from '@/types/IAttraction';
 
 import Loading from './loading';
@@ -18,21 +19,21 @@ type Props = {
   autoplay?: boolean;
   description?: string;
   autoplayDelay?: number;
+  className?: React.HTMLAttributes<HTMLDivElement>['className'];
 };
 
 export default function PlaceCarousel({
   title,
   items,
-  autoplay = false,
+  className,
   description,
+  autoplay = false,
   autoplayDelay = 8000,
 }: Props) {
-  if (!items || items.length === 0) {
-    return <Loading />;
-  }
+  if (!items || items.length === 0) return <Loading />;
 
   return (
-    <div className='flex w-full flex-col'>
+    <div className={cn('flex w-full flex-col', className)}>
       <div className='mb-4 space-y-1.5'>
         <h2 className='text-lg font-bold tracking-tight md:text-xl lg:text-2xl'>
           {title}

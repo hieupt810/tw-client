@@ -72,7 +72,7 @@ export default function HorizontalPlace({
               postalCode={place.city.postalCode}
             />
             <Rating
-              className='mt-1.5 sm:mt-2 md:mt-4'
+              className='mt-1.5 sm:mt-2 md:mt-2.5'
               rating={place.rating}
               ratingHistorgram={place.ratingHistogram}
             />

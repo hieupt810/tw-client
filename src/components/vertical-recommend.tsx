@@ -35,7 +35,7 @@ export default function VerticalRecommend({ className }: Props) {
               />
             </AspectRatio>
           </div>
-          <span className='mt-1 max-w-full truncate text-sm font-medium md:text-base'>
+          <span className='mt-1.5 max-w-full truncate text-sm font-medium md:text-base'>
             Recommend Attraction Name
           </span>
           <Rating rating={5} ratingHistorgram={[1, 1, 1, 1, 1]} />
