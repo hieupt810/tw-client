@@ -14,9 +14,9 @@ import { HotelService } from '@/services/hotel';
 import { IAttraction } from '@/types/IAttraction';
 import { IError } from '@/types/IError';
 
-const HERO_TITLE = 'Explore the best things to do in Vietnam';
+const HERO_TITLE = 'Plan, go - we make it easy';
 const HERO_DESCRIPTION =
-  'Discover unforgettable experiences and activities for your next adventure, whether you are traveling for leisure or business.';
+  'Discover family activities, adventures, tours, museums, and top attractions to plan your next trip.';
 
 export default function ThingsToDoPage() {
   const router = useRouter();
@@ -56,21 +56,24 @@ export default function ThingsToDoPage() {
         title={HERO_TITLE}
         image='/thing-to-do-1.jpeg'
         description={HERO_DESCRIPTION}
+        className='-mt-10'
       />
       <div className='grid grid-cols-4 py-10'>
-        {/* Filter */}
         <div className='col-span-1 hidden flex-col pl-10 md:flex'>
           <SectionTitle text='Filter' />
         </div>
-
-        {/* List */}
         <HorizontalPlace
           places={items}
           totalPages={totalPages}
           className='col-span-4 flex flex-col px-10 md:col-span-3'
         />
       </div>
-      <RecentlyViewedItems className='border-grid border-t p-10 pb-0' />
+      <HeroSection
+        title={'Backed by travelers'}
+        image='/thing-to-do-2.jpeg'
+        description="See what people loved (or didn't love) with real reviews on almost everything."
+      />
+      <RecentlyViewedItems className='p-10 pb-0' />
     </>
   );
 }

@@ -56,6 +56,7 @@ export default function HotelsPage() {
         title={HERO_TITLE}
         image='/hotel-1.jpeg'
         description={HERO_DESCRIPTION}
+        className='-mt-10'
       />
       <div className='grid grid-cols-4 py-10'>
         {/* Filter */}

@@ -18,11 +18,11 @@ export default function HeroSection({
   image,
   className,
   description,
-  ratio = 16 / 7,
+  ratio = 16 / 6,
   object = 'center',
 }: Props) {
   return (
-    <section className={cn('relative -mt-10', className)}>
+    <section className={cn('relative', className)}>
       <div className='absolute bottom-0 left-0 z-10 flex flex-col gap-1.5 p-10 text-white'>
         <span className='text-2xl font-bold tracking-tight capitalize md:text-3xl lg:text-4xl'>
           {title}

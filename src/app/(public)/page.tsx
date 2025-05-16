@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import HeroSection from '@/components/hero-section';
 import PlaceCarousel from '@/components/place-carousel';
 import RecentlyViewedItems from '@/components/recently-viewed-items';
+import Search from '@/components/search';
 import { HotelService } from '@/services/hotel';
 import { IAttraction } from '@/types/IAttraction';
 import { IError } from '@/types/IError';
@@ -39,6 +40,7 @@ export default function HomePage() {
 
   return (
     <>
+      <Search />
       <HeroSection
         title={HERO_TITLE}
         image='/home.jpg'
@@ -56,13 +58,8 @@ export default function HomePage() {
           items={items}
         />
       </div>
-      <HeroSection
-        title='Vietnam Travel'
-        image='/home-2.jpeg'
-        ratio={16 / 7}
-        className='mt-0'
-      />
-      <RecentlyViewedItems className='p-10' />
+      <HeroSection title='Vietnam Travel' image='/home-2.jpeg' ratio={16 / 7} />
+      <RecentlyViewedItems className='p-10 pb-0' />
     </>
   );
 }
