@@ -36,7 +36,7 @@ export default function PlaceDetailsPage() {
       try {
         const data = await HotelService.details(elementId);
         setHotel(data);
-        saveRecentlyViewed(elementId);
+        saveRecentlyViewed(elementId, data.type);
       } catch (error) {
         if (error instanceof HTTPError) {
           const data = await error.response.json<IError>();
