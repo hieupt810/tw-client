@@ -14,7 +14,7 @@ import { HotelService } from '@/services/hotel';
 import { IAttraction } from '@/types/IAttraction';
 import { IError } from '@/types/IError';
 
-const HERO_TITLE = 'Explore the best hotels in Vietnam';
+const HERO_TITLE = "Stay at the Vietnam's top hotels";
 const HERO_DESCRIPTION =
   'Discover the perfect place to stay for your next unforgettable trip, whether you are traveling for leisure or business.';
 
@@ -52,7 +52,11 @@ export default function HotelsPage() {
 
   return (
     <>
-      <HeroSection title={HERO_TITLE} description={HERO_DESCRIPTION} />
+      <HeroSection
+        title={HERO_TITLE}
+        image='/hotel-1.jpeg'
+        description={HERO_DESCRIPTION}
+      />
       <div className='grid grid-cols-4 py-10'>
         {/* Filter */}
         <div className='col-span-1 hidden flex-col pl-10 md:flex'>

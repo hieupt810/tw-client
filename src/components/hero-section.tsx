@@ -1,27 +1,55 @@
 import Image from 'next/image';
 
+import { cn } from '@/lib/utils';
+
+import { AspectRatio } from './ui/aspect-ratio';
+
 type Props = {
   title: string;
-  description: string;
+  image: string;
+  ratio?: number;
+  description?: string;
+  object?: 'center' | 'top' | 'bottom';
+  className?: React.HTMLAttributes<HTMLElement>['className'];
 };
 
-export default function HeroSection({ title, description }: Props) {
+export default function HeroSection({
+  title,
+  image,
+  className,
+  description,
+  ratio = 16 / 7,
+  object = 'center',
+}: Props) {
   return (
-    <section className='border-grid flex flex-col gap-1 border-b md:pt-2 lg:gap-1.5 lg:pt-4 xl:pt-6'>
-      <span className='text-center text-2xl font-bold tracking-tight md:text-3xl lg:text-4xl'>
-        {title}
-      </span>
-      <span className='text-muted-foreground mx-auto max-w-sm text-center text-sm font-light md:max-w-lg md:text-base lg:max-w-2xl lg:text-lg'>
-        {description}
-      </span>
-      <Image
-        priority
-        alt='Banner'
-        width={4000}
-        height={1620}
-        src='/vietnam.jpg'
-        className='mx-auto w-full max-w-4xl'
-      />
+    <section className={cn('relative -mt-10', className)}>
+      <div className='absolute bottom-0 left-0 z-10 flex flex-col gap-1.5 p-10 text-white'>
+        <span className='text-2xl font-bold tracking-tight capitalize md:text-3xl lg:text-4xl'>
+          {title}
+        </span>
+        {description && (
+          <span className='max-w-md text-sm font-light md:max-w-xl md:text-base lg:max-w-2xl lg:text-lg'>
+            {description}
+          </span>
+        )}
+      </div>
+      <div className='relative w-full'>
+        <AspectRatio ratio={ratio}>
+          <Image
+            fill
+            priority
+            alt='Hero banner'
+            src={image}
+            className={cn(
+              'z-0 w-full object-cover',
+              object === 'top' && 'object-top',
+              object === 'center' && 'object-center',
+              object === 'bottom' && 'object-bottom',
+            )}
+          />
+        </AspectRatio>
+        <div className='absolute top-0 right-0 left-0 h-full bg-gradient-to-b from-white/20 to-black/90' />
+      </div>
     </section>
   );
 }

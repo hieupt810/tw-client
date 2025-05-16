@@ -1,9 +1,21 @@
 import { ThingToDoRoutes } from '@/constants/routes';
 import api from '@/lib/api';
-import { IAttractionPaging } from '@/types/IAttraction';
+import { IAttraction, IAttractionPaging } from '@/types/IAttraction';
 
 export class ThingToDoService {
-  static getAll() {
-    return api.get(ThingToDoRoutes.DEFAULT).json<IAttractionPaging>();
+  static list(page: number = 1, size: number = 10) {
+    return api
+      .get(ThingToDoRoutes.DEFAULT, { searchParams: { page, size } })
+      .json<IAttractionPaging>();
+  }
+
+  static shortDetails(id: string) {
+    return api
+      .get(`${ThingToDoRoutes.DEFAULT}${id}/short-details`)
+      .json<IAttraction>();
+  }
+
+  static details(id: string) {
+    return api.get(`${ThingToDoRoutes.DEFAULT}${id}/details`).json();
   }
 }

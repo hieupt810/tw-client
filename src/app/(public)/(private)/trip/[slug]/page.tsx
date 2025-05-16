@@ -44,12 +44,12 @@ export default function TripPage() {
   if (!items.length) return <Loading />;
 
   return (
-    <>
-      <DraggableList baseItems={items} className='p-10 pt-0' />
-      <div className='border-grid flex flex-col border-t px-10 pt-10'>
+    <div className='grid grid-cols-5'>
+      <DraggableList baseItems={items} className='col-span-2 pr-6 pl-10' />
+      <div className='col-span-3 flex flex-col'>
         <SectionTitle text='Map' />
         <MarkerMap items={items} />
       </div>
-    </>
+    </div>
   );
 }

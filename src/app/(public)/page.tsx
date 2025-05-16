@@ -1,7 +1,6 @@
 'use client';
 
 import { HTTPError } from 'ky';
-import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -40,21 +39,30 @@ export default function HomePage() {
 
   return (
     <>
-      <HeroSection title={HERO_TITLE} description={HERO_DESCRIPTION} />
-      <PlaceCarousel
-        title='Explore top destinations'
-        description='Discover the best places to visit '
-        items={items}
-        className='p-10'
+      <HeroSection
+        title={HERO_TITLE}
+        image='/home.jpg'
+        description={HERO_DESCRIPTION}
       />
-      <Image
-        priority
-        width={4500}
-        height={1503}
-        src='/home-banner.jpg'
-        alt='Welcome to Vietnam'
+      <div className='flex flex-col gap-10 p-10'>
+        <PlaceCarousel
+          title='Top destinations for your next vacation'
+          description='Discover the most popular places with the highest rankings'
+          items={items}
+        />
+        <PlaceCarousel
+          title="Stay at the Vietnam's top hotels"
+          description="2025 Travelers's Choice Awards"
+          items={items}
+        />
+      </div>
+      <HeroSection
+        title='Vietnam Travel'
+        image='/home-2.jpeg'
+        ratio={16 / 7}
+        className='mt-0'
       />
-      <RecentlyViewedItems className='p-10 pb-0' />
+      <RecentlyViewedItems className='p-10' />
     </>
   );
 }

@@ -44,14 +44,9 @@ export function saveRecentlyViewed(elementId: string, type: string) {
     Constant.LOCAL_STORAGE_KEY.RECENTLY_VIEWED_KEY,
   );
   const newItem = { elementId, type };
-  if (!recentlyViewed) {
-    localStorage.setItem(
-      Constant.LOCAL_STORAGE_KEY.RECENTLY_VIEWED_KEY,
-      JSON.stringify([newItem]),
-    );
-    return;
-  }
-  const parsed: ISavedAttraction[] = JSON.parse(recentlyViewed);
+  let parsed: ISavedAttraction[] = recentlyViewed
+    ? JSON.parse(recentlyViewed)
+    : [];
   const index = parsed.findIndex(
     (item) => item.elementId === elementId && item.type === type,
   );
@@ -59,6 +54,9 @@ export function saveRecentlyViewed(elementId: string, type: string) {
     parsed.splice(index, 1);
   }
   parsed.unshift(newItem);
+  if (parsed.length > 10) {
+    parsed = parsed.slice(0, 10);
+  }
   localStorage.setItem(
     Constant.LOCAL_STORAGE_KEY.RECENTLY_VIEWED_KEY,
     JSON.stringify(parsed),
@@ -73,4 +71,28 @@ export function getRecentlyViewed() {
   if (!recentlyViewed) return [];
   const parsed: ISavedAttraction[] = JSON.parse(recentlyViewed);
   return parsed;
+}
+
+export async function* streamResponse(message: string) {
+  const response = await fetch(`${Constant.API_URL}conversations/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ message }),
+  });
+
+  if (!response.body) throw new Error('No response body');
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+
+  let done = false;
+  while (!done) {
+    const { value, done: readerDone } = await reader.read();
+    done = readerDone;
+    if (value) {
+      yield decoder.decode(value, { stream: !done });
+    }
+  }
 }

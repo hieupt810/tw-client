@@ -52,7 +52,11 @@ export default function RestaurantsPage() {
 
   return (
     <>
-      <HeroSection title={HERO_TITLE} description={HERO_DESCRIPTION} />
+      <HeroSection
+        title={HERO_TITLE}
+        image='/restaurant-1.jpeg'
+        description={HERO_DESCRIPTION}
+      />
       <div className='grid grid-cols-4 py-10'>
         {/* Filter */}
         <div className='col-span-1 hidden flex-col pl-10 md:flex'>

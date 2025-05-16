@@ -12,7 +12,6 @@ import { IAttraction } from '@/types/IAttraction';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconUrl: Constant.MARKER_ICON_URL.VIOLET,
@@ -114,22 +113,24 @@ export default function MarkerMap({ items }: { items?: IAttraction[] }) {
 
   return (
     <MapContainer
-      zoom={13}
+      zoom={15}
       minZoom={10}
       maxZoom={25}
       center={centerPosition}
-      className='h-full min-h-[40rem] w-full rounded-lg'
+      className='h-full min-h-[35rem] w-full rounded-lg'
     >
       <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
       {items &&
         items.map((item, idx) => {
           const position: LatLngExpression = [item.latitude, item.longitude];
-          const icon =
-            idx === 0
-              ? VIOLET_MARKER
-              : idx != items.length - 1
-                ? GREEN_MARKER
-                : RED_MARKER;
+          let icon = VIOLET_MARKER;
+          if (items.length === 1) {
+            icon = VIOLET_MARKER;
+          } else if (idx === 0) {
+            icon = GREEN_MARKER;
+          } else if (idx === items.length - 1) {
+            icon = RED_MARKER;
+          }
           return (
             <Marker key={item.elementId} position={position} icon={icon}>
               <Popup>
