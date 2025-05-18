@@ -31,7 +31,7 @@ export default function VerticalRecommend({ className }: Props) {
                 quality={100}
                 src={'/fallback-avatar.jpg'}
                 sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                className='overflow-hidden rounded-lg object-cover object-center'
+                className='overflow-hidden rounded-md object-cover object-center'
               />
             </AspectRatio>
           </div>

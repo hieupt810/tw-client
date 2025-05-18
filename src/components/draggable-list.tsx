@@ -34,7 +34,7 @@ function SortableItem({ item }: { item: IAttraction }) {
       style={style}
       {...attributes}
       {...listeners}
-      className='flex w-full cursor-move flex-col items-center gap-2.5 overflow-hidden rounded-lg bg-violet-50 hover:opacity-80 sm:flex-row'
+      className='flex w-full cursor-move flex-col items-center gap-2.5 overflow-hidden rounded-md bg-violet-50 hover:opacity-80 sm:flex-row'
     >
       <div className='w-full lg:max-w-48'>
         <AspectRatio ratio={4 / 3}>
@@ -57,7 +57,7 @@ function SortableItem({ item }: { item: IAttraction }) {
           </span>
           <div
             className={cn(
-              'w-fit rounded-lg px-2 py-0.5 text-xs text-white capitalize',
+              'w-fit rounded-md px-2 py-0.5 text-xs text-white capitalize',
               item.type === 'HOTEL' && 'bg-orange-600',
               item.type === 'RESTAURANT' && 'bg-blue-600',
               item.type === 'THING-TO-DO' && 'bg-amber-600',

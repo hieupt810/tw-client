@@ -1,12 +1,32 @@
 import { Heart } from 'lucide-react';
 
 import { Button } from './ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from './ui/tooltip';
 
-export default function SavePlaceButton() {
+interface Props {
+  elementId: string;
+  iconOnly?: boolean;
+}
+
+export default function SavePlaceButton({ iconOnly = false }: Props) {
   return (
-    <Button variant='outline'>
-      <Heart />
-      <span>Save</span>
-    </Button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant='outline' size={iconOnly ? 'icon' : 'sm'}>
+            <Heart />
+            {!iconOnly && <span>Save</span>}
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <span>Add to favorites</span>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }

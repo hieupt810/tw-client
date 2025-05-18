@@ -42,7 +42,7 @@ export default function Message({
       </div>
 
       {isLoading && (
-        <div className='flex h-10 flex-row items-center gap-2 rounded-xl bg-violet-50 px-4 py-1.5 shadow-md'>
+        <div className='flex h-10 flex-row items-center gap-2 rounded-md bg-violet-50 px-4 py-1.5 shadow-md'>
           <div className='bg-primary size-3 animate-bounce rounded-full [animation-delay:-0.3s]' />
           <div className='bg-primary size-3 animate-bounce rounded-full [animation-delay:-0.15s]' />
           <div className='bg-primary size-3 animate-bounce rounded-full' />
@@ -52,7 +52,7 @@ export default function Message({
       {!isLoading && (
         <div
           className={cn(
-            'rounded-xl px-4 py-1.5 shadow-md',
+            'rounded-md px-4 py-1.5 shadow-md',
             isUser ? 'bg-accent text-accent-foreground' : 'bg-violet-100',
           )}
         >

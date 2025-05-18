@@ -67,7 +67,7 @@ export default function Search() {
           </button>
         ))}
       </div>
-      <div className='flex w-full max-w-3xl flex-row items-center justify-center gap-2.5 rounded-lg border px-2.5 py-1.5 shadow-md'>
+      <div className='flex w-full max-w-3xl flex-row items-center justify-center gap-2.5 rounded-md border px-2.5 py-1.5 shadow-md'>
         <div>
           <SearchIcon />
         </div>
@@ -77,7 +77,7 @@ export default function Search() {
           placeholder={selectedItem.placeholder}
           onChange={(e) => setInput(e.target.value)}
         />
-        <button className='bg-primary text-background rounded-lg px-2.5 py-1.5 text-sm font-medium tracking-tight'>
+        <button className='bg-primary text-background rounded-md px-2.5 py-1.5 text-sm font-medium tracking-tight'>
           Search
         </button>
       </div>

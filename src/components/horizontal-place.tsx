@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -10,6 +10,7 @@ import { IAttraction } from '@/types/IAttraction';
 
 import Address from './address';
 import Rating from './rating';
+import SavePlaceButton from './save-place-button';
 import { AspectRatio } from './ui/aspect-ratio';
 import { Button } from './ui/button';
 
@@ -79,10 +80,7 @@ export default function HorizontalPlace({
           </Link>
 
           <div className='col-span-1 flex justify-end md:my-8'>
-            <Button variant='outline' className='w-full md:w-fit'>
-              <Heart />
-              <span>Save</span>
-            </Button>
+            <SavePlaceButton />
           </div>
         </div>
       ))}

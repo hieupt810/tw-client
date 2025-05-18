@@ -85,7 +85,7 @@ export default function SignInPage() {
     <AuthLayout image='/sign-in.jpg'>
       <div className='mx-auto w-full max-w-md'>
         <div className='flex items-center justify-center'>
-          <div className='border-muted rounded-lg border p-2'>
+          <div className='border-muted rounded-md border p-2'>
             <LogIn size={28} />
           </div>
         </div>

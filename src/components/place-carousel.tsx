@@ -1,15 +1,16 @@
 'use client';
 
 import Autoplay from 'embla-carousel-autoplay';
-import { Heart, ListPlus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 import { IAttraction } from '@/types/IAttraction';
 
+import AddTripButton from './add-trip-button';
 import Loading from './loading';
 import Rating from './rating';
+import SavePlaceButton from './save-place-button';
 import { AspectRatio } from './ui/aspect-ratio';
 import { Carousel, CarouselContent, CarouselItem } from './ui/carousel';
 
@@ -47,11 +48,8 @@ export default function PlaceCarousel({
           className='mx-auto'
         >
           <CarouselContent>
-            {items.map((item) => (
-              <CarouselItem
-                key={item.elementId}
-                className='max-w-3xs md:max-w-2xs'
-              >
+            {items.map((item, index) => (
+              <CarouselItem key={index} className='max-w-3xs md:max-w-2xs'>
                 <AspectRatio ratio={1 / 1} className='relative'>
                   <Image
                     fill
@@ -59,21 +57,11 @@ export default function PlaceCarousel({
                     src={item.image}
                     alt='Placeholder'
                     sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                    className='h-full w-full rounded-xl object-cover object-center'
+                    className='h-full w-full rounded-md object-cover object-center'
                   />
-                  <div className='absolute top-1.5 right-1.5 flex items-center gap-1'>
-                    <button
-                      aria-label='Bookmark this place'
-                      className='inline-flex cursor-pointer items-center justify-center rounded-full bg-white p-1.5 hover:bg-neutral-50'
-                    >
-                      <ListPlus size={16} />
-                    </button>
-                    <button
-                      aria-label='Bookmark this place'
-                      className='inline-flex cursor-pointer items-center justify-center rounded-full bg-white p-1.5'
-                    >
-                      <Heart size={16} />
-                    </button>
+                  <div className='absolute top-2 right-2 flex items-center gap-1.5'>
+                    <AddTripButton elementId={item.elementId} iconOnly />
+                    <SavePlaceButton elementId={item.elementId} iconOnly />
                   </div>
                 </AspectRatio>
                 <Link

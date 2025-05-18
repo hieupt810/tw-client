@@ -16,3 +16,7 @@ export class RestaurantRoutes {
 export class ThingToDoRoutes {
   static DEFAULT = 'things-to-do/';
 }
+
+export class TripRoutes {
+  static DEFAULT = 'trips/';
+}

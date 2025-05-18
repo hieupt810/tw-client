@@ -83,11 +83,11 @@ export default function AppNavbar() {
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className='z-[1000] w-52'>
-                  <DropdownMenuLabel>My account</DropdownMenuLabel>
+                  <DropdownMenuLabel>Hi, {me.fullName}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <Link href='/account' passHref>
-                      <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <Link href='/favorites' passHref>
+                      <DropdownMenuItem>Favorites</DropdownMenuItem>
                     </Link>
                     <DropdownMenuItem
                       variant='destructive'
