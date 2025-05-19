@@ -2,10 +2,13 @@
 
 import { Dialog, DialogTitle } from '@radix-ui/react-dialog';
 import { ListPlus, Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
+import { useStore } from 'zustand';
 
 import { TripService } from '@/services/trip';
+import { useAuthStore } from '@/stores/auth';
 import { ITrip } from '@/types/ITrip';
 
 import { Button } from './ui/button';
@@ -23,6 +26,9 @@ interface Props {
 }
 
 export default function AddTripButton({ elementId, iconOnly = false }: Props) {
+  const router = useRouter();
+  const me = useStore(useAuthStore, (state) => state.me);
+
   const [trips, setTrips] = useState<ITrip[]>([]);
   const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -62,8 +68,15 @@ export default function AddTripButton({ elementId, iconOnly = false }: Props) {
           <Dialog
             open={dialogOpen}
             onOpenChange={(open) => {
+              if (!me) {
+                toast.error(
+                  'You need to be signed in to add a place to a trip',
+                );
+                router.push('/sign-in');
+                return;
+              }
               setDialogOpen(open);
-              if (open) fetchTrips(); // Fetch trips only when opening dialog
+              if (open) fetchTrips();
             }}
           >
             <DialogTrigger asChild>
@@ -74,13 +87,10 @@ export default function AddTripButton({ elementId, iconOnly = false }: Props) {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle className='text-center font-medium'>
-                  Add this place to a trip
-                </DialogTitle>
+                <DialogTitle>Add this place to a trip</DialogTitle>
               </DialogHeader>
 
-              {/* Main dialog */}
-              <div className='h-fit max-h-[15rem] space-y-2 overflow-y-auto'>
+              <div className='max-h-[15rem] space-y-2 overflow-y-auto'>
                 {loading === true ? (
                   <div className='flex items-center justify-center p-10'>
                     <Loader2 className='stroke-primary animate-spin' />

@@ -34,7 +34,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         )}
         suppressHydrationWarning
       >
-        <main className='relative bg-violet-50/50'>
+        <main className='relative bg-violet-50/20'>
           <div className='flex min-h-dvh flex-col'>{children}</div>
         </main>
         <Toaster

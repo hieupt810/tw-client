@@ -69,7 +69,7 @@ export default function PlaceDetailsPage() {
               ratingHistorgram={hotel.ratingHistogram}
             />
           </div>
-          <SavePlaceButton />
+          <SavePlaceButton elementId={hotel.elementId} />
         </div>
         <Address
           street={hotel.street}

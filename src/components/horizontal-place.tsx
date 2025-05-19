@@ -80,7 +80,7 @@ export default function HorizontalPlace({
           </Link>
 
           <div className='col-span-1 flex justify-end md:my-8'>
-            <SavePlaceButton />
+            <SavePlaceButton elementId={place.elementId} />
           </div>
         </div>
       ))}

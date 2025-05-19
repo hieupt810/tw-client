@@ -7,58 +7,52 @@ import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth';
 
 import Markdown from './markdown';
+import { AspectRatio } from './ui/aspect-ratio';
 
 type Props = {
   text?: string;
   isUser?: boolean;
-  isLoading?: boolean;
 };
 
-export default function Message({
-  text = '',
-  isUser = false,
-  isLoading = false,
-}: Props) {
+export default function Message({ text = '', isUser = false }: Props) {
   const me = useStore(useAuthStore, (state) => state.me);
 
   return (
     <div
       className={cn(
-        'flex w-full items-start gap-2',
+        'flex w-full items-start',
         isUser ? 'flex-row-reverse' : 'flex-row',
       )}
     >
-      <div className='size-8 overflow-hidden rounded-full shadow-md'>
+      <div className='border-primary size-10 overflow-hidden rounded-full border'>
         {isUser ? (
-          <Image
-            src={me && me.avatar ? me.avatar : '/fallback-avatar.jpg'}
-            alt={me ? me.fullName : 'User'}
-            width={1000}
-            height={1000}
-          />
+          <AspectRatio ratio={1 / 1}>
+            <Image
+              fill
+              alt={me ? me.fullName : 'User'}
+              src={me && me.avatar ? me.avatar : '/fallback-avatar.jpg'}
+              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+            />
+          </AspectRatio>
         ) : (
-          <Image src='/robot.jpeg' alt='Assistant' width={1000} height={1000} />
+          <AspectRatio ratio={1 / 1}>
+            <Image
+              fill
+              alt='Assistant'
+              src='/robot.jpeg'
+              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+            />
+          </AspectRatio>
         )}
       </div>
-
-      {isLoading && (
-        <div className='flex h-10 flex-row items-center gap-2 rounded-md bg-violet-50 px-4 py-1.5 shadow-md'>
-          <div className='bg-primary size-3 animate-bounce rounded-full [animation-delay:-0.3s]' />
-          <div className='bg-primary size-3 animate-bounce rounded-full [animation-delay:-0.15s]' />
-          <div className='bg-primary size-3 animate-bounce rounded-full' />
-        </div>
-      )}
-
-      {!isLoading && (
-        <div
-          className={cn(
-            'rounded-md px-4 py-1.5 shadow-md',
-            isUser ? 'bg-accent text-accent-foreground' : 'bg-violet-100',
-          )}
-        >
-          <Markdown text={text} />
-        </div>
-      )}
+      <div
+        className={cn(
+          'rounded-md px-4',
+          isUser && 'mr-4 bg-violet-100 px-4 py-2.5',
+        )}
+      >
+        <Markdown text={text} />
+      </div>
     </div>
   );
 }
