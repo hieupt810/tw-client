@@ -77,33 +77,67 @@ export default function HotelDetailsPage() {
       </div>
       <div className='grid grid-cols-1 lg:grid-cols-4'>
         <div className='border-grid col-span-3 lg:border-r'>
-          {/* <TextSection
-            title='AI Review Summary'
-            text={
-              item.aiReviewsSummary ||
-              'Do not have enough reviews for AI summary.'
-            }
-            className='border-t-0'
-          /> */}
-          <div className='border-grid grid grid-cols-1 border-t md:grid-cols-2'>
-            {/* Rating Chart */}
-            <div className='border-grid col-span-1 flex flex-col border-r p-10'>
+          <TextSection
+            title='Description'
+            text={item.description || 'No description.'}
+            className='border-t-0 border-b'
+          />
+
+          <div className='grid grid-cols-1 gap-6 p-10 md:grid-cols-2'>
+            <div className='col-span-1 flex flex-col'>
               <SectionTitle text='Rating Distribution' />
               <RatingChart histogram={item.ratingHistogram} />
             </div>
-
-            {/* Amenities */}
-            <div className='border-grid col-span-1 flex flex-col border-t p-10 md:border-t-0'>
+            <div className='col-span-1 flex flex-col'>
               <SectionTitle text='Amenities' />
               <Feature features={item.features} />
             </div>
           </div>
 
-          {/* Description */}
-          <TextSection
-            title='Description'
-            text={item.description || 'No description.'}
-          />
+          <div className='border-grid grid grid-cols-2 grid-rows-2 gap-x-6 gap-y-10 truncate border-t p-10'>
+            <div className='flex flex-col'>
+              {item.cuisines.length > 0 && (
+                <>
+                  <SectionTitle text='Cuisines' />
+                  <div className='text-muted-foreground flex flex-col gap-0.5'>
+                    {item.cuisines.map((cuisine) => (
+                      <span key={cuisine}>{cuisine}</span>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+            <div className='flex flex-col'>
+              {item.cuisines.length > 0 && (
+                <>
+                  <SectionTitle text='Dietary Restrictions' />
+                  <div className='text-muted-foreground flex flex-col gap-0.5'>
+                    {item.dietaryRestrictions.map((dietaryRestriction) => (
+                      <span key={dietaryRestriction}>{dietaryRestriction}</span>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+            <div className='flex flex-col'>
+              <SectionTitle text='Price Levels' />
+              <span className='text-muted-foreground'>
+                {item.priceLevels.join(' - ')}
+              </span>
+            </div>
+            <div className='flex flex-col'>
+              {item.cuisines.length > 0 && (
+                <>
+                  <SectionTitle text='Dish' />
+                  <div className='text-muted-foreground flex flex-col gap-0.5'>
+                    {item.dishes.map((dish) => (
+                      <span key={dish}>{dish}</span>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
 
           <div className='border-grid flex flex-col border-t p-10'>
             <SectionTitle text='Map' />

@@ -25,7 +25,7 @@ export default function ThumbnailsCarousel({ images, className }: Props) {
         <CarouselContent>
           {images.map((image, index) => (
             <CarouselItem key={index}>
-              <AspectRatio ratio={1.8 / 1}>
+              <AspectRatio ratio={3 / 2}>
                 <ImageWithFallback
                   fill
                   priority

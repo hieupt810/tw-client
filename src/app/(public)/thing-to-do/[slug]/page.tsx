@@ -81,6 +81,33 @@ export default function HotelDetailsPage() {
             text={item.description || 'No description.'}
           />
 
+          <div className='grid grid-cols-2 gap-10 truncate'>
+            <div className='flex flex-col pb-10 pl-10'>
+              {item.subcategories.length > 0 && (
+                <>
+                  <SectionTitle text='Subcategories' />
+                  <div className='text-muted-foreground flex flex-col gap-0.5'>
+                    {item.subcategories.map((subcategory) => (
+                      <span key={subcategory}>{subcategory}</span>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+            <div className='flex flex-col pr-10 pb-10'>
+              {item.subtypes.length > 0 && (
+                <>
+                  <SectionTitle text='Subtypes' />
+                  <div className='text-muted-foreground flex flex-col gap-0.5'>
+                    {item.subtypes.map((subtype) => (
+                      <span key={subtype}>{subtype}</span>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
           <div className='border-grid flex flex-col border-t p-10'>
             <SectionTitle text='Map' />
             <MarkerMap items={[item]} />
@@ -111,7 +138,7 @@ function TextSection({
   className?: React.HTMLProps<HTMLDivElement>['className'];
 }) {
   return (
-    <div className={cn('border-grid flex flex-col border-t p-10', className)}>
+    <div className={cn('border-grid flex flex-col p-10', className)}>
       <SectionTitle text={title} />
       <p className='text-justify leading-relaxed'>{text}</p>
     </div>
