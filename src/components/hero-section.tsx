@@ -1,7 +1,6 @@
-import Image from 'next/image';
-
 import { cn } from '@/lib/utils';
 
+import ImageWithFallback from './image-with-fallback';
 import { AspectRatio } from './ui/aspect-ratio';
 
 type Props = {
@@ -18,7 +17,7 @@ export default function HeroSection({
   image,
   className,
   description,
-  ratio = 16 / 6,
+  ratio = 16 / 7,
   object = 'center',
 }: Props) {
   return (
@@ -35,7 +34,7 @@ export default function HeroSection({
       </div>
       <div className='relative w-full'>
         <AspectRatio ratio={ratio}>
-          <Image
+          <ImageWithFallback
             fill
             priority
             alt='Hero banner'

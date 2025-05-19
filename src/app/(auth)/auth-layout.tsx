@@ -2,11 +2,11 @@
 
 import { ArrowLeft } from 'lucide-react';
 import { motion } from 'motion/react';
-import Image from 'next/image';
 import Link from 'next/link';
 
 import AppFooter from '@/components/app-footer';
 import AppLogo from '@/components/app-logo';
+import ImageWithFallback from '@/components/image-with-fallback';
 import { Button } from '@/components/ui/button';
 
 type Props = {
@@ -45,7 +45,7 @@ export default function AuthLayout({ image, children }: Props) {
         transition={{ type: 'tween', duration: 0.5 }}
         className='absolute top-0 right-0 hidden h-screen w-full max-w-1/2 md:block'
       >
-        <Image
+        <ImageWithFallback
           fill
           priority
           alt='Image'

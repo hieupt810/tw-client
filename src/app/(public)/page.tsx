@@ -9,6 +9,8 @@ import PlaceCarousel from '@/components/place-carousel';
 import RecentlyViewedItems from '@/components/recently-viewed-items';
 import Search from '@/components/search';
 import { HotelService } from '@/services/hotel';
+import { RestaurantService } from '@/services/restaurant';
+import { ThingToDoService } from '@/services/thing-to-do';
 import { IAttraction } from '@/types/IAttraction';
 import { IError } from '@/types/IError';
 
@@ -17,15 +19,20 @@ const HERO_DESCRIPTION =
   'Tailored to your preferences and designed to make every step of your adventure seamless and memorable.';
 
 export default function HomePage() {
-  const [items, setItems] = useState<IAttraction[]>([]);
+  const [hotels, setHotels] = useState<IAttraction[]>([]);
+  const [restaurants, setRestaurants] = useState<IAttraction[]>([]);
+  const [thingsToDo, setThingsToDo] = useState<IAttraction[]>([]);
 
-  const fetchItems = useCallback(async function (
-    page: number = 1,
-    size: number = 10,
-  ) {
+  const fetchAll = useCallback(async function () {
     try {
-      const data = await HotelService.list(page, size);
-      setItems(data.data);
+      const [hotels, restaurants, thingsToDo] = await Promise.all([
+        HotelService.list(1, 10),
+        RestaurantService.list(1, 10),
+        ThingToDoService.list(1, 10),
+      ]);
+      setHotels(hotels.data);
+      setRestaurants(restaurants.data);
+      setThingsToDo(thingsToDo.data);
     } catch (error) {
       if (error instanceof HTTPError) {
         const data = await error.response.json<IError>();
@@ -35,8 +42,8 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    fetchItems();
-  }, [fetchItems]);
+    fetchAll();
+  }, [fetchAll]);
 
   return (
     <>
@@ -50,12 +57,16 @@ export default function HomePage() {
         <PlaceCarousel
           title='Top destinations for your next vacation'
           description='Discover the most popular places with the highest rankings'
-          items={items}
+          items={hotels}
+        />
+        <PlaceCarousel title="Stay at Vietnam's top hotels" items={hotels} />
+        <PlaceCarousel
+          title="Experience at Vietnam's top restaurants"
+          items={restaurants}
         />
         <PlaceCarousel
-          title="Stay at the Vietnam's top hotels"
-          description="2025 Travelers's Choice Awards"
-          items={items}
+          title='Enjoy the things people love to do'
+          items={thingsToDo}
         />
       </div>
       <HeroSection title='Vietnam Travel' image='/home-2.jpeg' ratio={16 / 7} />

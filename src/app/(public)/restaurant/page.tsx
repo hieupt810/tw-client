@@ -22,7 +22,7 @@ export default function RestaurantsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1');
-  const size = parseInt(searchParams.get('size') || '5');
+  const size = parseInt(searchParams.get('size') || '10');
 
   const [items, setItems] = useState<IAttraction[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
@@ -71,7 +71,13 @@ export default function RestaurantsPage() {
           className='col-span-4 flex flex-col px-10 md:col-span-3'
         />
       </div>
-      <RecentlyViewedItems className='border-grid border-t px-10 pt-10' />
+      <HeroSection
+        title={'Backed by travelers'}
+        image='/restaurant-2.jpeg'
+        description="See what people loved (or didn't love) with real reviews on almost everything."
+        className='mt-10'
+      />
+      <RecentlyViewedItems className='px-10' />
     </>
   );
 }

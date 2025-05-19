@@ -9,12 +9,12 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Grip } from 'lucide-react';
-import Image from 'next/image';
 import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
 import { IAttraction } from '@/types/IAttraction';
 
+import ImageWithFallback from './image-with-fallback';
 import SectionTitle from './section-title';
 import { AspectRatio } from './ui/aspect-ratio';
 import { Button } from './ui/button';
@@ -38,7 +38,7 @@ function SortableItem({ item }: { item: IAttraction }) {
     >
       <div className='w-full lg:max-w-32'>
         <AspectRatio ratio={1 / 1}>
-          <Image
+          <ImageWithFallback
             fill
             alt={item.name}
             src={item.image}

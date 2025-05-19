@@ -1,7 +1,6 @@
-import Image from 'next/image';
-
 import { cn } from '@/lib/utils';
 
+import ImageWithFallback from './image-with-fallback';
 import Rating from './rating';
 import { AspectRatio } from './ui/aspect-ratio';
 
@@ -24,12 +23,12 @@ export default function VerticalRecommend({ className }: Props) {
         >
           <div className='mx-auto w-full max-w-full'>
             <AspectRatio ratio={1 / 1}>
-              <Image
+              <ImageWithFallback
                 fill
                 priority
                 alt='Placeholder'
                 quality={100}
-                src={'/fallback-avatar.jpg'}
+                src={'/'}
                 sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                 className='overflow-hidden rounded-md object-cover object-center'
               />

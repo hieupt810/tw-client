@@ -1,5 +1,4 @@
 import Autoplay from 'embla-carousel-autoplay';
-import Image from 'next/image';
 
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import {
@@ -7,6 +6,8 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
+
+import ImageWithFallback from './image-with-fallback';
 
 type Props = {
   images: string[];
@@ -25,7 +26,7 @@ export default function ThumbnailsCarousel({ images, className }: Props) {
           {images.map((image, index) => (
             <CarouselItem key={index}>
               <AspectRatio ratio={1.8 / 1}>
-                <Image
+                <ImageWithFallback
                   fill
                   priority
                   alt='Placeholder'

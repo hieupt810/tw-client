@@ -1,7 +1,6 @@
 'use client';
 
 import { Bot } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { useStore } from 'zustand';
@@ -11,6 +10,7 @@ import { removeTokenPair } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth';
 
 import AppLogo from './app-logo';
+import ImageWithFallback from './image-with-fallback';
 import { Button } from './ui/button';
 import {
   DropdownMenu,
@@ -74,7 +74,7 @@ export default function AppNavbar() {
                     className='border-primary size-8 overflow-hidden rounded-full border-2 shadow-md select-none'
                     aria-label='User Avatar'
                   >
-                    <Image
+                    <ImageWithFallback
                       width={5000}
                       height={5000}
                       src={me.avatar || '/fallback-avatar.jpg'}

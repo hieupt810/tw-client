@@ -1,7 +1,6 @@
 'use client';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -9,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { IAttraction } from '@/types/IAttraction';
 
 import Address from './address';
+import ImageWithFallback from './image-with-fallback';
 import Rating from './rating';
 import SavePlaceButton from './save-place-button';
 import { AspectRatio } from './ui/aspect-ratio';
@@ -48,9 +48,9 @@ export default function HorizontalPlace({
           key={place.elementId}
           className='grid grid-cols-3 gap-1 md:grid-cols-5'
         >
-          <div className='col-span-1'>
+          <div className='col-span-1 flex items-center justify-center'>
             <AspectRatio ratio={1 / 1}>
-              <Image
+              <ImageWithFallback
                 fill
                 alt={place.name}
                 src={place.image}
@@ -73,7 +73,7 @@ export default function HorizontalPlace({
               postalCode={place.city.postalCode}
             />
             <Rating
-              className='mt-1.5 sm:mt-2 md:mt-2.5'
+              className='mt-2 sm:mt-2.5 md:mt-4'
               rating={place.rating}
               ratingHistorgram={place.ratingHistogram}
             />

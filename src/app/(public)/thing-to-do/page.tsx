@@ -22,7 +22,7 @@ export default function ThingsToDoPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1');
-  const size = parseInt(searchParams.get('size') || '5');
+  const size = parseInt(searchParams.get('size') || '10');
 
   const [items, setItems] = useState<IAttraction[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);

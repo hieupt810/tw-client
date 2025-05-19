@@ -1,13 +1,13 @@
 'use client';
 
 import Autoplay from 'embla-carousel-autoplay';
-import Image from 'next/image';
 import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 import { IAttraction } from '@/types/IAttraction';
 
 import AddTripButton from './add-trip-button';
+import ImageWithFallback from './image-with-fallback';
 import Loading from './loading';
 import Rating from './rating';
 import SavePlaceButton from './save-place-button';
@@ -51,7 +51,7 @@ export default function PlaceCarousel({
             {items.map((item, index) => (
               <CarouselItem key={index} className='max-w-3xs md:max-w-2xs'>
                 <AspectRatio ratio={1 / 1} className='relative'>
-                  <Image
+                  <ImageWithFallback
                     fill
                     priority
                     src={item.image}

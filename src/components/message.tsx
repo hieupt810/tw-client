@@ -1,11 +1,11 @@
 'use client';
 
-import Image from 'next/image';
 import { useStore } from 'zustand';
 
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth';
 
+import ImageWithFallback from './image-with-fallback';
 import Markdown from './markdown';
 import { AspectRatio } from './ui/aspect-ratio';
 
@@ -27,7 +27,7 @@ export default function Message({ text = '', isUser = false }: Props) {
       <div className='border-primary size-10 overflow-hidden rounded-full border'>
         {isUser ? (
           <AspectRatio ratio={1 / 1}>
-            <Image
+            <ImageWithFallback
               fill
               alt={me ? me.fullName : 'User'}
               src={me && me.avatar ? me.avatar : '/fallback-avatar.jpg'}
@@ -36,7 +36,7 @@ export default function Message({ text = '', isUser = false }: Props) {
           </AspectRatio>
         ) : (
           <AspectRatio ratio={1 / 1}>
-            <Image
+            <ImageWithFallback
               fill
               alt='Assistant'
               src='/robot.jpeg'

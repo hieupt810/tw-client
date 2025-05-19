@@ -18,11 +18,11 @@ export default function Address({
   return (
     <div
       className={cn(
-        'text-muted-foreground flex items-center gap-0.5 text-sm capitalize md:text-base',
+        'text-muted-foreground flex items-start gap-1 text-sm capitalize md:text-base',
         className,
       )}
     >
-      <div>
+      <div className='mt-1'>
         <MapPin size={16} />
       </div>
       {street ? (
