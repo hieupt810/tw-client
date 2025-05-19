@@ -58,7 +58,7 @@ export default function ThingsToDoPage() {
         description={HERO_DESCRIPTION}
         className='-mt-10'
       />
-      <div className='grid grid-cols-4 py-10'>
+      <div className='grid grid-cols-4 pt-10'>
         <div className='col-span-1 hidden flex-col pl-10 md:flex'>
           <SectionTitle text='Filter' />
         </div>
