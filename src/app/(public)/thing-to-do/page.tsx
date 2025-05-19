@@ -10,7 +10,7 @@ import HorizontalPlace from '@/components/horizontal-place';
 import Loading from '@/components/loading';
 import RecentlyViewedItems from '@/components/recently-viewed-items';
 import SectionTitle from '@/components/section-title';
-import { HotelService } from '@/services/hotel';
+import { ThingToDoService } from '@/services/thing-to-do';
 import { IAttraction } from '@/types/IAttraction';
 import { IError } from '@/types/IError';
 
@@ -30,7 +30,7 @@ export default function ThingsToDoPage() {
   const fetchItems = useCallback(
     async function (page: number = 1, size: number = 10) {
       try {
-        const data = await HotelService.list(page, size);
+        const data = await ThingToDoService.list(page, size);
         setItems(data.data);
         setTotalPages(data.paging.pageCount);
       } catch (error) {
@@ -72,8 +72,9 @@ export default function ThingsToDoPage() {
         title={'Backed by travelers'}
         image='/thing-to-do-2.jpeg'
         description="See what people loved (or didn't love) with real reviews on almost everything."
+        className='mt-10'
       />
-      <RecentlyViewedItems className='p-10 pb-0' />
+      <RecentlyViewedItems className='px-10' />
     </>
   );
 }

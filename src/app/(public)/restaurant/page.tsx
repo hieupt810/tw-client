@@ -10,7 +10,7 @@ import HorizontalPlace from '@/components/horizontal-place';
 import Loading from '@/components/loading';
 import RecentlyViewedItems from '@/components/recently-viewed-items';
 import SectionTitle from '@/components/section-title';
-import { HotelService } from '@/services/hotel';
+import { RestaurantService } from '@/services/restaurant';
 import { IAttraction } from '@/types/IAttraction';
 import { IError } from '@/types/IError';
 
@@ -30,7 +30,7 @@ export default function RestaurantsPage() {
   const fetchItems = useCallback(
     async function (page: number = 1, size: number = 10) {
       try {
-        const data = await HotelService.list(page, size);
+        const data = await RestaurantService.list(page, size);
         setItems(data.data);
         setTotalPages(data.paging.pageCount);
       } catch (error) {
@@ -71,7 +71,7 @@ export default function RestaurantsPage() {
           className='col-span-4 flex flex-col px-10 md:col-span-3'
         />
       </div>
-      <RecentlyViewedItems className='border-grid border-t p-10 pb-0' />
+      <RecentlyViewedItems className='border-grid border-t px-10 pt-10' />
     </>
   );
 }

@@ -7,18 +7,16 @@ import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import Address from '@/components/address';
-import Feature from '@/components/feature';
 import Loading from '@/components/loading';
 import Rating from '@/components/rating';
-import RatingChart from '@/components/rating-chart';
 import SavePlaceButton from '@/components/save-place-button';
 import SectionTitle from '@/components/section-title';
 import ThumbnailsCarousel from '@/components/thumbnails-carousel';
 import VerticalRecommend from '@/components/vertical-recommend';
 import { cn, saveRecentlyViewed } from '@/lib/utils';
-import { HotelService } from '@/services/hotel';
+import { ThingToDoService } from '@/services/thing-to-do';
 import { IError } from '@/types/IError';
-import { IHotel } from '@/types/IHotel';
+import { IThingToDo } from '@/types/IThingToDo';
 
 const MarkerMap = dynamic(() => import('@/components/marker-map'), {
   ssr: false,
@@ -27,12 +25,12 @@ const MarkerMap = dynamic(() => import('@/components/marker-map'), {
 export default function HotelDetailsPage() {
   const router = useRouter();
   const { slug } = useParams();
-  const [item, setItem] = useState<IHotel | null>(null);
+  const [item, setItem] = useState<IThingToDo | null>(null);
 
   const fetchItem = useCallback(
     async function (elementId: string) {
       try {
-        const data = await HotelService.details(elementId);
+        const data = await ThingToDoService.details(elementId);
         setItem(data);
         saveRecentlyViewed(elementId, data.type);
       } catch (error) {
@@ -40,7 +38,7 @@ export default function HotelDetailsPage() {
           const data = await error.response.json<IError>();
           toast.error(data.error);
         } else toast.error('Something went wrong');
-        router.push('/hotel');
+        router.push('/restaurant');
       }
     },
     [router],
@@ -77,28 +75,6 @@ export default function HotelDetailsPage() {
       </div>
       <div className='grid grid-cols-1 lg:grid-cols-4'>
         <div className='border-grid col-span-3 lg:border-r'>
-          <TextSection
-            title='AI Review Summary'
-            text={
-              item.aiReviewsSummary ||
-              'Do not have enough reviews for AI summary.'
-            }
-            className='border-t-0'
-          />
-          <div className='border-grid grid grid-cols-1 border-t md:grid-cols-2'>
-            {/* Rating Chart */}
-            <div className='border-grid col-span-1 flex flex-col border-r p-10'>
-              <SectionTitle text='Rating Distribution' />
-              <RatingChart histogram={item.ratingHistogram} />
-            </div>
-
-            {/* Amenities */}
-            <div className='border-grid col-span-1 flex flex-col border-t p-10 md:border-t-0'>
-              <SectionTitle text='Amenities' />
-              <Feature features={item.features} />
-            </div>
-          </div>
-
           {/* Description */}
           <TextSection
             title='Description'

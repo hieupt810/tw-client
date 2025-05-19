@@ -45,8 +45,8 @@ export default function TripPage() {
 
   return (
     <div className='grid grid-cols-5'>
-      <DraggableList baseItems={items} className='col-span-2 pr-6 pl-10' />
-      <div className='col-span-3 flex flex-col'>
+      <DraggableList baseItems={items} className='col-span-2 pr-4 pl-10' />
+      <div className='col-span-3 flex max-h-[50rem] flex-col'>
         <SectionTitle text='Map' />
         <MarkerMap items={items} />
       </div>

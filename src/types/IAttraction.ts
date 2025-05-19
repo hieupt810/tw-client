@@ -17,9 +17,6 @@ export interface IAttraction {
   ratingHistogram: number[];
   street: string | null;
   type: 'HOTEL' | 'RESTAURANT' | 'THING-TO-DO';
-  phone: string | null;
-  photos: string[];
-  website: string | null;
 }
 
 export type IAttractionPaging = IPaging<IAttraction>;

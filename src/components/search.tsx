@@ -30,16 +30,16 @@ const searchItems: ISearchItem[] = [
     placeholder: 'Hotel name or destination',
   },
   {
-    icon: <Camera />,
-    type: 'Things to Do',
-    title: 'Do something fun',
-    placeholder: 'Attraction, activity or destination',
-  },
-  {
     icon: <UtensilsCrossed />,
     type: 'Restaurants',
     title: 'Find places to eat',
     placeholder: 'Restaurant or destination',
+  },
+  {
+    icon: <Camera />,
+    type: 'Things to Do',
+    title: 'Do something fun',
+    placeholder: 'Attraction, activity or destination',
   },
 ];
 

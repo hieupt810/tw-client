@@ -71,7 +71,7 @@ export default function HotelsPage() {
           className='col-span-4 flex flex-col px-10 md:col-span-3'
         />
       </div>
-      <RecentlyViewedItems className='border-grid border-t p-10 pb-0' />
+      <RecentlyViewedItems className='border-grid border-t px-10 pt-10' />
     </>
   );
 }

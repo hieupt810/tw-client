@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
-import { getRecentlyViewed } from '@/lib/utils';
+import { cn, getRecentlyViewed } from '@/lib/utils';
 import { HotelService } from '@/services/hotel';
 import { IAttraction } from '@/types/IAttraction';
 import { ISavedAttraction } from '@/types/ISavedAttraction';
@@ -12,6 +12,7 @@ import PlaceCarousel from './place-carousel';
 interface Props {
   className?: React.HTMLAttributes<HTMLElement>['className'];
 }
+
 export default function RecentlyViewedItems({ className }: Props) {
   const [recentItems, setRecentItems] = useState<IAttraction[]>([]);
 
@@ -40,7 +41,7 @@ export default function RecentlyViewedItems({ className }: Props) {
     <PlaceCarousel
       title='Recently viewed'
       items={recentItems}
-      className={className}
+      className={cn('mt-10', className)}
     />
   );
 }

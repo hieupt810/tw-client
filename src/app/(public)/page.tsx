@@ -59,7 +59,7 @@ export default function HomePage() {
         />
       </div>
       <HeroSection title='Vietnam Travel' image='/home-2.jpeg' ratio={16 / 7} />
-      <RecentlyViewedItems className='p-10 pb-0' />
+      <RecentlyViewedItems className='px-10' />
     </>
   );
 }

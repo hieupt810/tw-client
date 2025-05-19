@@ -18,17 +18,17 @@ export default function Address({
   return (
     <div
       className={cn(
-        'text-muted-foreground flex items-center gap-1 text-sm capitalize md:gap-1.5 md:text-base',
+        'text-muted-foreground flex items-center gap-0.5 text-sm capitalize md:text-base',
         className,
       )}
     >
       <div>
-        <MapPin size={20} />
+        <MapPin size={16} />
       </div>
       {street ? (
-        <span>{`${street}, ${city} ${postalCode}, Vietnam`}</span>
+        <span>{`${street}, ${city} ${postalCode}, Vietnam`.trim()}</span>
       ) : (
-        <span>{`${city} ${postalCode}, Vietnam`}</span>
+        <span>{`${city} ${postalCode}, Vietnam`.trim()}</span>
       )}
     </div>
   );

@@ -36,8 +36,8 @@ function SortableItem({ item }: { item: IAttraction }) {
       {...listeners}
       className='flex w-full cursor-move flex-col items-center gap-2.5 overflow-hidden rounded-md bg-violet-50 hover:opacity-80 sm:flex-row'
     >
-      <div className='w-full lg:max-w-48'>
-        <AspectRatio ratio={4 / 3}>
+      <div className='w-full lg:max-w-32'>
+        <AspectRatio ratio={1 / 1}>
           <Image
             fill
             alt={item.name}
@@ -47,24 +47,24 @@ function SortableItem({ item }: { item: IAttraction }) {
           />
         </AspectRatio>
       </div>
-      <div className='flex w-full grow flex-col gap-0.5'>
-        <span className='text-sm leading-snug font-semibold tracking-tight md:text-base'>
-          {item.name}
-        </span>
+      <div className='flex grow flex-col justify-between gap-6'>
         <div className='flex flex-col gap-1'>
+          <span className='text-sm leading-snug font-semibold tracking-tight md:text-base'>
+            {item.name}
+          </span>
           <span className='text-muted-foreground text-xs'>
             {item.street || item.city.name}
           </span>
-          <div
-            className={cn(
-              'w-fit rounded-md px-2 py-0.5 text-xs text-white capitalize',
-              item.type === 'HOTEL' && 'bg-orange-600',
-              item.type === 'RESTAURANT' && 'bg-blue-600',
-              item.type === 'THING-TO-DO' && 'bg-amber-600',
-            )}
-          >
-            {item.type.toLowerCase()}
-          </div>
+        </div>
+        <div
+          className={cn(
+            'w-fit rounded-md px-2 py-0.5 text-xs text-white capitalize',
+            item.type === 'HOTEL' && 'bg-orange-600',
+            item.type === 'RESTAURANT' && 'bg-blue-600',
+            item.type === 'THING-TO-DO' && 'bg-amber-600',
+          )}
+        >
+          {item.type.toLowerCase()}
         </div>
       </div>
       <div className='hidden p-3.5 md:block'>
@@ -106,7 +106,7 @@ export default function DraggableList({
           items={items.map((item) => item.elementId)}
           strategy={verticalListSortingStrategy}
         >
-          <div className='space-y-2.5'>
+          <div className='max-h-[42rem] space-y-4 overflow-y-auto'>
             {items.map((item) => (
               <SortableItem key={item.elementId} item={item} />
             ))}

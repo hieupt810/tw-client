@@ -9,6 +9,7 @@ import {
   FormMessage,
 } from './ui/form';
 import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
 
 type Props = {
   name: string;
@@ -19,6 +20,7 @@ type Props = {
   placeholder?: string;
   description?: string;
   type?: React.HTMLInputTypeAttribute;
+  textarea?: boolean; // Add textarea prop
 };
 
 export default function FormInput({
@@ -29,7 +31,10 @@ export default function FormInput({
   placeholder,
   description,
   type = 'text',
+  textarea = false, // Add textarea prop
 }: Props) {
+  // Import Textarea lazily to avoid circular deps
+  const InputComponent = textarea ? Textarea : Input;
   return (
     <FormField
       control={form.control}
@@ -38,8 +43,8 @@ export default function FormInput({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Input
-              type={type}
+            <InputComponent
+              type={textarea ? undefined : type}
               required={required}
               placeholder={placeholder}
               disabled={form.formState.isSubmitting}

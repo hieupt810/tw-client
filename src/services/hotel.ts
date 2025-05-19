@@ -19,4 +19,12 @@ export class HotelService {
   static details(id: string) {
     return api.get(`${HotelRoutes.DEFAULT}${id}/details`).json<IHotel>();
   }
+
+  static delete(id: string) {
+    return api.delete(`${HotelRoutes.DEFAULT}${id}`).json();
+  }
+
+  static edit(id: string, data: IHotel) {
+    return api.put(`${HotelRoutes.DEFAULT}${id}`, { json: data }).json();
+  }
 }
