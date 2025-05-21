@@ -152,7 +152,7 @@ export default function HotelDetailsPage() {
         </div>
       </div>
 
-      <div className='border-grid border-t p-10'>
+      <div className='border-grid border-t p-10 pb-0'>
         <SectionTitle text='Reviews' />
       </div>
     </>

@@ -85,15 +85,15 @@ export default function HotelDetailsPage() {
             }
             className='border-t-0'
           />
-          <div className='border-grid grid grid-cols-1 border-t md:grid-cols-2'>
+          <div className='border-grid grid grid-cols-1 gap-6 border-t p-10 md:grid-cols-2'>
             {/* Rating Chart */}
-            <div className='border-grid col-span-1 flex flex-col border-r p-10'>
+            <div className='col-span-1 flex flex-col'>
               <SectionTitle text='Rating Distribution' />
               <RatingChart histogram={item.ratingHistogram} />
             </div>
 
             {/* Amenities */}
-            <div className='border-grid col-span-1 flex flex-col border-t p-10 md:border-t-0'>
+            <div className='col-span-1 flex flex-col'>
               <SectionTitle text='Amenities' />
               <Feature features={item.features} />
             </div>
@@ -118,7 +118,7 @@ export default function HotelDetailsPage() {
         </div>
       </div>
 
-      <div className='border-grid border-t p-10'>
+      <div className='border-grid border-t p-10 pb-0'>
         <SectionTitle text='Reviews' />
       </div>
     </>

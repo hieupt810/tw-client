@@ -71,7 +71,7 @@ export default function AppNavbar() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <div
-                    className='border-primary size-8 overflow-hidden rounded-full border-2 shadow-md select-none'
+                    className='border-primary size-9 overflow-hidden rounded-full border select-none'
                     aria-label='User Avatar'
                   >
                     <ImageWithFallback

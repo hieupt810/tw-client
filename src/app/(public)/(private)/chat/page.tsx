@@ -64,7 +64,11 @@ export default function ChatPage() {
           placeholder='Ask me anything...'
           onChange={(e) => setInput(e.target.value)}
         />
-        <Button onClick={handleRequestMessage} size={'icon'}>
+        <Button
+          onClick={handleRequestMessage}
+          size={'icon'}
+          disabled={!input.trim()}
+        >
           <Send />
         </Button>
       </div>

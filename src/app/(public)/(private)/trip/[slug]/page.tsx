@@ -2,14 +2,14 @@
 
 import { HTTPError } from 'ky';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import DraggableList from '@/components/draggable-list';
 import Loading from '@/components/loading';
 import SectionTitle from '@/components/section-title';
-import { HotelService } from '@/services/hotel';
+import { TripService } from '@/services/trip';
 import { IAttraction } from '@/types/IAttraction';
 import { IError } from '@/types/IError';
 
@@ -19,13 +19,14 @@ const MarkerMap = dynamic(() => import('@/components/marker-map'), {
 
 export default function TripPage() {
   const router = useRouter();
+  const { slug } = useParams();
   const [items, setItems] = useState<IAttraction[]>([]);
 
-  const fetchHotels = useCallback(
-    async function (page: number = 1, size: number = 10) {
+  const fetchTripItems = useCallback(
+    async function (slug: string) {
       try {
-        const data = await HotelService.list(page, size);
-        setItems(data.data);
+        const data = await TripService.getTripById(slug);
+        setItems(data);
       } catch (error) {
         if (error instanceof HTTPError) {
           const data = await error.response.json<IError>();
@@ -38,8 +39,12 @@ export default function TripPage() {
   );
 
   useEffect(() => {
-    fetchHotels();
-  }, [fetchHotels]);
+    if (!slug || typeof slug !== 'string') {
+      router.push('/');
+      return;
+    }
+    fetchTripItems(slug);
+  }, [fetchTripItems, router, slug]);
 
   if (!items.length) return <Loading />;
 
