@@ -1,5 +1,6 @@
 import { TripRoutes } from '@/constants/routes';
 import api from '@/lib/api';
+import { IAttraction } from '@/types/IAttraction';
 import { ITrip } from '@/types/ITrip';
 import { ITripDetails } from '@/types/ITripDetails';
 import { ITripOptimize } from '@/types/ITripOptimize';
@@ -23,5 +24,13 @@ export class TripService {
     return api
       .post(`${TripRoutes.DEFAULT}${tripId}/optimize`)
       .json<ITripOptimize>();
+  }
+
+  static reorder(tripId: string, places: string[]) {
+    return api
+      .post(`${TripRoutes.DEFAULT}${tripId}/places/reorder`, {
+        json: { places },
+      })
+      .json<IAttraction[]>();
   }
 }

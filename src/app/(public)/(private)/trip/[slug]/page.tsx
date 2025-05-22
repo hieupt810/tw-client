@@ -23,6 +23,7 @@ export default function TripPage() {
   const { slug } = useParams();
   const [items, setItems] = useState<IAttraction[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const fetchTripItems = useCallback(
     async function (slug: string) {
@@ -58,6 +59,25 @@ export default function TripPage() {
     [slug],
   );
 
+  const handleSaveOrder = useCallback(
+    async function () {
+      if (!slug || typeof slug !== 'string') return;
+      try {
+        setIsSaving(true);
+        await TripService.reorder(
+          slug,
+          items.map((item) => item.elementId),
+        );
+        toast.success('Order saved successfully');
+      } catch {
+        toast.error('Failed to save order');
+      } finally {
+        setIsSaving(false);
+      }
+    },
+    [slug, items],
+  );
+
   useEffect(() => {
     if (!slug || typeof slug !== 'string') {
       router.push('/');
@@ -79,9 +99,11 @@ export default function TripPage() {
       </div>
       <div className='grid grid-cols-5 gap-4'>
         <DraggableList
-          baseItems={items}
-          isLoading={isLoading}
+          items={items}
+          setItems={setItems}
+          isLoading={isLoading || isSaving}
           onOptimize={handleOptimizeTrip}
+          onSave={handleSaveOrder}
           className='col-span-2'
         />
         <div className='col-span-3 flex max-h-[50rem] flex-col'>

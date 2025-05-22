@@ -9,7 +9,6 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Grip, Loader2 } from 'lucide-react';
-import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
 import { IAttraction } from '@/types/IAttraction';
@@ -74,17 +73,19 @@ function SortableItem({ item }: { item: IAttraction }) {
 
 export default function DraggableList({
   isLoading,
-  baseItems,
+  items,
+  setItems,
   onOptimize,
+  onSave,
   className,
 }: {
   isLoading: boolean;
-  baseItems: IAttraction[];
+  items: IAttraction[];
+  setItems: React.Dispatch<React.SetStateAction<IAttraction[]>>;
   onOptimize: () => Promise<void>;
+  onSave: () => Promise<void>;
   className?: React.HTMLAttributes<HTMLDivElement>['className'];
 }) {
-  const [items, setItems] = useState<IAttraction[]>(baseItems);
-
   function handleDragEnd(e: DragEndEvent) {
     const { active, over } = e;
     if (over && active.id !== over.id) {
@@ -128,8 +129,9 @@ export default function DraggableList({
         </Button>
         <Button
           variant='outline'
-          disabled={items === baseItems || isLoading}
-          aria-disabled={items === baseItems || isLoading}
+          onClick={onSave}
+          disabled={isLoading}
+          aria-disabled={isLoading}
         >
           Save changes
         </Button>
