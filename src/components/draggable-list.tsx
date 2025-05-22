@@ -8,7 +8,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Grip } from 'lucide-react';
+import { Grip, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
@@ -36,7 +36,7 @@ function SortableItem({ item }: { item: IAttraction }) {
       {...listeners}
       className='flex w-full cursor-move flex-col items-center gap-2.5 overflow-hidden rounded-md bg-violet-50 hover:opacity-80 sm:flex-row'
     >
-      <div className='w-full lg:max-w-32'>
+      <div className='w-full lg:max-w-28'>
         <AspectRatio ratio={1 / 1}>
           <ImageWithFallback
             fill
@@ -47,15 +47,13 @@ function SortableItem({ item }: { item: IAttraction }) {
           />
         </AspectRatio>
       </div>
-      <div className='flex grow flex-col justify-between gap-6'>
-        <div className='flex flex-col gap-1'>
-          <span className='text-sm leading-snug font-semibold tracking-tight md:text-base'>
-            {item.name}
-          </span>
-          <span className='text-muted-foreground text-xs'>
-            {item.street || item.city.name}
-          </span>
-        </div>
+      <div className='flex grow flex-col justify-around gap-1'>
+        <span className='text-sm leading-snug font-semibold tracking-tight md:text-base'>
+          {item.name}
+        </span>
+        <span className='text-muted-foreground text-xs'>
+          {item.street || item.city.name}
+        </span>
         <div
           className={cn(
             'w-fit rounded-md px-2 py-0.5 text-xs text-white capitalize',
@@ -64,21 +62,25 @@ function SortableItem({ item }: { item: IAttraction }) {
             item.type === 'THING-TO-DO' && 'bg-amber-600',
           )}
         >
-          {item.type.toLowerCase()}
+          {item.type.toLowerCase().replace(/-/g, ' ')}
         </div>
       </div>
-      <div className='hidden p-3.5 md:block'>
-        <Grip size={20} />
+      <div className='mr-3.5 hidden md:block'>
+        <Grip size={16} />
       </div>
     </div>
   );
 }
 
 export default function DraggableList({
+  isLoading,
   baseItems,
+  onOptimize,
   className,
 }: {
+  isLoading: boolean;
   baseItems: IAttraction[];
+  onOptimize: () => Promise<void>;
   className?: React.HTMLAttributes<HTMLDivElement>['className'];
 }) {
   const [items, setItems] = useState<IAttraction[]>(baseItems);
@@ -100,13 +102,13 @@ export default function DraggableList({
 
   return (
     <div className={cn('flex flex-col', className)}>
-      <SectionTitle text='Trip Places' />
+      <SectionTitle text='Places' />
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext
           items={items.map((item) => item.elementId)}
           strategy={verticalListSortingStrategy}
         >
-          <div className='max-h-[42rem] space-y-4 overflow-y-auto'>
+          <div className='max-h-[45rem] space-y-4 overflow-y-auto'>
             {items.map((item) => (
               <SortableItem key={item.elementId} item={item} />
             ))}
@@ -114,8 +116,21 @@ export default function DraggableList({
         </SortableContext>
       </DndContext>
       <div className='mt-4 flex flex-row items-center justify-end gap-2.5'>
-        <Button>Optimize Route</Button>
-        <Button variant='outline' disabled={items === baseItems}>
+        {isLoading && (
+          <Loader2 size={16} className='stroke-primary animate-spin' />
+        )}
+        <Button
+          onClick={() => onOptimize()}
+          disabled={isLoading}
+          aria-disabled={isLoading}
+        >
+          Optimize Route
+        </Button>
+        <Button
+          variant='outline'
+          disabled={items === baseItems || isLoading}
+          aria-disabled={items === baseItems || isLoading}
+        >
           Save changes
         </Button>
       </div>

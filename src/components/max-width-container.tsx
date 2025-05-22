@@ -12,7 +12,7 @@ export default function MaxWidthContainer({
   return (
     <div
       className={cn(
-        'bg-background container mx-auto h-full max-w-7xl overflow-hidden py-10',
+        'bg-background container mx-auto h-full max-w-[1320px] overflow-hidden py-10',
         className,
       )}
       {...props}
