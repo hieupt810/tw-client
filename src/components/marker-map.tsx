@@ -117,7 +117,7 @@ export default function MarkerMap({ items }: { items?: IAttraction[] }) {
       minZoom={10}
       maxZoom={25}
       center={centerPosition}
-      className='h-full min-h-[35rem] w-full rounded-md'
+      className='h-full min-h-[45rem] w-full rounded-md'
     >
       <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
       {items &&

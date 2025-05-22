@@ -1,7 +1,6 @@
 'use client';
 
 import { HTTPError } from 'ky';
-import { Info } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
@@ -89,27 +88,18 @@ export default function TripPage() {
   if (!items.length) return <Loading />;
 
   return (
-    <div className='flex flex-col gap-4 px-10'>
-      <div className='flex flex-row items-center gap-1'>
-        <Info size={16} className='stroke-blue-600' />
-        <span className='text-sm text-blue-600'>
-          Map will be updated when you press the &quot;Save changes&quot; or
-          &quot;Optimize Route&quot; button.
-        </span>
-      </div>
-      <div className='grid grid-cols-5 gap-4'>
-        <DraggableList
-          items={items}
-          setItems={setItems}
-          isLoading={isLoading || isSaving}
-          onOptimize={handleOptimizeTrip}
-          onSave={handleSaveOrder}
-          className='col-span-2'
-        />
-        <div className='col-span-3 flex max-h-[50rem] flex-col'>
-          <SectionTitle text='Map' />
-          <MarkerMap items={items} />
-        </div>
+    <div className='grid grid-cols-5 gap-4 px-10'>
+      <DraggableList
+        items={items}
+        setItems={setItems}
+        isLoading={isLoading || isSaving}
+        onOptimize={handleOptimizeTrip}
+        onSave={handleSaveOrder}
+        className='col-span-2'
+      />
+      <div className='col-span-3 flex max-h-[50rem] flex-col'>
+        <SectionTitle text='Map' />
+        <MarkerMap items={items} />
       </div>
     </div>
   );

@@ -109,7 +109,7 @@ export default function DraggableList({
           items={items.map((item) => item.elementId)}
           strategy={verticalListSortingStrategy}
         >
-          <div className='max-h-[45rem] space-y-4 overflow-y-auto'>
+          <div className='max-h-[45rem] space-y-4 overflow-x-hidden overflow-y-auto'>
             {items.map((item) => (
               <SortableItem key={item.elementId} item={item} />
             ))}
