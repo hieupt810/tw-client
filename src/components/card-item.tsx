@@ -14,31 +14,35 @@ interface Props {
 
 export default function CardItem({ item }: Props) {
   return (
-    <div className='group flex cursor-pointer flex-col select-none'>
-      <AspectRatio ratio={1 / 1} className='relative'>
-        <ImageWithFallback
-          fill
-          priority
-          sizes='30rem'
-          quality={100}
-          src={item.image}
-          alt={`Thumbnail of ${item.name}`}
-          className='rounded-md object-cover object-center group-hover:opacity-80'
-        />
-        <div className='absolute top-2 right-2 flex items-center gap-1.5'>
-          <AddTripButton elementId={item.elementId} iconOnly />
-          <SavePlaceButton elementId={item.elementId} iconOnly />
-        </div>
-      </AspectRatio>
+    <div className='group relative flex cursor-pointer flex-col select-none'>
       <Link
         href={`/${item.type.toLowerCase()}/${item.elementId}`}
-        className='flex flex-col group-hover:opacity-80'
+        className='relative flex flex-col transition-colors group-hover:opacity-90'
       >
+        <AspectRatio ratio={1 / 1}>
+          <ImageWithFallback
+            fill
+            priority
+            sizes='30rem'
+            quality={100}
+            src={item.image}
+            alt={`Thumbnail of ${item.name}`}
+            className='rounded-md object-cover object-center group-hover:opacity-80'
+          />
+        </AspectRatio>
         <h3 className='mt-2 max-w-full truncate font-semibold tracking-tight underline-offset-4 group-hover:underline'>
           {item.name}
         </h3>
-        <Rating rating={item.rating} ratingHistorgram={item.ratingHistogram} />
+        <Rating
+          rating={item.rating}
+          ratingHistorgram={item.ratingHistogram}
+          className='group-hover:opacity-90'
+        />
       </Link>
+      <div className='absolute top-2 right-2 z-10 flex items-center gap-1.5'>
+        <AddTripButton elementId={item.elementId} iconOnly />
+        <SavePlaceButton elementId={item.elementId} iconOnly />
+      </div>
     </div>
   );
 }

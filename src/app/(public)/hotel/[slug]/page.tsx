@@ -59,19 +59,17 @@ export default function HotelDetailsPage() {
       <div className='border-grid grid grid-cols-3 gap-20 border-b py-10'>
         <div className='col-span-2 flex flex-col gap-10'>
           <TextSection
-            className='col-span-2'
             title='AI Review Summary'
             text={
               hotel.item.aiReviewsSummary ||
               'Do not have enough reviews for AI summary.'
             }
           />
-          <div className='col-span-2 flex flex-col'>
-            <TextSection
-              className='mb-10'
-              title='Description'
-              text={hotel.item.description || 'No description.'}
-            />
+          <TextSection
+            title='Description'
+            text={hotel.item.description || 'No description.'}
+          />
+          <div className='flex flex-col'>
             <SectionTitle text='Contact' />
             <div className='flex flex-col gap-2'>
               <div className='flex flex-row items-center gap-2'>
