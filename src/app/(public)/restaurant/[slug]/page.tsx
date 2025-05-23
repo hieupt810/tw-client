@@ -61,10 +61,105 @@ export default function RestaurantDetailsPage() {
       </div>
       <div className='border-grid grid grid-cols-3 gap-20 border-b py-10'>
         <div className='col-span-2 flex flex-col gap-10'>
+          <div className='flex flex-col'>
+            <SectionTitle text='Opening Hours' />
+            {restaurant.item.hours ? (
+              <div className='grid grid-cols-3 gap-x-10 gap-y-4'>
+                <div className='flex flex-col gap-0.5'>
+                  <span className='font-semibold'>Monday</span>
+                  <span>
+                    {`${restaurant.item.hours.monday.open} - ${restaurant.item.hours.monday.close}`}
+                  </span>
+                </div>
+                <div className='flex flex-col gap-0.5'>
+                  <span className='font-semibold'>Tuesday</span>
+                  <span>
+                    {`${restaurant.item.hours.tuesday.open} - ${restaurant.item.hours.tuesday.close}`}
+                  </span>
+                </div>
+                <div className='flex flex-col gap-0.5'>
+                  <span className='font-semibold'>Wednesday</span>
+                  <span>
+                    {`${restaurant.item.hours.wednesday.open} - ${restaurant.item.hours.wednesday.close}`}
+                  </span>
+                </div>
+                <div className='flex flex-col gap-0.5'>
+                  <span className='font-semibold'>Thursday</span>
+                  <span>
+                    {`${restaurant.item.hours.thursday.open} - ${restaurant.item.hours.thursday.close}`}
+                  </span>
+                </div>
+                <div className='flex flex-col gap-0.5'>
+                  <span className='font-semibold'>Friday</span>
+                  <span>
+                    {`${restaurant.item.hours.friday.open} - ${restaurant.item.hours.friday.close}`}
+                  </span>
+                </div>
+                <div className='flex flex-col gap-0.5'>
+                  <span className='font-semibold'>Saturday</span>
+                  <span>
+                    {`${restaurant.item.hours.saturday.open} - ${restaurant.item.hours.saturday.close}`}
+                  </span>
+                </div>
+                <div className='flex flex-col gap-0.5'>
+                  <span className='font-semibold'>Sunday</span>
+                  <span>
+                    {`${restaurant.item.hours.sunday.open} - ${restaurant.item.hours.sunday.close}`}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <span>No information</span>
+            )}
+          </div>
           <TextSection
             title='Description'
             text={restaurant.item.description || 'No description.'}
           />
+          <div className='flex flex-col'>
+            <SectionTitle text='Dishes' />
+            <div className='grid grid-flow-row grid-cols-3 gap-x-10 gap-y-1.5'>
+              {restaurant.item.dishes.length > 0 ? (
+                restaurant.item.dishes.map((dish) => (
+                  <span key={dish}>{dish}</span>
+                ))
+              ) : (
+                <span>No information</span>
+              )}
+            </div>
+          </div>
+          <div className='grid grid-cols-3 gap-10'>
+            <div className='flex flex-col'>
+              <SectionTitle text='Meal Types' />
+              <div className='text-muted-foreground flex flex-col gap-1.5'>
+                {restaurant.item.mealTypes.length > 0 ? (
+                  restaurant.item.mealTypes.map((type) => (
+                    <span key={type}>{type}</span>
+                  ))
+                ) : (
+                  <span>No information</span>
+                )}
+              </div>
+            </div>
+            <div className='flex flex-col'>
+              <SectionTitle text='Dietary Restrictions' />
+              <div className='text-muted-foreground flex flex-col gap-1.5'>
+                {restaurant.item.dietaryRestrictions.length > 0 ? (
+                  restaurant.item.dietaryRestrictions.map((restriction) => (
+                    <span key={restriction}>{restriction}</span>
+                  ))
+                ) : (
+                  <span>No information</span>
+                )}
+              </div>
+            </div>
+            <div className='flex flex-col'>
+              <SectionTitle text='Price' />
+              <span className='text-muted-foreground'>
+                {restaurant.item.priceLevels.join(' - ')}
+              </span>
+            </div>
+          </div>
           <div className='flex flex-col'>
             <SectionTitle text='Contact' />
             <div className='flex flex-col gap-2'>
@@ -110,101 +205,6 @@ export default function RestaurantDetailsPage() {
                   <span>No information</span>
                 )}
               </div>
-            </div>
-          </div>
-          <div className='flex flex-col'>
-            <SectionTitle text='Opening Hours' />
-            {restaurant.item.hours ? (
-              <div className='flex flex-col gap-1.5'>
-                <div className='grid grid-cols-3'>
-                  <span className='font-medium'>Monday</span>
-                  <div className='col-span-2'>
-                    {`${restaurant.item.hours.monday.open} - ${restaurant.item.hours.monday.close}`}
-                  </div>
-                </div>
-                <div className='grid grid-cols-3'>
-                  <span className='font-medium'>Tuesday</span>
-                  <div className='col-span-2'>
-                    {`${restaurant.item.hours.tuesday.open} - ${restaurant.item.hours.tuesday.close}`}
-                  </div>
-                </div>
-                <div className='grid grid-cols-3'>
-                  <span className='font-medium'>Wednesday</span>
-                  <div className='col-span-2'>
-                    {`${restaurant.item.hours.wednesday.open} - ${restaurant.item.hours.wednesday.close}`}
-                  </div>
-                </div>
-                <div className='grid grid-cols-3'>
-                  <span className='font-medium'>Thursday</span>
-                  <div className='col-span-2'>
-                    {`${restaurant.item.hours.thursday.open} - ${restaurant.item.hours.thursday.close}`}
-                  </div>
-                </div>
-                <div className='grid grid-cols-3'>
-                  <span className='font-medium'>Friday</span>
-                  <div className='col-span-2'>
-                    {`${restaurant.item.hours.friday.open} - ${restaurant.item.hours.friday.close}`}
-                  </div>
-                </div>
-                <div className='text-primary grid grid-cols-3'>
-                  <span className='font-medium'>Saturday</span>
-                  <div className='col-span-2'>
-                    {`${restaurant.item.hours.saturday.open} - ${restaurant.item.hours.saturday.close}`}
-                  </div>
-                </div>
-                <div className='text-primary grid grid-cols-3'>
-                  <span className='font-medium'>Sunday</span>
-                  <div className='col-span-2'>
-                    {`${restaurant.item.hours.sunday.open} - ${restaurant.item.hours.sunday.close}`}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <span>No information</span>
-            )}
-          </div>
-          <div className='flex flex-col'>
-            <SectionTitle text='Dishes' />
-            <div className='grid grid-flow-row grid-cols-3 gap-x-10 gap-y-1.5'>
-              {restaurant.item.dishes.length > 0 ? (
-                restaurant.item.dishes.map((dish) => (
-                  <span key={dish}>{dish}</span>
-                ))
-              ) : (
-                <span>No information</span>
-              )}
-            </div>
-          </div>
-          <div className='grid grid-cols-3 gap-10'>
-            <div className='flex flex-col'>
-              <SectionTitle text='Meal Types' />
-              <div className='text-muted-foreground flex flex-col gap-1.5'>
-                {restaurant.item.mealTypes.length > 0 ? (
-                  restaurant.item.mealTypes.map((type) => (
-                    <span key={type}>{type}</span>
-                  ))
-                ) : (
-                  <span>No information</span>
-                )}
-              </div>
-            </div>
-            <div className='flex flex-col'>
-              <SectionTitle text='Dietary Restrictions' />
-              <div className='text-muted-foreground flex flex-col gap-1.5'>
-                {restaurant.item.dietaryRestrictions.length > 0 ? (
-                  restaurant.item.dietaryRestrictions.map((restriction) => (
-                    <span key={restriction}>{restriction}</span>
-                  ))
-                ) : (
-                  <span>No information</span>
-                )}
-              </div>
-            </div>
-            <div className='flex flex-col'>
-              <SectionTitle text='Price' />
-              <span className='text-muted-foreground'>
-                {restaurant.item.priceLevels.join(' - ')}
-              </span>
             </div>
           </div>
         </div>
