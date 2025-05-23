@@ -59,7 +59,7 @@ type Props = {
 
 export default function Feature({ features }: Props) {
   return (
-    <div className='grid grid-cols-2 gap-x-4 gap-y-2'>
+    <div className='grid grid-cols-2 gap-x-4 gap-y-2.5'>
       {features.slice(0, 18).map((item) => {
         const Icon = getIcon(item) || CircleEllipsis;
         return (

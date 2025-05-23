@@ -1,6 +1,8 @@
 'use client';
 
+import { Globe, Phone } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useStore } from 'zustand';
@@ -40,57 +42,89 @@ export default function HotelDetailsPage() {
 
   return (
     <>
-      <div className='border-grid border-b px-10 pb-10'>
-        <div className='mb-1 flex flex-row justify-between'>
-          <div className='flex grow flex-col gap-1'>
-            <span className='text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>
-              {hotel.item.name}
-            </span>
-            <Rating
-              rating={hotel.item.rating}
-              ratingHistorgram={hotel.item.ratingHistogram}
-            />
-          </div>
+      <div className='border-grid flex flex-col gap-0.5 border-b py-10'>
+        <div className='flex flex-row justify-between'>
+          <span className='text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>
+            {hotel.item.name}
+          </span>
           <SavePlaceButton elementId={hotel.item.elementId} />
         </div>
-        <Address
-          street={hotel.item.street}
-          city={hotel.item.city.name}
-          postalCode={hotel.item.city.postalCode}
+        <Rating
+          rating={hotel.item.rating}
+          ratingHistorgram={hotel.item.ratingHistogram}
         />
-        <ThumbnailsCarousel images={hotel.item.photos} className='mt-6' />
+        <Address street={hotel.item.street} city={hotel.item.city.name} />
+        <ThumbnailsCarousel images={hotel.item.photos} className='mt-4' />
       </div>
-      <div className='grid grid-cols-1 lg:grid-cols-4'>
-        <div className='border-grid col-span-3 lg:border-r'>
+      <div className='border-grid grid grid-cols-3 gap-20 border-b py-10'>
+        <div className='col-span-2 flex flex-col gap-10'>
           <TextSection
+            className='col-span-2'
             title='AI Review Summary'
             text={
               hotel.item.aiReviewsSummary ||
               'Do not have enough reviews for AI summary.'
             }
-            className='border-t-0'
           />
-          <div className='border-grid grid grid-cols-1 gap-6 border-t p-10 md:grid-cols-2'>
-            <div className='col-span-1 flex flex-col'>
-              <SectionTitle text='Rating Distribution' />
-              <RatingChart histogram={hotel.item.ratingHistogram} />
-            </div>
-            <div className='col-span-1 flex flex-col'>
-              <SectionTitle text='Amenities' />
-              <Feature features={hotel.item.features} />
+          <div className='col-span-2 flex flex-col'>
+            <TextSection
+              className='mb-10'
+              title='Description'
+              text={hotel.item.description || 'No description.'}
+            />
+            <SectionTitle text='Contact' />
+            <div className='flex flex-col gap-2'>
+              <div className='flex flex-row items-center gap-2'>
+                <div>
+                  <Phone size={20} className='stroke-primary' />
+                </div>
+                <span>
+                  {hotel.item.phone ? hotel.item.phone : 'No information'}
+                </span>
+              </div>
+              <div className='flex flex-row items-center gap-2'>
+                <div>
+                  <Globe size={20} className='stroke-primary' />
+                </div>
+                {hotel.item.website ? (
+                  <Link
+                    target='_blank'
+                    href={hotel.item.website}
+                    className='hover:text-primary underline underline-offset-4'
+                  >
+                    {hotel.item.website}
+                  </Link>
+                ) : (
+                  'No information'
+                )}
+              </div>
             </div>
           </div>
-          <TextSection
-            title='Description'
-            text={hotel.item.description || 'No description.'}
-          />
-          <div className='border-grid flex flex-col border-t p-10'>
-            <SectionTitle text='Map' />
-            <MarkerMap items={[hotel.item]} />
+          <div className='flex flex-col'>
+            <SectionTitle text='Additional Information' />
+            <div className='text-muted-foreground flex flex-col gap-1.5'>
+              <span>Price: {hotel.item.priceLevels.join(' - ')}</span>
+              <span>Hotel Class: {hotel.item.hotelClass}</span>
+              <span>Number of Rooms: {hotel.item.numberOfRooms}</span>
+            </div>
+          </div>
+        </div>
+        <div className='grid grid-rows-2 gap-10'>
+          <div className='col-span-1 flex flex-col'>
+            <SectionTitle text='Rating Distribution' />
+            <RatingChart histogram={hotel.item.ratingHistogram} />
+          </div>
+          <div className='col-span-1 flex flex-col'>
+            <SectionTitle text='Amenities' />
+            <Feature features={hotel.item.features} />
           </div>
         </div>
       </div>
-      <div className='border-grid border-t p-10 pb-0'>
+      <div className='flex flex-col py-10'>
+        <SectionTitle text='Map' />
+        <MarkerMap zoom={16} items={[hotel.item]} />
+      </div>
+      <div className='border-grid border-t py-10'>
         <SectionTitle text='Reviews' />
       </div>
     </>
@@ -107,7 +141,7 @@ function TextSection({
   className?: React.HTMLProps<HTMLDivElement>['className'];
 }) {
   return (
-    <div className={cn('border-grid flex flex-col border-t p-10', className)}>
+    <div className={cn('flex flex-col', className)}>
       <SectionTitle text={title} />
       <p className='text-justify leading-relaxed'>{text}</p>
     </div>

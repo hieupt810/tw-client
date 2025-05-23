@@ -18,7 +18,7 @@ export default function SavePlaceButton({ iconOnly = false }: Props) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant='outline' size={iconOnly ? 'icon' : 'sm'}>
+          <Button variant='outline' size={iconOnly ? 'icon' : 'default'}>
             <Heart />
             {!iconOnly && <span>Save</span>}
           </Button>
