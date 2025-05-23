@@ -40,23 +40,16 @@ export function formatDate(isodate: string) {
 export async function* streamResponse(message: string) {
   const response = await fetch(`${Constant.API_URL}conversations/`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify({ message }),
+    headers: { 'Content-Type': 'application/json' },
   });
-
   if (!response.body) throw new Error('No response body');
-
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder();
-
   let done = false;
+  const decoder = new TextDecoder();
+  const reader = response.body.getReader();
   while (!done) {
     const { value, done: readerDone } = await reader.read();
     done = readerDone;
-    if (value) {
-      yield decoder.decode(value, { stream: !done });
-    }
+    if (value) yield decoder.decode(value, { stream: !done });
   }
 }
