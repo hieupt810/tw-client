@@ -93,7 +93,7 @@ export default function HotelDetailsPage() {
                     {hotel.item.website}
                   </Link>
                 ) : (
-                  'No information'
+                  <span>No information</span>
                 )}
               </div>
             </div>
