@@ -5,10 +5,6 @@ export class AuthRoutes {
   static REFRESH_TOKEN = 'auth/refresh/';
 }
 
-export class TripRoutes {
-  static DEFAULT = 'trips/';
-}
-
 export class FavouriteRoutes {
   static DEFAULT = 'favourites/';
 }

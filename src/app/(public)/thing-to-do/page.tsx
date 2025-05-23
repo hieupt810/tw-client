@@ -12,7 +12,7 @@ import { useThingToDoStore } from '@/stores/thing-to-do-store';
 export default function ThingsToDoPage() {
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1');
-  const size = parseInt(searchParams.get('size') || '10');
+  const size = parseInt(searchParams.get('size') || '12');
 
   const { thingsToDo, reset, fetchThingsToDo } = useStore(
     useThingToDoStore,
@@ -24,7 +24,7 @@ export default function ThingsToDoPage() {
     return () => {
       reset();
     };
-  }, [fetchThingsToDo, page, size]);
+  }, [fetchThingsToDo, page, size, reset]);
 
   if (thingsToDo.items.length === 0) return <Loading />;
   return (
@@ -34,7 +34,7 @@ export default function ThingsToDoPage() {
         title='Plan, go - we make it easy'
         description='Discover family activities, adventures, tours, museums, and top attractions to plan your next trip.'
       />
-      <div className='my-10 grid grid-cols-5 gap-6'>
+      <div className='my-10 grid grid-cols-2 gap-6 md:grid-cols-4'>
         {thingsToDo.items.map((thing) => (
           <CardItem key={thing.elementId} item={thing} />
         ))}

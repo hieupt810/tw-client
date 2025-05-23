@@ -16,7 +16,7 @@ const HERO_DESCRIPTION =
 export default function HotelsPage() {
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1');
-  const size = parseInt(searchParams.get('size') || '10');
+  const size = parseInt(searchParams.get('size') || '12');
 
   const { hotels, reset, fetchHotels } = useStore(
     useHotelStore,
@@ -28,7 +28,7 @@ export default function HotelsPage() {
     return () => {
       reset();
     };
-  }, [fetchHotels, page, size]);
+  }, [fetchHotels, page, size, reset]);
 
   if (hotels.items.length === 0) return <Loading />;
 
@@ -39,7 +39,7 @@ export default function HotelsPage() {
         image='/hotel-1.jpeg'
         description={HERO_DESCRIPTION}
       />
-      <div className='my-10 grid grid-cols-5 gap-6'>
+      <div className='my-10 grid grid-cols-2 gap-6 md:grid-cols-4'>
         {hotels.items.map((hotel) => (
           <CardItem key={hotel.elementId} item={hotel} />
         ))}

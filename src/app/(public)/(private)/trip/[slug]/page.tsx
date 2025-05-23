@@ -88,7 +88,7 @@ export default function TripPage() {
   if (!items.length) return <Loading />;
 
   return (
-    <div className='grid grid-cols-5 gap-4 px-10'>
+    <div className='grid grid-cols-5 gap-4 py-10'>
       <DraggableList
         items={items}
         setItems={setItems}

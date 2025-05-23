@@ -12,7 +12,7 @@ import { useRestaurantStore } from '@/stores/restaurant-store';
 export default function RestaurantsPage() {
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1');
-  const size = parseInt(searchParams.get('size') || '10');
+  const size = parseInt(searchParams.get('size') || '12');
 
   const { restaurants, reset, fetchRestaurants } = useStore(
     useRestaurantStore,
@@ -24,7 +24,7 @@ export default function RestaurantsPage() {
     return () => {
       reset();
     };
-  }, [fetchRestaurants, page, size]);
+  }, [fetchRestaurants, page, size, reset]);
 
   if (restaurants.items.length === 0) return <Loading />;
 
@@ -35,7 +35,7 @@ export default function RestaurantsPage() {
         title='Discover amazing dining options'
         description='Discover the best restaurants, cafes, and bars in your area. Indulge in a variety of cuisines and dining experiences tailored to your taste.'
       />
-      <div className='my-10 grid grid-cols-5 gap-6'>
+      <div className='my-10 grid grid-cols-2 gap-6 md:grid-cols-4'>
         {restaurants.items.map((restaurant) => (
           <CardItem key={restaurant.elementId} item={restaurant} />
         ))}

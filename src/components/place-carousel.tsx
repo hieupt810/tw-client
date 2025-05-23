@@ -44,7 +44,7 @@ export default function PlaceCarousel({
         >
           <CarouselContent>
             {items.map((item, index) => (
-              <CarouselItem key={index} className='max-w-3xs'>
+              <CarouselItem key={index} className='max-w-2xs'>
                 <CardItem item={item} />
               </CarouselItem>
             ))}
