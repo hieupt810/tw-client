@@ -18,9 +18,9 @@ export default function AuthLayout({ image, children }: Props) {
   return (
     <div className='relative h-screen w-screen overflow-hidden'>
       <motion.div
-        initial={{ x: '-100%' }}
         animate={{ x: 0 }}
         exit={{ x: '-100%' }}
+        initial={{ x: '-100%' }}
         transition={{ type: 'tween', duration: 0.5 }}
         className='bg-background absolute top-0 left-0 flex h-full w-full flex-col md:max-w-1/2'
       >
@@ -39,9 +39,9 @@ export default function AuthLayout({ image, children }: Props) {
         <AppFooter />
       </motion.div>
       <motion.div
-        initial={{ x: '100%' }}
         animate={{ x: 0 }}
         exit={{ x: '100%' }}
+        initial={{ x: '100%' }}
         transition={{ type: 'tween', duration: 0.5 }}
         className='absolute top-0 right-0 hidden h-screen w-full max-w-1/2 md:block'
       >
@@ -50,9 +50,9 @@ export default function AuthLayout({ image, children }: Props) {
           priority
           alt='Image'
           src={image}
+          sizes='50rem'
           loading='eager'
           className='object-cover object-center'
-          sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
         />
       </motion.div>
     </div>

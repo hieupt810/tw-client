@@ -1,45 +1,33 @@
 'use client';
 
-import { HTTPError } from 'ky';
-import { useCallback, useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { useCallback, useEffect } from 'react';
+import { useStore } from 'zustand';
 
 import HeroSection from '@/components/hero-section';
 import PlaceCarousel from '@/components/place-carousel';
-import RecentlyViewedItems from '@/components/recently-viewed-items';
 import Search from '@/components/search';
-import { HotelService } from '@/services/hotel';
-import { RestaurantService } from '@/services/restaurant';
-import { ThingToDoService } from '@/services/thing-to-do';
-import { IAttraction } from '@/types/IAttraction';
-import { IError } from '@/types/IError';
-
-const HERO_TITLE = 'Explore Your Journey Awaits';
-const HERO_DESCRIPTION =
-  'Tailored to your preferences and designed to make every step of your adventure seamless and memorable.';
+import { useHotelStore } from '@/stores/hotel-store';
+import { useRestaurantStore } from '@/stores/restaurant-store';
+import { useThingToDoStore } from '@/stores/thing-to-do-store';
 
 export default function HomePage() {
-  const [hotels, setHotels] = useState<IAttraction[]>([]);
-  const [restaurants, setRestaurants] = useState<IAttraction[]>([]);
-  const [thingsToDo, setThingsToDo] = useState<IAttraction[]>([]);
+  const { hotels, fetchHotels } = useStore(useHotelStore, (state) => state);
+  const { restaurants, fetchRestaurants } = useStore(
+    useRestaurantStore,
+    (state) => state,
+  );
+  const { thingsToDo, fetchThingsToDo } = useStore(
+    useThingToDoStore,
+    (state) => state,
+  );
 
-  const fetchAll = useCallback(async function () {
-    try {
-      const [hotels, restaurants, thingsToDo] = await Promise.all([
-        HotelService.list(1, 10),
-        RestaurantService.list(1, 10),
-        ThingToDoService.list(1, 10),
-      ]);
-      setHotels(hotels.data);
-      setRestaurants(restaurants.data);
-      setThingsToDo(thingsToDo.data);
-    } catch (error) {
-      if (error instanceof HTTPError) {
-        const data = await error.response.json<IError>();
-        toast.error(data.error);
-      } else toast.error('Something went wrong');
-    }
-  }, []);
+  const fetchAll = useCallback(async () => {
+    await Promise.all([
+      fetchHotels(1, 10),
+      fetchRestaurants(1, 10),
+      fetchThingsToDo(1, 10),
+    ]);
+  }, [fetchHotels, fetchRestaurants, fetchThingsToDo]);
 
   useEffect(() => {
     fetchAll();
@@ -49,28 +37,27 @@ export default function HomePage() {
     <>
       <Search />
       <HeroSection
-        title={HERO_TITLE}
         image='/home.jpg'
-        description={HERO_DESCRIPTION}
+        title='Explore Your Journey Awaits'
+        description='Tailored to your preferences and designed to make every step of your adventure seamless and memorable.'
       />
-      <div className='flex flex-col gap-10 p-10'>
+      <div className='my-10 flex flex-col gap-10'>
         <PlaceCarousel
+          items={hotels.items}
           title='Top destinations for your next vacation'
           description='Discover the most popular places with the highest rankings'
-          items={hotels}
         />
-        <PlaceCarousel title="Stay at Vietnam's top hotels" items={hotels} />
+        <PlaceCarousel items={hotels.items} title='Stay at top hotels' />
         <PlaceCarousel
-          title="Experience at Vietnam's top restaurants"
-          items={restaurants}
+          items={restaurants.items}
+          title='Experience at top restaurants'
         />
         <PlaceCarousel
+          items={thingsToDo.items}
           title='Enjoy the things people love to do'
-          items={thingsToDo}
         />
       </div>
-      <HeroSection title='Vietnam Travel' image='/home-2.jpeg' ratio={16 / 7} />
-      <RecentlyViewedItems className='px-10' />
+      <HeroSection title='Da Nang, Vietnam' image='/home-2.jpeg' />
     </>
   );
 }

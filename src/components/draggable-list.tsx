@@ -121,19 +121,19 @@ export default function DraggableList({
           <Loader2 size={16} className='stroke-primary animate-spin' />
         )}
         <Button
-          onClick={() => onOptimize()}
-          disabled={isLoading}
-          aria-disabled={isLoading}
-        >
-          Optimize Route
-        </Button>
-        <Button
           variant='outline'
           onClick={onSave}
           disabled={isLoading}
           aria-disabled={isLoading}
         >
           Save changes
+        </Button>
+        <Button
+          onClick={() => onOptimize()}
+          disabled={isLoading}
+          aria-disabled={isLoading}
+        >
+          Optimize Route
         </Button>
       </div>
     </div>

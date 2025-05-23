@@ -1,80 +1,49 @@
 'use client';
 
-import { HTTPError } from 'ky';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+import { useStore } from 'zustand';
 
+import CardItem from '@/components/card-item';
 import HeroSection from '@/components/hero-section';
-import HorizontalPlace from '@/components/horizontal-place';
 import Loading from '@/components/loading';
-import RecentlyViewedItems from '@/components/recently-viewed-items';
-import SectionTitle from '@/components/section-title';
-import { ThingToDoService } from '@/services/thing-to-do';
-import { IAttraction } from '@/types/IAttraction';
-import { IError } from '@/types/IError';
-
-const HERO_TITLE = 'Plan, go - we make it easy';
-const HERO_DESCRIPTION =
-  'Discover family activities, adventures, tours, museums, and top attractions to plan your next trip.';
+import { useThingToDoStore } from '@/stores/thing-to-do-store';
 
 export default function ThingsToDoPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1');
   const size = parseInt(searchParams.get('size') || '10');
 
-  const [items, setItems] = useState<IAttraction[]>([]);
-  const [totalPages, setTotalPages] = useState<number>(1);
-
-  const fetchItems = useCallback(
-    async function (page: number = 1, size: number = 10) {
-      try {
-        const data = await ThingToDoService.list(page, size);
-        setItems(data.data);
-        setTotalPages(data.paging.pageCount);
-      } catch (error) {
-        if (error instanceof HTTPError) {
-          const data = await error.response.json<IError>();
-          toast.error(data.error);
-        } else toast.error('Something went wrong');
-        router.push('/');
-      }
-    },
-    [router],
+  const { thingsToDo, reset, fetchThingsToDo } = useStore(
+    useThingToDoStore,
+    (state) => state,
   );
 
   useEffect(() => {
-    fetchItems(page, size);
-  }, [fetchItems, page, size]);
+    fetchThingsToDo(page, size);
+    return () => {
+      reset();
+    };
+  }, [page, size, fetchThingsToDo, reset]);
 
-  if (items.length === 0) return <Loading />;
-
+  if (thingsToDo.items.length === 0) return <Loading />;
   return (
     <>
       <HeroSection
-        title={HERO_TITLE}
         image='/thing-to-do-1.jpeg'
-        description={HERO_DESCRIPTION}
-        className='-mt-10'
+        title='Plan, go - we make it easy'
+        description='Discover family activities, adventures, tours, museums, and top attractions to plan your next trip.'
       />
-      <div className='grid grid-cols-4 pt-10'>
-        <div className='col-span-1 hidden flex-col pl-10 md:flex'>
-          <SectionTitle text='Filter' />
-        </div>
-        <HorizontalPlace
-          places={items}
-          totalPages={totalPages}
-          className='col-span-4 flex flex-col px-10 md:col-span-3'
-        />
+      <div className='my-10 grid grid-cols-5 gap-6'>
+        {thingsToDo.items.map((thing) => (
+          <CardItem key={thing.elementId} item={thing} />
+        ))}
       </div>
       <HeroSection
-        title={'Backed by travelers'}
+        title='Backed by travelers'
         image='/thing-to-do-2.jpeg'
         description="See what people loved (or didn't love) with real reviews on almost everything."
-        className='mt-10'
       />
-      <RecentlyViewedItems className='px-10' />
     </>
   );
 }

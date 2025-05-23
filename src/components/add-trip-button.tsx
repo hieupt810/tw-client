@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import { useStore } from 'zustand';
 
 import { TripService } from '@/services/trip';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth-store';
 import { ITrip } from '@/types/ITrip';
 
 import { Button } from './ui/button';
@@ -62,64 +62,60 @@ export default function AddTripButton({ elementId, iconOnly = false }: Props) {
   }, []);
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Dialog
-            open={dialogOpen}
-            onOpenChange={(open) => {
-              if (!me) {
-                toast.error(
-                  'You need to be signed in to add a place to a trip',
-                );
-                router.push('/sign-in');
-                return;
-              }
-              setDialogOpen(open);
-              if (open) fetchTrips();
-            }}
-          >
+    <Dialog
+      open={dialogOpen}
+      onOpenChange={(open) => {
+        if (!me) {
+          toast.error('You need to be signed in to add a place to a trip');
+          router.push('/sign-in');
+          return;
+        }
+        setDialogOpen(open);
+        if (open) fetchTrips();
+      }}
+    >
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
             <DialogTrigger asChild>
               <Button variant='outline' size={iconOnly ? 'icon' : 'sm'}>
                 <ListPlus />
                 {!iconOnly && <span>Add this place to a trip</span>}
               </Button>
             </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add this place to a trip</DialogTitle>
-              </DialogHeader>
+          </TooltipTrigger>
+          <TooltipContent>
+            <span>Add this place to a trip</span>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Add this place to a trip</DialogTitle>
+        </DialogHeader>
 
-              <div className='max-h-[15rem] space-y-2 overflow-y-auto'>
-                {loading === true ? (
-                  <div className='flex items-center justify-center p-10'>
-                    <Loader2 className='stroke-primary animate-spin' />
-                  </div>
-                ) : trips.length === 0 ? (
-                  <div className='text-muted-foreground text-sm'>
-                    No trips found.
-                  </div>
-                ) : (
-                  trips.map((trip) => (
-                    <Button
-                      key={trip.id}
-                      variant='secondary'
-                      className='w-full justify-start'
-                      disabled={loading}
-                      onClick={() => handleAddToTrip(trip.id)}
-                    >
-                      {trip.name}
-                    </Button>
-                  ))
-                )}
-              </div>
-            </DialogContent>
-          </Dialog>
-        </TooltipTrigger>
-        <TooltipContent>
-          <span>Add to trip</span>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+        <div className='max-h-[15rem] space-y-2 overflow-y-auto'>
+          {loading === true ? (
+            <div className='flex items-center justify-center p-10'>
+              <Loader2 className='stroke-primary animate-spin' />
+            </div>
+          ) : trips.length === 0 ? (
+            <div className='text-muted-foreground text-sm'>No trips found.</div>
+          ) : (
+            trips.map((trip) => (
+              <Button
+                key={trip.id}
+                variant='secondary'
+                className='w-full justify-start'
+                disabled={loading}
+                onClick={() => handleAddToTrip(trip.id)}
+              >
+                {trip.name}
+              </Button>
+            ))
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

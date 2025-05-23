@@ -30,13 +30,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         className={cn(
           fontSans.variable,
           fontMono.variable,
-          'min-h-svh font-sans antialiased',
+          'min-h-dvh font-sans antialiased',
         )}
         suppressHydrationWarning
       >
-        <main className='relative bg-violet-50/20'>
-          <div className='flex min-h-dvh flex-col'>{children}</div>
-        </main>
+        <main className='relative flex min-h-dvh flex-col'>{children}</main>
         <Toaster
           richColors
           closeButton

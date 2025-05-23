@@ -66,7 +66,13 @@ function RoutingMachine({ items }: { items: IAttraction[] }) {
   return null;
 }
 
-export default function MarkerMap({ items }: { items?: IAttraction[] }) {
+export default function MarkerMap({
+  zoom = 12,
+  items,
+}: {
+  zoom?: number;
+  items?: IAttraction[];
+}) {
   const centerPosition: LatLngExpression =
     items && items.length !== 0
       ? [items[0].latitude, items[0].longitude]
@@ -113,11 +119,11 @@ export default function MarkerMap({ items }: { items?: IAttraction[] }) {
 
   return (
     <MapContainer
-      zoom={15}
+      zoom={zoom}
       minZoom={10}
       maxZoom={25}
       center={centerPosition}
-      className='h-full min-h-[45rem] w-full rounded-md'
+      className='h-full min-h-[30rem] w-full rounded-md'
     >
       <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
       {items &&

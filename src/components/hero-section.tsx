@@ -17,7 +17,7 @@ export default function HeroSection({
   image,
   className,
   description,
-  ratio = 16 / 7,
+  ratio = 16 / 6,
   object = 'center',
 }: Props) {
   return (

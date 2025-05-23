@@ -24,7 +24,7 @@ export default function SavePlaceButton({ iconOnly = false }: Props) {
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <span>Add to favorites</span>
+          <p>Save this place to your profile</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

@@ -3,7 +3,7 @@
 import { useStore } from 'zustand';
 
 import { cn } from '@/lib/utils';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth-store';
 
 import ImageWithFallback from './image-with-fallback';
 import Markdown from './markdown';

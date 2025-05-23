@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { useStore } from 'zustand';
 
 import Loading from '@/components/loading';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth-store';
 
 export default function PrivateLayout({
   children,

@@ -3,18 +3,12 @@ import { MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Props {
-  street: string | null;
   city: string;
-  postalCode: string;
+  street: string | null;
   className?: React.HTMLAttributes<HTMLDivElement>['className'];
 }
 
-export default function Address({
-  street,
-  city,
-  postalCode,
-  className,
-}: Props) {
+export default function Address({ street, city, className }: Props) {
   return (
     <div
       className={cn(
@@ -25,11 +19,7 @@ export default function Address({
       <div className='mt-1'>
         <MapPin size={16} />
       </div>
-      {street ? (
-        <span>{`${street}, ${city} ${postalCode}, Vietnam`.trim()}</span>
-      ) : (
-        <span>{`${city} ${postalCode}, Vietnam`.trim()}</span>
-      )}
+      <span>{street ? street : city}</span>
     </div>
   );
 }

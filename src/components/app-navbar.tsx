@@ -7,7 +7,7 @@ import { useStore } from 'zustand';
 
 import { Constant } from '@/constants';
 import { removeTokenPair } from '@/lib/utils';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth-store';
 
 import AppLogo from './app-logo';
 import ImageWithFallback from './image-with-fallback';
@@ -86,8 +86,8 @@ export default function AppNavbar() {
                   <DropdownMenuLabel>Hi, {me.fullName}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <Link href='/favorites' passHref>
-                      <DropdownMenuItem>Favorites</DropdownMenuItem>
+                    <Link href='/profile' passHref>
+                      <DropdownMenuItem>Profile</DropdownMenuItem>
                     </Link>
                     <DropdownMenuItem
                       variant='destructive'

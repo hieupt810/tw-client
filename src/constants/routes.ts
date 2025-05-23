@@ -5,18 +5,10 @@ export class AuthRoutes {
   static REFRESH_TOKEN = 'auth/refresh/';
 }
 
-export class HotelRoutes {
-  static DEFAULT = 'hotels/';
-}
-
-export class RestaurantRoutes {
-  static DEFAULT = 'restaurants/';
-}
-
-export class ThingToDoRoutes {
-  static DEFAULT = 'things-to-do/';
-}
-
 export class TripRoutes {
   static DEFAULT = 'trips/';
+}
+
+export class FavouriteRoutes {
+  static DEFAULT = 'favourites/';
 }

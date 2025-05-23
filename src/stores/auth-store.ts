@@ -12,9 +12,13 @@ type Action = {
   meAction: () => Promise<void>;
 };
 
-export const useAuthStore = create<State & Action>()((set) => ({
+const initialState: State = {
   me: null,
   isLoading: true,
+};
+
+export const useAuthStore = create<State & Action>()((set) => ({
+  ...initialState,
 
   async meAction() {
     set((state) => ({ ...state, isLoading: true }));

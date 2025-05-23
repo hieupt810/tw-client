@@ -28,17 +28,10 @@ export default function Rating({ rating, ratingHistorgram, className }: Props) {
       <span className='text-sm md:text-base'>{rating.toFixed(1)}</span>
       <div className='flex flex-row items-center gap-0.5'>
         {Array.from({ length: quotient }).map((_, index) => (
-          <CircleRating
-            key={index}
-            fillPercent={100}
-            className='size-3 md:size-4'
-          />
+          <CircleRating key={index} fillPercent={100} className='size-3' />
         ))}
         {decimal > 0 && (
-          <CircleRating
-            fillPercent={decimal * 10}
-            className='size-3 md:size-4'
-          />
+          <CircleRating fillPercent={decimal * 10} className='size-3' />
         )}
       </div>
       {totalRatings && totalRatings > 0 && (

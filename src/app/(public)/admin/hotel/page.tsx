@@ -1,9 +1,8 @@
 'use client';
 
-import { HTTPError } from 'ky';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { useEffect } from 'react';
+import { useStore } from 'zustand';
 
 import Loading from '@/components/loading';
 import SectionTitle from '@/components/section-title';
@@ -23,56 +22,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { HotelService } from '@/services/hotel';
-import { IHotel } from '@/types/IHotel';
+import { useHotelStore } from '@/stores/hotel-store';
 
 export default function HotelAdminPage() {
-  const [hotels, setHotels] = useState<IHotel[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [deleting, setDeleting] = useState(false);
-  const [totalPages, setTotalPages] = useState(1);
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1');
   const size = parseInt(searchParams.get('size') || '10');
 
-  const fetchHotels = useCallback(async () => {
-    setLoading(true);
-    try {
-      const data = await HotelService.list(page, size);
-      setHotels(data.data as IHotel[]);
-      setTotalPages(data.paging.pageCount || 1);
-    } catch {
-      toast.error('Something went wrong');
-    } finally {
-      setLoading(false);
-    }
-  }, [page, size]);
+  const { hotels, fetchHotels } = useStore(useHotelStore, (state) => state);
 
   useEffect(() => {
-    fetchHotels();
-  }, [fetchHotels]);
+    fetchHotels(page, size);
+  }, [fetchHotels, page, size]);
 
-  const handleDelete = async () => {
-    if (!deleteId) return;
-    setDeleting(true);
-    try {
-      await HotelService.delete(deleteId);
-      toast.success('Hotel deleted');
-      setDeleteId(null);
-      fetchHotels();
-    } catch (error) {
-      if (error instanceof HTTPError) {
-        const data = await error.response.json();
-        toast.error(data.error);
-      } else toast.error('Something went wrong');
-    } finally {
-      setDeleting(false);
-    }
-  };
+  if (hotels.isLoading) return <Loading />;
 
-  if (loading) return <Loading />;
   return (
     <div className='px-10'>
       <div className='flex items-center justify-between'>
@@ -98,8 +63,8 @@ export default function HotelAdminPage() {
         </div>
       </div>
       <div className='mt-6 grid gap-4'>
-        {hotels.length === 0 && <div>No hotels found.</div>}
-        {hotels.map((hotel) => (
+        {hotels.items.length === 0 && <div>No hotels found.</div>}
+        {hotels.items.map((hotel) => (
           <Card
             key={hotel.elementId}
             className='flex flex-row items-center justify-between p-4'
@@ -120,17 +85,11 @@ export default function HotelAdminPage() {
               >
                 Edit
               </Button>
-              <Button
-                variant='destructive'
-                onClick={() => setDeleteId(hotel.elementId)}
-              >
-                Delete
-              </Button>
+              <Button variant='destructive'>Delete</Button>
             </div>
           </Card>
         ))}
       </div>
-      {/* Pagination Controls - HorizontalPlace style */}
       <div className='mt-6 flex flex-row items-center justify-center gap-2 text-sm font-medium'>
         <Button
           variant='outline'
@@ -145,12 +104,16 @@ export default function HotelAdminPage() {
           <span className='pr-1'>Previous</span>
         </Button>
         <span className='px-3'>
-          Page {page} of {totalPages}
+          Page {page} of {hotels.paging.pageCount}
         </span>
         <Button
           variant='outline'
-          disabled={page === totalPages || hotels.length < size}
-          aria-disabled={page === totalPages || hotels.length < size}
+          disabled={
+            page === hotels.paging.pageCount || hotels.items.length < size
+          }
+          aria-disabled={
+            page === hotels.paging.pageCount || hotels.items.length < size
+          }
           onClick={() => {
             const params = new URLSearchParams(searchParams.toString());
             params.set('page', (page + 1).toString());
@@ -160,30 +123,15 @@ export default function HotelAdminPage() {
           <span className='pl-1'>Next</span>
         </Button>
       </div>
-      <Dialog
-        open={!!deleteId}
-        onOpenChange={(open) => !open && setDeleteId(null)}
-      >
+      <Dialog>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirm Delete</DialogTitle>
           </DialogHeader>
           <div>Are you sure you want to delete this hotel?</div>
           <DialogFooter>
-            <Button
-              variant='outline'
-              onClick={() => setDeleteId(null)}
-              disabled={deleting}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant='destructive'
-              onClick={handleDelete}
-              disabled={deleting}
-            >
-              Delete
-            </Button>
+            <Button variant='outline'>Cancel</Button>
+            <Button variant='destructive'>Delete</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

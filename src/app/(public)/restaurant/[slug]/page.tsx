@@ -14,8 +14,7 @@ import RatingChart from '@/components/rating-chart';
 import SavePlaceButton from '@/components/save-place-button';
 import SectionTitle from '@/components/section-title';
 import ThumbnailsCarousel from '@/components/thumbnails-carousel';
-import VerticalRecommend from '@/components/vertical-recommend';
-import { cn, saveRecentlyViewed } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { RestaurantService } from '@/services/restaurant';
 import { IError } from '@/types/IError';
 import { IRestaurant } from '@/types/IRestaurant';
@@ -34,7 +33,6 @@ export default function HotelDetailsPage() {
       try {
         const data = await RestaurantService.details(elementId);
         setItem(data);
-        saveRecentlyViewed(elementId, data.type);
       } catch (error) {
         if (error instanceof HTTPError) {
           const data = await error.response.json<IError>();
@@ -143,12 +141,6 @@ export default function HotelDetailsPage() {
             <SectionTitle text='Map' />
             <MarkerMap items={[item]} />
           </div>
-        </div>
-
-        {/* Popular */}
-        <div className='border-grid col-span-1 flex flex-col border-t p-10 lg:border-t-0'>
-          <SectionTitle text='Popular' />
-          <VerticalRecommend />
         </div>
       </div>
 

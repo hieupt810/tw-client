@@ -12,8 +12,7 @@ import Rating from '@/components/rating';
 import SavePlaceButton from '@/components/save-place-button';
 import SectionTitle from '@/components/section-title';
 import ThumbnailsCarousel from '@/components/thumbnails-carousel';
-import VerticalRecommend from '@/components/vertical-recommend';
-import { cn, saveRecentlyViewed } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { ThingToDoService } from '@/services/thing-to-do';
 import { IError } from '@/types/IError';
 import { IThingToDo } from '@/types/IThingToDo';
@@ -32,7 +31,6 @@ export default function HotelDetailsPage() {
       try {
         const data = await ThingToDoService.details(elementId);
         setItem(data);
-        saveRecentlyViewed(elementId, data.type);
       } catch (error) {
         if (error instanceof HTTPError) {
           const data = await error.response.json<IError>();
@@ -53,75 +51,57 @@ export default function HotelDetailsPage() {
   return (
     <>
       {/* Main */}
-      <div className='border-grid border-b px-10 pb-10'>
-        <div className='mb-1 flex flex-row justify-between'>
-          <div className='flex grow flex-col gap-1'>
-            <span className='text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>
-              {item.name}
-            </span>
-            <Rating
-              rating={item.rating}
-              ratingHistorgram={item.ratingHistogram}
-            />
-          </div>
+      <div className='border-grid flex flex-col gap-1 border-b p-10 md:p-6'>
+        <div className='flex flex-row justify-between'>
+          <span className='text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>
+            {item.name}
+          </span>
           <SavePlaceButton elementId={item.elementId} />
         </div>
+        <Rating rating={item.rating} ratingHistorgram={item.ratingHistogram} />
         <Address
           street={item.street}
           city={item.city.name}
           postalCode={item.city.postalCode}
         />
-        <ThumbnailsCarousel images={item.photos} className='mt-6' />
+        <ThumbnailsCarousel images={item.photos} className='mt-2.5' />
       </div>
-      <div className='grid grid-cols-1 lg:grid-cols-4'>
-        <div className='border-grid col-span-3 lg:border-r'>
-          {/* Description */}
-          <TextSection
-            title='Description'
-            text={item.description || 'No description.'}
-          />
-
-          <div className='grid grid-cols-2 gap-10 truncate'>
-            <div className='flex flex-col pb-10 pl-10'>
-              {item.subcategories.length > 0 && (
-                <>
-                  <SectionTitle text='Subcategories' />
-                  <div className='text-muted-foreground flex flex-col gap-0.5'>
-                    {item.subcategories.map((subcategory) => (
-                      <span key={subcategory}>{subcategory}</span>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-            <div className='flex flex-col pr-10 pb-10'>
-              {item.subtypes.length > 0 && (
-                <>
-                  <SectionTitle text='Subtypes' />
-                  <div className='text-muted-foreground flex flex-col gap-0.5'>
-                    {item.subtypes.map((subtype) => (
-                      <span key={subtype}>{subtype}</span>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-
-          <div className='border-grid flex flex-col border-t p-10'>
-            <SectionTitle text='Map' />
-            <MarkerMap items={[item]} />
-          </div>
+      <div className='border-grid my-6 grid grid-cols-5 gap-10'>
+        <TextSection
+          title='Description'
+          text={item.description || 'No description.'}
+          className='col-span-3'
+        />
+        <div className='flex flex-col'>
+          {item.subcategories.length > 0 && (
+            <>
+              <SectionTitle text='Subcategories' />
+              <div className='text-muted-foreground flex flex-col gap-0.5'>
+                {item.subcategories.map((subcategory) => (
+                  <span key={subcategory}>{subcategory}</span>
+                ))}
+              </div>
+            </>
+          )}
         </div>
-
-        {/* Popular */}
-        <div className='border-grid col-span-1 flex flex-col border-t p-10 lg:border-t-0'>
-          <SectionTitle text='Popular' />
-          <VerticalRecommend />
+        <div className='flex flex-col'>
+          {item.subtypes.length > 0 && (
+            <>
+              <SectionTitle text='Subtypes' />
+              <div className='text-muted-foreground flex flex-col gap-0.5'>
+                {item.subtypes.map((subtype) => (
+                  <span key={subtype}>{subtype}</span>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
-
-      <div className='border-grid border-t p-10 pb-0'>
+      <div className='border-grid flex flex-col border-t px-10 py-6 md:px-6'>
+        <SectionTitle text='Map' />
+        <MarkerMap zoom={15} items={[item]} />
+      </div>
+      <div className='border-grid border-t px-10 py-6 md:px-6'>
         <SectionTitle text='Reviews' />
       </div>
     </>
@@ -138,7 +118,7 @@ function TextSection({
   className?: React.HTMLProps<HTMLDivElement>['className'];
 }) {
   return (
-    <div className={cn('border-grid flex flex-col p-10', className)}>
+    <div className={cn('border-grid flex flex-col px-10 md:px-6', className)}>
       <SectionTitle text={title} />
       <p className='text-justify leading-relaxed'>{text}</p>
     </div>

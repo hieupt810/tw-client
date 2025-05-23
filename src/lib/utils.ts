@@ -2,7 +2,6 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 import { Constant } from '@/constants';
-import { ISavedAttraction } from '@/types/ISavedAttraction';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -36,41 +35,6 @@ export function formatDate(isodate: string) {
     minute: '2-digit',
     hour12: false,
   });
-}
-
-export function saveRecentlyViewed(elementId: string, type: string) {
-  if (typeof window === 'undefined') return;
-  const recentlyViewed = localStorage.getItem(
-    Constant.LOCAL_STORAGE_KEY.RECENTLY_VIEWED_KEY,
-  );
-  const newItem = { elementId, type };
-  let parsed: ISavedAttraction[] = recentlyViewed
-    ? JSON.parse(recentlyViewed)
-    : [];
-  const index = parsed.findIndex(
-    (item) => item.elementId === elementId && item.type === type,
-  );
-  if (index !== -1) {
-    parsed.splice(index, 1);
-  }
-  parsed.unshift(newItem);
-  if (parsed.length > 10) {
-    parsed = parsed.slice(0, 10);
-  }
-  localStorage.setItem(
-    Constant.LOCAL_STORAGE_KEY.RECENTLY_VIEWED_KEY,
-    JSON.stringify(parsed),
-  );
-}
-
-export function getRecentlyViewed() {
-  if (typeof window === 'undefined') return [];
-  const recentlyViewed = localStorage.getItem(
-    Constant.LOCAL_STORAGE_KEY.RECENTLY_VIEWED_KEY,
-  );
-  if (!recentlyViewed) return [];
-  const parsed: ISavedAttraction[] = JSON.parse(recentlyViewed);
-  return parsed;
 }
 
 export async function* streamResponse(message: string) {

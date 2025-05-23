@@ -15,7 +15,7 @@ export class TripService {
   }
 
   static addPlaceToTrip(tripId: string, placeId: string) {
-    return api.post(`${TripRoutes.DEFAULT}${tripId}/places`, {
+    return api.post(`${TripRoutes.DEFAULT}${tripId}`, {
       json: { place_id: placeId },
     });
   }

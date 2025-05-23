@@ -1,10 +1,9 @@
 'use client';
 
-import { HTTPError } from 'ky';
 import dynamic from 'next/dynamic';
-import { useParams, useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { useParams } from 'next/navigation';
+import { useEffect } from 'react';
+import { useStore } from 'zustand';
 
 import Address from '@/components/address';
 import Feature from '@/components/feature';
@@ -14,110 +13,83 @@ import RatingChart from '@/components/rating-chart';
 import SavePlaceButton from '@/components/save-place-button';
 import SectionTitle from '@/components/section-title';
 import ThumbnailsCarousel from '@/components/thumbnails-carousel';
-import VerticalRecommend from '@/components/vertical-recommend';
-import { cn, saveRecentlyViewed } from '@/lib/utils';
-import { HotelService } from '@/services/hotel';
-import { IError } from '@/types/IError';
-import { IHotel } from '@/types/IHotel';
+import { cn } from '@/lib/utils';
+import { useHotelStore } from '@/stores/hotel-store';
 
 const MarkerMap = dynamic(() => import('@/components/marker-map'), {
   ssr: false,
 });
 
 export default function HotelDetailsPage() {
-  const router = useRouter();
   const { slug } = useParams();
-  const [item, setItem] = useState<IHotel | null>(null);
 
-  const fetchItem = useCallback(
-    async function (elementId: string) {
-      try {
-        const data = await HotelService.details(elementId);
-        setItem(data);
-        saveRecentlyViewed(elementId, data.type);
-      } catch (error) {
-        if (error instanceof HTTPError) {
-          const data = await error.response.json<IError>();
-          toast.error(data.error);
-        } else toast.error('Something went wrong');
-        router.push('/hotel');
-      }
-    },
-    [router],
+  const { hotel, reset, fetchHotel } = useStore(
+    useHotelStore,
+    (state) => state,
   );
 
   useEffect(() => {
     if (!slug || typeof slug !== 'string') return;
-    fetchItem(slug);
-  }, [slug, fetchItem]);
+    fetchHotel(slug);
+    return () => {
+      reset();
+    };
+  }, [slug, fetchHotel]);
 
-  if (!item) return <Loading />;
+  if (!hotel.item) return <Loading />;
+
   return (
     <>
-      {/* Main */}
       <div className='border-grid border-b px-10 pb-10'>
         <div className='mb-1 flex flex-row justify-between'>
           <div className='flex grow flex-col gap-1'>
             <span className='text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>
-              {item.name}
+              {hotel.item.name}
             </span>
             <Rating
-              rating={item.rating}
-              ratingHistorgram={item.ratingHistogram}
+              rating={hotel.item.rating}
+              ratingHistorgram={hotel.item.ratingHistogram}
             />
           </div>
-          <SavePlaceButton elementId={item.elementId} />
+          <SavePlaceButton elementId={hotel.item.elementId} />
         </div>
         <Address
-          street={item.street}
-          city={item.city.name}
-          postalCode={item.city.postalCode}
+          street={hotel.item.street}
+          city={hotel.item.city.name}
+          postalCode={hotel.item.city.postalCode}
         />
-        <ThumbnailsCarousel images={item.photos} className='mt-6' />
+        <ThumbnailsCarousel images={hotel.item.photos} className='mt-6' />
       </div>
       <div className='grid grid-cols-1 lg:grid-cols-4'>
         <div className='border-grid col-span-3 lg:border-r'>
           <TextSection
             title='AI Review Summary'
             text={
-              item.aiReviewsSummary ||
+              hotel.item.aiReviewsSummary ||
               'Do not have enough reviews for AI summary.'
             }
             className='border-t-0'
           />
           <div className='border-grid grid grid-cols-1 gap-6 border-t p-10 md:grid-cols-2'>
-            {/* Rating Chart */}
             <div className='col-span-1 flex flex-col'>
               <SectionTitle text='Rating Distribution' />
-              <RatingChart histogram={item.ratingHistogram} />
+              <RatingChart histogram={hotel.item.ratingHistogram} />
             </div>
-
-            {/* Amenities */}
             <div className='col-span-1 flex flex-col'>
               <SectionTitle text='Amenities' />
-              <Feature features={item.features} />
+              <Feature features={hotel.item.features} />
             </div>
           </div>
-
-          {/* Description */}
           <TextSection
             title='Description'
-            text={item.description || 'No description.'}
+            text={hotel.item.description || 'No description.'}
           />
-
           <div className='border-grid flex flex-col border-t p-10'>
             <SectionTitle text='Map' />
-            <MarkerMap items={[item]} />
+            <MarkerMap items={[hotel.item]} />
           </div>
         </div>
-
-        {/* Popular */}
-        <div className='border-grid col-span-1 flex flex-col border-t p-10 lg:border-t-0'>
-          <SectionTitle text='Popular' />
-          <VerticalRecommend />
-        </div>
       </div>
-
       <div className='border-grid border-t p-10 pb-0'>
         <SectionTitle text='Reviews' />
       </div>

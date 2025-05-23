@@ -48,7 +48,7 @@ export default function Search() {
   const [selectedItem, setSelectedItem] = useState<ISearchItem>(searchItems[0]);
 
   return (
-    <div className='mt-6 mb-12 flex flex-col items-center justify-center'>
+    <div className='mt-24 mb-12 flex flex-col items-center justify-center'>
       <span className='text-xl font-black tracking-tight sm:text-2xl md:text-3xl lg:text-5xl'>
         {selectedItem.title}
       </span>
