@@ -48,11 +48,11 @@ export default function Search() {
   const [selectedItem, setSelectedItem] = useState<ISearchItem>(searchItems[0]);
 
   return (
-    <div className='mt-24 mb-12 flex flex-col items-center justify-center'>
-      <span className='text-xl font-black tracking-tight sm:text-2xl md:text-3xl lg:text-5xl'>
+    <div className='mt-16 flex flex-col items-center justify-center md:mt-24 md:mb-12'>
+      <span className='text-3xl font-black tracking-tight lg:text-5xl'>
         {selectedItem.title}
       </span>
-      <div className='mt-8 mb-4 flex flex-row gap-6'>
+      <div className='my-4 grid grid-cols-2 gap-x-4 gap-y-2 md:mt-8 md:flex md:flex-row md:gap-6'>
         {searchItems.map((item, index) => (
           <button
             key={index}
@@ -63,7 +63,9 @@ export default function Search() {
             )}
           >
             <div>{item.icon}</div>
-            <span className='font-medium'>{item.type}</span>
+            <span className='text-sm font-medium md:text-base'>
+              {item.type}
+            </span>
           </button>
         ))}
       </div>

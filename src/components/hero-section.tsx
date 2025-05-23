@@ -21,7 +21,7 @@ export default function HeroSection({
   object = 'center',
 }: Props) {
   return (
-    <section className={cn('relative', className)}>
+    <section className={cn('relative hidden md:block', className)}>
       <div className='absolute bottom-0 left-0 z-10 flex flex-col gap-1.5 p-10 text-white'>
         <span className='text-2xl font-bold tracking-tight capitalize md:text-3xl lg:text-4xl'>
           {title}

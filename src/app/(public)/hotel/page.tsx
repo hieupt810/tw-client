@@ -28,7 +28,7 @@ export default function HotelsPage() {
     return () => {
       reset();
     };
-  }, [fetchHotels, page, size, reset]);
+  }, [fetchHotels, page, size]);
 
   if (hotels.items.length === 0) return <Loading />;
 

@@ -1,107 +1,137 @@
 'use client';
 
-import { HTTPError } from 'ky';
+import { Globe, Phone } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { useParams, useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useEffect } from 'react';
+import { useStore } from 'zustand';
 
 import Address from '@/components/address';
 import Loading from '@/components/loading';
 import Rating from '@/components/rating';
+import RatingChart from '@/components/rating-chart';
 import SavePlaceButton from '@/components/save-place-button';
 import SectionTitle from '@/components/section-title';
 import ThumbnailsCarousel from '@/components/thumbnails-carousel';
 import { cn } from '@/lib/utils';
-import { ThingToDoService } from '@/services/thing-to-do';
-import { IError } from '@/types/IError';
-import { IThingToDo } from '@/types/IThingToDo';
+import { useThingToDoStore } from '@/stores/thing-to-do-store';
 
 const MarkerMap = dynamic(() => import('@/components/marker-map'), {
   ssr: false,
 });
 
-export default function HotelDetailsPage() {
-  const router = useRouter();
+export default function ThingToDoDetailsPage() {
   const { slug } = useParams();
-  const [item, setItem] = useState<IThingToDo | null>(null);
 
-  const fetchItem = useCallback(
-    async function (elementId: string) {
-      try {
-        const data = await ThingToDoService.details(elementId);
-        setItem(data);
-      } catch (error) {
-        if (error instanceof HTTPError) {
-          const data = await error.response.json<IError>();
-          toast.error(data.error);
-        } else toast.error('Something went wrong');
-        router.push('/restaurant');
-      }
-    },
-    [router],
+  const { thingToDo, reset, fetchThingToDo } = useStore(
+    useThingToDoStore,
+    (state) => state,
   );
 
   useEffect(() => {
     if (!slug || typeof slug !== 'string') return;
-    fetchItem(slug);
-  }, [slug, fetchItem]);
+    fetchThingToDo(slug);
+    return () => {
+      reset();
+    };
+  }, [slug, fetchThingToDo]);
 
-  if (!item) return <Loading />;
+  if (!thingToDo.item) return <Loading />;
+
   return (
     <>
-      {/* Main */}
-      <div className='border-grid flex flex-col gap-1 border-b p-10 md:p-6'>
+      <div className='border-grid flex flex-col gap-0.5 border-b py-10'>
         <div className='flex flex-row justify-between'>
           <span className='text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>
-            {item.name}
+            {thingToDo.item.name}
           </span>
-          <SavePlaceButton elementId={item.elementId} />
+          <SavePlaceButton elementId={thingToDo.item.elementId} />
         </div>
-        <Rating rating={item.rating} ratingHistorgram={item.ratingHistogram} />
+        <Rating
+          rating={thingToDo.item.rating}
+          ratingHistorgram={thingToDo.item.ratingHistogram}
+        />
         <Address
-          street={item.street}
-          city={item.city.name}
-          postalCode={item.city.postalCode}
+          street={thingToDo.item.street}
+          city={thingToDo.item.city.name}
         />
-        <ThumbnailsCarousel images={item.photos} className='mt-2.5' />
+        <ThumbnailsCarousel images={thingToDo.item.photos} className='mt-4' />
       </div>
-      <div className='border-grid my-6 grid grid-cols-5 gap-10'>
-        <TextSection
-          title='Description'
-          text={item.description || 'No description.'}
-          className='col-span-3'
-        />
-        <div className='flex flex-col'>
-          {item.subcategories.length > 0 && (
-            <>
-              <SectionTitle text='Subcategories' />
-              <div className='text-muted-foreground flex flex-col gap-0.5'>
-                {item.subcategories.map((subcategory) => (
-                  <span key={subcategory}>{subcategory}</span>
-                ))}
+      <div className='border-grid grid grid-cols-3 gap-10 border-b py-10 md:gap-20'>
+        <div className='col-span-full flex flex-col gap-10 md:col-span-2'>
+          <TextSection
+            title='Description'
+            text={thingToDo.item.description || 'No description.'}
+          />
+          <div className='grid grid-cols-2 gap-10 md:grid-cols-3'>
+            <div className='flex flex-col'>
+              <SectionTitle text='Sub-types' />
+              <div className='text-muted-foreground flex flex-col gap-1.5'>
+                {thingToDo.item.subtypes.length > 0 ? (
+                  thingToDo.item.subtypes.map((subtype) => (
+                    <span key={subtype}>{subtype}</span>
+                  ))
+                ) : (
+                  <span>No information</span>
+                )}
               </div>
-            </>
-          )}
+            </div>
+            <div className='flex flex-col'>
+              <SectionTitle text='Sub-categories' />
+              <div className='text-muted-foreground flex flex-col gap-1.5'>
+                {thingToDo.item.subcategories.length > 0 ? (
+                  thingToDo.item.subcategories.map((subcategory) => (
+                    <span key={subcategory}>{subcategory}</span>
+                  ))
+                ) : (
+                  <span>No information</span>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className='flex flex-col'>
+            <SectionTitle text='Contact' />
+            <div className='flex flex-col gap-2'>
+              <div className='flex flex-row items-center gap-2'>
+                <div>
+                  <Phone size={20} className='stroke-primary' />
+                </div>
+                <span>
+                  {thingToDo.item.phone
+                    ? thingToDo.item.phone
+                    : 'No information'}
+                </span>
+              </div>
+              <div className='flex flex-row items-center gap-2'>
+                <div>
+                  <Globe size={20} className='stroke-primary' />
+                </div>
+                {thingToDo.item.website ? (
+                  <Link
+                    target='_blank'
+                    href={thingToDo.item.website}
+                    className='hover:text-primary underline underline-offset-4'
+                  >
+                    {thingToDo.item.website}
+                  </Link>
+                ) : (
+                  <span>No information</span>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
-        <div className='flex flex-col'>
-          {item.subtypes.length > 0 && (
-            <>
-              <SectionTitle text='Subtypes' />
-              <div className='text-muted-foreground flex flex-col gap-0.5'>
-                {item.subtypes.map((subtype) => (
-                  <span key={subtype}>{subtype}</span>
-                ))}
-              </div>
-            </>
-          )}
+        <div className='col-span-full flex flex-col md:col-span-1'>
+          <SectionTitle text='Rating Distribution' />
+          <RatingChart histogram={thingToDo.item.ratingHistogram} />
         </div>
       </div>
-      <div className='border-grid flex flex-col border-t px-10 py-6 md:px-6'>
+      <div className='flex flex-col py-10'>
         <SectionTitle text='Map' />
-        <MarkerMap zoom={15} items={[item]} />
+        <MarkerMap zoom={16} items={[thingToDo.item]} />
       </div>
-      <div className='border-grid border-t px-10 py-6 md:px-6'>
+      <div className='border-grid border-t py-10'>
         <SectionTitle text='Reviews' />
       </div>
     </>
@@ -118,7 +148,7 @@ function TextSection({
   className?: React.HTMLProps<HTMLDivElement>['className'];
 }) {
   return (
-    <div className={cn('border-grid flex flex-col px-10 md:px-6', className)}>
+    <div className={cn('flex flex-col', className)}>
       <SectionTitle text={title} />
       <p className='text-justify leading-relaxed'>{text}</p>
     </div>

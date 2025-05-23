@@ -24,7 +24,7 @@ export default function ThingsToDoPage() {
     return () => {
       reset();
     };
-  }, [page, size, fetchThingsToDo, reset]);
+  }, [fetchThingsToDo, page, size]);
 
   if (thingsToDo.items.length === 0) return <Loading />;
   return (

@@ -21,7 +21,7 @@ export default function ThumbnailsCarousel({ images, className }: Props) {
       <Carousel
         opts={{ loop: true }}
         plugins={[Autoplay({ delay: 7000 })]}
-        className='col-span-3'
+        className='col-span-full md:col-span-3'
       >
         <CarouselContent>
           {images.map((image, index) => (
@@ -41,7 +41,7 @@ export default function ThumbnailsCarousel({ images, className }: Props) {
           ))}
         </CarouselContent>
       </Carousel>
-      <div className='flex flex-col gap-1'>
+      <div className='col-span-full flex flex-row gap-1 md:col-span-1 md:flex-col'>
         {images.splice(0, 3).map((image, idx) => (
           <AspectRatio
             key={image}

@@ -56,8 +56,8 @@ export default function HotelDetailsPage() {
         <Address street={hotel.item.street} city={hotel.item.city.name} />
         <ThumbnailsCarousel images={hotel.item.photos} className='mt-4' />
       </div>
-      <div className='border-grid grid grid-cols-3 gap-20 border-b py-10'>
-        <div className='col-span-2 flex flex-col gap-10'>
+      <div className='border-grid grid grid-cols-3 gap-10 border-b py-10 md:gap-20'>
+        <div className='col-span-full flex flex-col gap-10 md:col-span-2'>
           <TextSection
             title='AI Review Summary'
             text={
@@ -88,7 +88,7 @@ export default function HotelDetailsPage() {
                   <Link
                     target='_blank'
                     href={hotel.item.website}
-                    className='hover:text-primary underline underline-offset-4'
+                    className='hover:text-primary truncate underline underline-offset-4'
                   >
                     {hotel.item.website}
                   </Link>
@@ -107,7 +107,7 @@ export default function HotelDetailsPage() {
             </div>
           </div>
         </div>
-        <div className='grid grid-rows-2 gap-10'>
+        <div className='col-span-full grid grid-rows-2 gap-10 md:col-span-1'>
           <div className='col-span-1 flex flex-col'>
             <SectionTitle text='Rating Distribution' />
             <RatingChart histogram={hotel.item.ratingHistogram} />

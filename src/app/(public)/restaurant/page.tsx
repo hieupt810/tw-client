@@ -24,7 +24,7 @@ export default function RestaurantsPage() {
     return () => {
       reset();
     };
-  }, [fetchRestaurants, page, size, reset]);
+  }, [fetchRestaurants, page, size]);
 
   if (restaurants.items.length === 0) return <Loading />;
 

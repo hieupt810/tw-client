@@ -59,12 +59,12 @@ export default function RestaurantDetailsPage() {
         />
         <ThumbnailsCarousel images={restaurant.item.photos} className='mt-4' />
       </div>
-      <div className='border-grid grid grid-cols-3 gap-20 border-b py-10'>
-        <div className='col-span-2 flex flex-col gap-10'>
+      <div className='border-grid grid grid-cols-3 gap-10 border-b py-10 md:gap-20'>
+        <div className='col-span-full flex flex-col gap-10 md:col-span-2'>
           <div className='flex flex-col'>
             <SectionTitle text='Opening Hours' />
             {restaurant.item.hours ? (
-              <div className='grid grid-cols-3 gap-x-10 gap-y-4'>
+              <div className='grid grid-cols-2 gap-x-10 gap-y-4 md:grid-cols-3'>
                 <div className='flex flex-col gap-0.5'>
                   <span className='font-semibold'>Monday</span>
                   <span>
@@ -128,7 +128,7 @@ export default function RestaurantDetailsPage() {
               )}
             </div>
           </div>
-          <div className='grid grid-cols-3 gap-10'>
+          <div className='grid grid-cols-1 gap-10 md:grid-cols-3'>
             <div className='flex flex-col'>
               <SectionTitle text='Meal Types' />
               <div className='text-muted-foreground flex flex-col gap-1.5'>
@@ -208,7 +208,7 @@ export default function RestaurantDetailsPage() {
             </div>
           </div>
         </div>
-        <div className='grid grid-rows-2 gap-10'>
+        <div className='col-span-full grid grid-rows-2 gap-10 md:col-span-1'>
           <div className='col-span-1 flex flex-col'>
             <SectionTitle text='Rating Distribution' />
             <RatingChart histogram={restaurant.item.ratingHistogram} />
