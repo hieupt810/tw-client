@@ -81,7 +81,11 @@ export const useRestaurantStore = create<State & Action>()((set) => ({
     try {
       const data = await RestaurantService.list(page, size);
       set((state) => ({
-        restaurants: { ...state.restaurants, items: data.data },
+        restaurants: {
+          ...state.restaurants,
+          items: data.data,
+          paging: data.paging,
+        },
       }));
     } catch {
       set((state) => ({

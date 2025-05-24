@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 import { ThingToDoService } from '@/services/thing-to-do';
 import { IAttraction } from '@/types/IAttraction';
+import { IPagingMeta } from '@/types/IPaging';
 import { IThingToDo } from '@/types/IThingToDo';
 
 type State = {
@@ -14,6 +15,7 @@ type State = {
     items: IAttraction[];
     error: string;
     isLoading: boolean;
+    paging: IPagingMeta;
   };
 };
 
@@ -33,6 +35,13 @@ const initialState: State = {
     items: [],
     error: '',
     isLoading: true,
+    paging: {
+      offset: 0,
+      page: 1,
+      pageCount: 0,
+      size: 10,
+      totalCount: 0,
+    },
   },
 };
 
@@ -72,7 +81,11 @@ export const useThingToDoStore = create<State & Action>()((set) => ({
     try {
       const data = await ThingToDoService.list(page, size);
       set((state) => ({
-        thingsToDo: { ...state.thingsToDo, items: data.data },
+        thingsToDo: {
+          ...state.thingsToDo,
+          items: data.data,
+          paging: data.paging,
+        },
       }));
     } catch {
       set((state) => ({
