@@ -85,7 +85,7 @@ export default function TripPage() {
     fetchTripItems(slug);
   }, [fetchTripItems, router, slug]);
 
-  if (!items.length) return <Loading />;
+  if (isLoading) return <Loading />;
 
   return (
     <div className='grid grid-cols-5 gap-4 py-10'>
@@ -99,7 +99,7 @@ export default function TripPage() {
       />
       <div className='col-span-3 flex max-h-[50rem] flex-col'>
         <SectionTitle text='Map' />
-        <MarkerMap items={items} />
+        <MarkerMap zoom={11} items={items} />
       </div>
     </div>
   );

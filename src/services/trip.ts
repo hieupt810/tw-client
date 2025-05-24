@@ -4,7 +4,7 @@ import { ITrip } from '@/types/ITrip';
 import { ITripDetails } from '@/types/ITripDetails';
 import { ITripOptimize } from '@/types/ITripOptimize';
 
-export class Routes {
+class Routes {
   static DEFAULT = 'trips/';
 }
 
@@ -15,6 +15,10 @@ export class TripService {
 
   static getTripById(tripId: string) {
     return api.get(`${Routes.DEFAULT}${tripId}`).json<ITripDetails>();
+  }
+
+  static createTrip(name: string) {
+    return api.post(Routes.DEFAULT, { json: { name } }).json<ITrip>();
   }
 
   static addPlaceToTrip(tripId: string, placeId: string) {

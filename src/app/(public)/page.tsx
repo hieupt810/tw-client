@@ -43,6 +43,7 @@ export default function HomePage() {
       />
       <div className='my-10 flex flex-col gap-10'>
         <PlaceCarousel
+          autoplay
           items={hotels.items}
           title='Top destinations for your next vacation'
           description='Discover the most popular places with the highest rankings'

@@ -8,15 +8,32 @@ import {
   UtensilsCrossed,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
 
 import SectionTitle from '@/components/section-title';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { formatDate } from '@/lib/utils';
 import { useTripStore } from '@/stores/trip-store';
 
 export default function TripsComponent() {
-  const { trips, reset, fetchTrips } = useStore(useTripStore, (state) => state);
+  const { trips, reset, fetchTrips, createTrip } = useStore(
+    useTripStore,
+    (state) => state,
+  );
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [tripName, setTripName] = useState<string>('');
+  const [creating, setCreating] = useState<boolean>(false);
 
   useEffect(() => {
     fetchTrips();
@@ -24,6 +41,19 @@ export default function TripsComponent() {
       reset();
     };
   }, [fetchTrips, reset]);
+
+  const handleCreateTrip = async () => {
+    setDialogOpen(true);
+  };
+
+  const handleDialogCreate = async () => {
+    if (!tripName.trim()) return;
+    setCreating(true);
+    await createTrip(tripName.trim());
+    setCreating(false);
+    setDialogOpen(false);
+    setTripName('');
+  };
 
   if (trips.isLoading) {
     return (
@@ -35,14 +65,54 @@ export default function TripsComponent() {
 
   return (
     <>
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create a New Trip</DialogTitle>
+            <DialogDescription>
+              Enter a name for your new trip. You can edit trip details later.
+            </DialogDescription>
+          </DialogHeader>
+          <div className='grid grid-cols-4 items-center gap-4'>
+            <Label htmlFor='name' className='text-right'>
+              Trip Name
+            </Label>
+            <Input
+              autoFocus
+              id='name'
+              value={tripName}
+              onChange={(e) => setTripName(e.target.value)}
+              className='col-span-3'
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              variant='outline'
+              disabled={creating}
+              onClick={() => setDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDialogCreate}
+              disabled={creating || !tripName.trim()}
+            >
+              {creating ? 'Creating...' : 'Create'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <SectionTitle text='Your Trips' />
       <div className='grid grid-cols-2 gap-10'>
-        <div className='bg-primary text-background flex h-full min-h-40 w-full cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded-md shadow-md transition-all duration-200 ease-in-out select-none hover:shadow-lg'>
+        <button
+          className='bg-primary text-background flex h-full min-h-40 w-full cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded-md shadow-md transition-all duration-200 ease-in-out select-none hover:shadow-lg'
+          onClick={handleCreateTrip}
+        >
           <div>
             <CirclePlus size={36} color='white' />
           </div>
           <span className='text-lg font-medium'>Create New</span>
-        </div>
+        </button>
         {trips.item.map((trip) => (
           <Link
             key={trip.id}

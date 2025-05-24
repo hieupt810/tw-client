@@ -18,25 +18,25 @@ interface ISearchItem {
 
 const searchItems: ISearchItem[] = [
   {
-    icon: <House />,
+    icon: <House size={20} />,
     type: 'Search All',
     title: 'Where to?',
     placeholder: 'Enter a destination',
   },
   {
-    icon: <Hotel />,
+    icon: <Hotel size={20} />,
     type: 'Hotels',
     title: 'Stay somewhere great',
     placeholder: 'Hotel name or destination',
   },
   {
-    icon: <UtensilsCrossed />,
+    icon: <UtensilsCrossed size={20} />,
     type: 'Restaurants',
     title: 'Find places to eat',
     placeholder: 'Restaurant or destination',
   },
   {
-    icon: <Camera />,
+    icon: <Camera size={20} />,
     type: 'Things to Do',
     title: 'Do something fun',
     placeholder: 'Attraction, activity or destination',
@@ -52,7 +52,7 @@ export default function Search() {
       <span className='text-3xl font-black tracking-tight lg:text-5xl'>
         {selectedItem.title}
       </span>
-      <div className='my-4 grid grid-cols-2 gap-x-4 gap-y-2 md:mt-8 md:flex md:flex-row md:gap-6'>
+      <div className='my-4 mt-8 grid grid-cols-2 sm:grid-cols-4'>
         {searchItems.map((item, index) => (
           <button
             key={index}
@@ -63,7 +63,7 @@ export default function Search() {
             )}
           >
             <div>{item.icon}</div>
-            <span className='text-sm font-medium md:text-base'>
+            <span className='text-xs font-medium md:text-sm lg:text-base'>
               {item.type}
             </span>
           </button>

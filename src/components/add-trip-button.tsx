@@ -1,18 +1,25 @@
 'use client';
 
-import { Dialog, DialogTitle } from '@radix-ui/react-dialog';
-import { ListPlus, Loader2 } from 'lucide-react';
+import { ListPlus, PlusIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
 import { useStore } from 'zustand';
 
-import { TripService } from '@/services/trip';
 import { useAuthStore } from '@/stores/auth-store';
-import { ITrip } from '@/types/ITrip';
+import { useTripStore } from '@/stores/trip-store';
 
 import { Button } from './ui/button';
-import { DialogContent, DialogHeader, DialogTrigger } from './ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from './ui/dialog';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
 import {
   Tooltip,
   TooltipContent,
@@ -28,93 +35,150 @@ interface Props {
 export default function AddTripButton({ elementId, iconOnly = false }: Props) {
   const router = useRouter();
   const me = useStore(useAuthStore, (state) => state.me);
-
-  const [trips, setTrips] = useState<ITrip[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  const handleAddToTrip = useCallback(
-    async function (tripId: string) {
-      setLoading(true);
-      try {
-        await TripService.addPlaceToTrip(tripId, elementId);
-        toast.success('Success');
-        setDialogOpen(false);
-      } catch {
-        toast.error('Failed to add to trip');
-      } finally {
-        setLoading(false);
-      }
-    },
-    [elementId],
+  const { trips, reset, fetchTrips, createTrip, addPlaceToTrip } = useStore(
+    useTripStore,
+    (state) => state,
   );
 
-  const fetchTrips = useCallback(async () => {
-    setLoading(true);
-    try {
-      const response = await TripService.getTrip();
-      setTrips(response);
-    } catch {
-      toast.error('Failed to fetch trips');
-    } finally {
-      setLoading(false);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [createDialogOpen, setCreateDialogOpen] = useState<boolean>(false);
+  const [tripName, setTripName] = useState<string>('');
+  const [creating, setCreating] = useState<boolean>(false);
+
+  const handleOpenDialog = useCallback(() => {
+    if (!me) {
+      router.push('/sign-in');
+      toast.info('Please sign in to add items to a trip.');
+      return;
     }
+    fetchTrips();
+    setDialogOpen(true);
+  }, [me, router, fetchTrips]);
+
+  const handleCreateTrip = useCallback(() => {
+    setCreateDialogOpen(true);
   }, []);
 
+  const handleDialogCreate = useCallback(async () => {
+    if (!tripName.trim()) return;
+    setCreating(true);
+    await createTrip(tripName.trim());
+    setCreating(false);
+    setCreateDialogOpen(false);
+    setTripName('');
+  }, [tripName, createTrip]);
+
+  const handleAddToTrip = useCallback(
+    async (tripId: string) => {
+      if (!elementId) return;
+      try {
+        await addPlaceToTrip(tripId, elementId);
+        toast.success('Item added to trip successfully!');
+        setDialogOpen(false);
+      } catch {
+        toast.error('Failed to add item to trip.');
+      }
+    },
+    [elementId, addPlaceToTrip],
+  );
+
   return (
-    <Dialog
-      open={dialogOpen}
-      onOpenChange={(open) => {
-        if (!me) {
-          toast.error('You need to be signed in to add a place to a trip');
-          router.push('/sign-in');
-          return;
-        }
-        setDialogOpen(open);
-        if (open) fetchTrips();
-      }}
-    >
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DialogTrigger asChild>
-              <Button variant='outline' size={iconOnly ? 'icon' : 'sm'}>
-                <ListPlus />
-                {!iconOnly && <span>Add this place to a trip</span>}
-              </Button>
-            </DialogTrigger>
-          </TooltipTrigger>
-          <TooltipContent>
-            <span>Add to trip</span>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Add to trip</DialogTitle>
-        </DialogHeader>
-        <div className='max-h-[15rem] space-y-2 overflow-y-auto'>
-          {loading === true ? (
-            <div className='flex items-center justify-center p-10'>
-              <Loader2 className='stroke-primary animate-spin' />
-            </div>
-          ) : trips.length === 0 ? (
-            <div className='text-muted-foreground text-sm'>No trips found.</div>
-          ) : (
-            trips.map((trip) => (
+    <>
+      {/* Create Trip Dialog */}
+      <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create a New Trip</DialogTitle>
+            <DialogDescription>
+              Enter a name for your new trip. You can edit trip details later.
+            </DialogDescription>
+          </DialogHeader>
+          <div className='grid grid-cols-4 items-center gap-4'>
+            <Label htmlFor='name' className='text-right'>
+              Trip Name
+            </Label>
+            <Input
+              autoFocus
+              id='name'
+              value={tripName}
+              onChange={(e) => setTripName(e.target.value)}
+              className='col-span-3'
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              variant='outline'
+              disabled={creating}
+              onClick={() => setCreateDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDialogCreate}
+              disabled={creating || !tripName.trim()}
+            >
+              {creating ? 'Creating...' : 'Create'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Main Add to Trip Dialog */}
+      <Dialog
+        open={dialogOpen && !createDialogOpen}
+        onOpenChange={(open) => {
+          setDialogOpen(open);
+          if (!open) reset();
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add to trip</DialogTitle>
+            <DialogDescription>
+              Select a trip to add this item to.
+            </DialogDescription>
+          </DialogHeader>
+          <div className='grid max-h-60 grid-cols-1 gap-2 overflow-y-auto'>
+            <Button className='justify-start' onClick={handleCreateTrip}>
+              <PlusIcon />
+              <span>Create New</span>
+            </Button>
+            {trips.item.map((trip) => (
               <Button
                 key={trip.id}
                 variant='secondary'
-                className='w-full justify-start'
-                disabled={loading}
+                className='justify-start capitalize'
                 onClick={() => handleAddToTrip(trip.id)}
               >
                 {trip.name}
               </Button>
-            ))
-          )}
-        </div>
-      </DialogContent>
-    </Dialog>
+            ))}
+          </div>
+          <DialogFooter>
+            <Button variant='outline' onClick={() => setDialogOpen(false)}>
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='outline'
+              onClick={handleOpenDialog}
+              size={iconOnly ? 'icon' : 'sm'}
+            >
+              <ListPlus />
+              {!iconOnly && <span>Add to trip</span>}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Add to trip</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </>
   );
 }

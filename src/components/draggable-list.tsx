@@ -35,13 +35,13 @@ function SortableItem({ item }: { item: IAttraction }) {
       {...listeners}
       className='flex w-full cursor-move flex-col items-center gap-2.5 overflow-hidden rounded-md bg-violet-50 hover:opacity-80 sm:flex-row'
     >
-      <div className='w-full lg:max-w-28'>
+      <div className='w-full md:max-w-28 md:min-w-28'>
         <AspectRatio ratio={1 / 1}>
           <ImageWithFallback
             fill
             alt={item.name}
             src={item.image}
-            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+            sizes='30rem'
             className='object-cover object-center'
           />
         </AspectRatio>
