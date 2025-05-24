@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useStore } from 'zustand';
 
+import AddTripButton from '@/components/add-trip-button';
 import Address from '@/components/address';
 import Feature from '@/components/feature';
 import Loading from '@/components/loading';
@@ -47,10 +48,13 @@ export default function HotelDetailsPage() {
           <span className='text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>
             {hotel.item.name}
           </span>
-          <SavePlaceButton
-            elementId={hotel.item.elementId}
-            isFavorite={hotel.item.isFavorite}
-          />
+          <div className='flex flex-row items-center gap-2'>
+            <AddTripButton elementId={hotel.item.elementId} />
+            <SavePlaceButton
+              elementId={hotel.item.elementId}
+              isFavorite={hotel.item.isFavorite}
+            />
+          </div>
         </div>
         <Rating
           rating={hotel.item.rating}

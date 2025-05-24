@@ -168,7 +168,7 @@ export default function AddTripButton({ elementId, iconOnly = false }: Props) {
             <Button
               variant='outline'
               onClick={handleOpenDialog}
-              size={iconOnly ? 'icon' : 'sm'}
+              size={iconOnly ? 'icon' : 'default'}
             >
               <ListPlus />
               {!iconOnly && <span>Add to trip</span>}

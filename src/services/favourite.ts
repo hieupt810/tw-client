@@ -6,4 +6,12 @@ export class FavouriteService {
   static list() {
     return api.get(FavouriteRoutes.DEFAULT).json<IAttraction[]>();
   }
+
+  static add(placeId: string) {
+    return api.post(FavouriteRoutes.DEFAULT, { json: { placeId } }).json();
+  }
+
+  static remove(placeId: string) {
+    return api.delete(`${FavouriteRoutes.DEFAULT}${placeId}`).json();
+  }
 }

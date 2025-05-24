@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useStore } from 'zustand';
 
+import AddTripButton from '@/components/add-trip-button';
 import Address from '@/components/address';
 import Loading from '@/components/loading';
 import Rating from '@/components/rating';
@@ -46,10 +47,13 @@ export default function ThingToDoDetailsPage() {
           <span className='text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>
             {thingToDo.item.name}
           </span>
-          <SavePlaceButton
-            elementId={thingToDo.item.elementId}
-            isFavorite={thingToDo.item.isFavorite}
-          />
+          <div className='flex flex-row items-center gap-2'>
+            <AddTripButton elementId={thingToDo.item.elementId} />
+            <SavePlaceButton
+              elementId={thingToDo.item.elementId}
+              isFavorite={thingToDo.item.isFavorite}
+            />
+          </div>
         </div>
         <Rating
           rating={thingToDo.item.rating}
