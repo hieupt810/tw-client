@@ -47,7 +47,10 @@ export default function HotelDetailsPage() {
           <span className='text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>
             {hotel.item.name}
           </span>
-          <SavePlaceButton elementId={hotel.item.elementId} />
+          <SavePlaceButton
+            elementId={hotel.item.elementId}
+            isFavorite={hotel.item.isFavorite}
+          />
         </div>
         <Rating
           rating={hotel.item.rating}

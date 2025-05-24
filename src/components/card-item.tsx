@@ -41,7 +41,11 @@ export default function CardItem({ item }: Props) {
       </Link>
       <div className='absolute top-2 right-2 z-10 flex items-center gap-1.5'>
         <AddTripButton elementId={item.elementId} iconOnly />
-        <SavePlaceButton elementId={item.elementId} iconOnly />
+        <SavePlaceButton
+          elementId={item.elementId}
+          isFavorite={item.isFavorite}
+          iconOnly
+        />
       </div>
     </div>
   );

@@ -46,7 +46,10 @@ export default function ThingToDoDetailsPage() {
           <span className='text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>
             {thingToDo.item.name}
           </span>
-          <SavePlaceButton elementId={thingToDo.item.elementId} />
+          <SavePlaceButton
+            elementId={thingToDo.item.elementId}
+            isFavorite={thingToDo.item.isFavorite}
+          />
         </div>
         <Rating
           rating={thingToDo.item.rating}

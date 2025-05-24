@@ -38,7 +38,7 @@ export default function AddTripButton({ elementId, iconOnly = false }: Props) {
       setLoading(true);
       try {
         await TripService.addPlaceToTrip(tripId, elementId);
-        toast.success('Added to trip!');
+        toast.success('Success');
         setDialogOpen(false);
       } catch {
         toast.error('Failed to add to trip');
@@ -85,15 +85,14 @@ export default function AddTripButton({ elementId, iconOnly = false }: Props) {
             </DialogTrigger>
           </TooltipTrigger>
           <TooltipContent>
-            <span>Add this place to a trip</span>
+            <span>Add to trip</span>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add this place to a trip</DialogTitle>
+          <DialogTitle>Add to trip</DialogTitle>
         </DialogHeader>
-
         <div className='max-h-[15rem] space-y-2 overflow-y-auto'>
           {loading === true ? (
             <div className='flex items-center justify-center p-10'>

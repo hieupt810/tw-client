@@ -47,7 +47,10 @@ export default function RestaurantDetailsPage() {
           <span className='text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>
             {restaurant.item.name}
           </span>
-          <SavePlaceButton elementId={restaurant.item.elementId} />
+          <SavePlaceButton
+            elementId={restaurant.item.elementId}
+            isFavorite={restaurant.item.isFavorite}
+          />
         </div>
         <Rating
           rating={restaurant.item.rating}

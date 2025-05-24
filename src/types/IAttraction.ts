@@ -9,6 +9,7 @@ export interface IAttraction {
   elementId: string;
   email: string | null;
   image: string;
+  isFavorite: boolean;
   latitude: number;
   longitude: number;
   name: string;

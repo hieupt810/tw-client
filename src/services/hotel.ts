@@ -1,5 +1,5 @@
 import api from '@/lib/api';
-import { IAttraction, IAttractionPaging } from '@/types/IAttraction';
+import { IAttractionPaging } from '@/types/IAttraction';
 import { IHotel } from '@/types/IHotel';
 
 class Routes {
@@ -13,12 +13,8 @@ export class HotelService {
       .json<IAttractionPaging>();
   }
 
-  static shortDetails(id: string) {
-    return api.get(`${Routes.DEFAULT}${id}/short-details`).json<IAttraction>();
-  }
-
   static details(id: string) {
-    return api.get(`${Routes.DEFAULT}${id}/details`).json<IHotel>();
+    return api.get(`${Routes.DEFAULT}${id}/`).json<IHotel>();
   }
 
   static delete(id: string) {

@@ -1,5 +1,5 @@
 import api from '@/lib/api';
-import { IAttraction, IAttractionPaging } from '@/types/IAttraction';
+import { IAttractionPaging } from '@/types/IAttraction';
 import { IRestaurant } from '@/types/IRestaurant';
 
 class Routes {
@@ -13,12 +13,8 @@ export class RestaurantService {
       .json<IAttractionPaging>();
   }
 
-  static shortDetails(id: string) {
-    return api.get(`${Routes.DEFAULT}${id}/short-details`).json<IAttraction>();
-  }
-
   static details(id: string) {
-    return api.get(`${Routes.DEFAULT}${id}/details`).json<IRestaurant>();
+    return api.get(`${Routes.DEFAULT}${id}/`).json<IRestaurant>();
   }
 
   static delete(id: string) {
