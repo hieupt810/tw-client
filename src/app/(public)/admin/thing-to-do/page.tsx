@@ -74,7 +74,7 @@ export default function ThingToDoAdminPage() {
 
   if (loading) return <Loading />;
   return (
-    <div className='px-10'>
+    <div className='py-5'>
       <div className='flex items-center justify-between'>
         <SectionTitle text='Manage Things To Do' />
         <div className='flex items-center gap-2'>

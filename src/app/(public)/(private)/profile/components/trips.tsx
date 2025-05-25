@@ -103,13 +103,13 @@ export default function TripsComponent() {
         </DialogContent>
       </Dialog>
       <SectionTitle text='Your Trips' />
-      <div className='grid grid-cols-2 gap-10'>
+      <div className='grid grid-cols-2 gap-5'>
         <button
-          className='bg-primary text-background flex h-full min-h-40 w-full cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded-md shadow-md transition-all duration-200 ease-in-out select-none hover:shadow-lg'
+          className='bg-primary text-background flex h-36 w-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-md shadow-md transition-all duration-200 ease-in-out select-none hover:shadow-lg'
           onClick={handleCreateTrip}
         >
           <div>
-            <CirclePlus size={36} color='white' />
+            <CirclePlus size={28} color='white' />
           </div>
           <span className='text-lg font-medium'>Create New</span>
         </button>
@@ -117,15 +117,15 @@ export default function TripsComponent() {
           <Link
             key={trip.id}
             href={`/trip/${trip.id}`}
-            className='flex min-h-40 cursor-pointer flex-col justify-between gap-6 overflow-hidden rounded-md bg-white p-5 shadow-md transition-all duration-200 ease-in-out select-none hover:shadow-lg'
+            className='flex h-36 cursor-pointer flex-col justify-between overflow-hidden rounded-md bg-white p-5 shadow-md transition-all duration-200 ease-in-out select-none hover:shadow-lg'
           >
             <div className='flex flex-row items-center gap-5'>
-              <span className='text-primary grow truncate text-xl font-bold capitalize'>
+              <span className='text-primary grow truncate text-lg font-bold capitalize'>
                 {trip.name}
               </span>
             </div>
 
-            <div className='grid grid-cols-3 gap-5 text-sm'>
+            <div className='flex flex-row gap-14 text-sm'>
               <div className='flex flex-row items-center gap-2'>
                 <div>
                   <Hotel size={16} />
