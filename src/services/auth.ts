@@ -13,7 +13,9 @@ export class AuthService {
   static signUp(values: ISignUpSchema) {
     const { fullName, email, password } = values;
     return api
-      .post(AuthRoutes.SIGN_UP, { json: { fullName, email, password } })
+      .post(AuthRoutes.SIGN_UP, {
+        json: { full_name: fullName, email, password },
+      })
       .json();
   }
 

@@ -29,7 +29,7 @@ export default function Message({ text = '', isUser = false }: Props) {
           <AspectRatio ratio={1 / 1}>
             <ImageWithFallback
               fill
-              alt={me ? me.fullName : 'User'}
+              alt={me ? me.full_name : 'User'}
               src={me && me.avatar ? me.avatar : '/fallback-avatar.jpg'}
               sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
             />

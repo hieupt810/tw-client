@@ -1,7 +1,7 @@
 export interface IAccessToken {
-  accessToken: string;
+  access_token: string;
 }
 
 export interface ITokenPair extends IAccessToken {
-  refreshToken: string;
+  refresh_token: string;
 }

@@ -48,13 +48,13 @@ const api = ky.create({
             // Update the access token in local storage
             localStorage.setItem(
               Constant.LOCAL_STORAGE_KEY.ACCESS_TOKEN_KEY,
-              response.accessToken,
+              response.access_token,
             );
 
             // Request the original request again with the new access token
             request.headers.set(
               'Authorization',
-              `Bearer ${response.accessToken}`,
+              `Bearer ${response.access_token}`,
             );
             return ky(request);
           } catch {

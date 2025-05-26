@@ -3,14 +3,12 @@ import { IAttraction } from './IAttraction';
 export interface ITripDetails {
   places: IAttraction[];
   trips: {
-    createdAt: string;
+    created_at: string;
     id: string;
-    isOptimized: boolean;
+    is_optimized: boolean;
     name: string;
-    totalDistance: number | null;
-    totalDistanceKm: number | null;
-    totalPlaces: number;
-    updatedAt: string;
-    userId: string;
+    total_places: number;
+    updated_at: string;
+    user_id: string;
   };
 }

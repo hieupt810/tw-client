@@ -38,7 +38,14 @@ export default function HomePage() {
       resetRestaurants();
       resetThingsToDo();
     };
-  }, [fetchHotels, fetchRestaurants, fetchThingsToDo]);
+  }, [
+    fetchHotels,
+    fetchRestaurants,
+    fetchThingsToDo,
+    resetHotels,
+    resetRestaurants,
+    resetThingsToDo,
+  ]);
 
   useEffect(() => {
     fetchAll();

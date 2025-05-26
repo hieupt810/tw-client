@@ -8,20 +8,20 @@ export const hotelEditSchema = z.object({
   street: z.string().nullable(),
   city: z.object({
     name: z.string(),
-    postalCode: z.string(),
+    postal_code: z.string(),
   }),
   latitude: z.number(),
   longitude: z.number(),
   description: z.string().nullable(),
   features: z.array(z.string()),
-  hotelClass: z.string(),
-  numberOfRooms: z
+  hotel_class: z.string(),
+  number_of_rooms: z
     .number()
     .int()
     .min(1, { message: 'Number of rooms must be at least 1.' }),
-  priceLevels: z.array(z.string()),
+  price_levels: z.array(z.string()),
   photos: z.array(z.string()),
-  aiReviewsSummary: z.string().nullable(),
+  ai_reviews_summary: z.string().nullable(),
 });
 
 export type IHotelEditSchema = z.infer<typeof hotelEditSchema>;

@@ -1,8 +1,8 @@
 export interface ITrip {
-  createdAt: string;
+  created_at: string;
   id: string;
-  isOptimized: boolean;
+  is_optimized: boolean;
   name: string;
-  placeCount: number;
-  updatedAt: string;
+  place_count: number;
+  updated_at: string;
 }

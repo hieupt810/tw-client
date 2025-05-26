@@ -1,6 +1,6 @@
 export interface IMe {
   avatar: string | null;
-  fullName: string;
+  full_name: string;
   id: string;
-  isAdmin: boolean;
+  is_admin: boolean;
 }

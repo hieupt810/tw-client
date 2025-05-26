@@ -33,11 +33,11 @@ export default function SignInPage() {
       // Store the tokens in local storage
       localStorage.setItem(
         Constant.LOCAL_STORAGE_KEY.ACCESS_TOKEN_KEY,
-        data.accessToken,
+        data.access_token,
       );
       localStorage.setItem(
         Constant.LOCAL_STORAGE_KEY.REFRESH_TOKEN_KEY,
-        data.refreshToken,
+        data.refresh_token,
       );
 
       // Toast success message

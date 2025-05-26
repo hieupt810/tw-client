@@ -78,12 +78,12 @@ export default function AppNavbar() {
                       width={5000}
                       height={5000}
                       src={me.avatar || '/fallback-avatar.jpg'}
-                      alt={me.fullName}
+                      alt={me.full_name}
                     />
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className='z-[1000] w-52'>
-                  <DropdownMenuLabel>Hi, {me.fullName}</DropdownMenuLabel>
+                  <DropdownMenuLabel>Hi, {me.full_name}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
                     <Link href='/profile' passHref>

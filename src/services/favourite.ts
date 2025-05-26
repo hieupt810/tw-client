@@ -8,7 +8,9 @@ export class FavouriteService {
   }
 
   static add(placeId: string) {
-    return api.post(FavouriteRoutes.DEFAULT, { json: { placeId } }).json();
+    return api
+      .post(FavouriteRoutes.DEFAULT, { json: { place_id: placeId } })
+      .json();
   }
 
   static remove(placeId: string) {

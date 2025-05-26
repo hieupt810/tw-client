@@ -147,7 +147,7 @@ export default function TripsComponent() {
             </div>
 
             <span className='text-muted-foreground text-sm'>
-              Last updated: {formatDate(trip.updatedAt)}
+              Last updated: {formatDate(trip.updated_at)}
             </span>
           </Link>
         ))}

@@ -1,9 +1,7 @@
 import { IAttraction } from './IAttraction';
 
 export interface ITripOptimize {
-  isOptimized: boolean;
+  is_optimized: boolean;
   message: string;
   places: IAttraction[];
-  totalDistance: number;
-  totalDistanceKm: number;
 }

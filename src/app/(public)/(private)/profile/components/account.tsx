@@ -38,7 +38,7 @@ export default function AccountComponent() {
               width={5000}
               height={5000}
               src={me.avatar || '/fallback-avatar.jpg'}
-              alt={me.fullName}
+              alt={me.full_name}
             />
           </div>
           <div className='col-span-2 flex flex-col justify-center gap-3'>
@@ -53,7 +53,7 @@ export default function AccountComponent() {
               <Input
                 disabled
                 id='fullName'
-                value={me.fullName}
+                value={me.full_name}
                 className='col-span-2'
               />
             </div>
