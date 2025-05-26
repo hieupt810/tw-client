@@ -7,10 +7,8 @@ export class FavouriteService {
     return api.get(FavouriteRoutes.DEFAULT).json<IAttraction[]>();
   }
 
-  static add(placeId: string) {
-    return api
-      .post(FavouriteRoutes.DEFAULT, { json: { place_id: placeId } })
-      .json();
+  static add(place_id: string) {
+    return api.post(FavouriteRoutes.DEFAULT, { json: { place_id } }).json();
   }
 
   static remove(placeId: string) {
