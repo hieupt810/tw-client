@@ -5,10 +5,9 @@ export interface IHotel extends IAttraction {
   photos: string[];
   website: string | null;
 
-  aiReviewsSummary: string;
+  ai_reviews_summary: string;
   description: string;
   features: string[];
-  hotelClass: string;
-  numberOfRooms: number;
-  priceLevels: string[];
+  hotel_class: string;
+  number_of_rooms: number;
 }

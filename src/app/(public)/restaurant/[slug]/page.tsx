@@ -37,7 +37,7 @@ export default function RestaurantDetailsPage() {
     return () => {
       reset();
     };
-  }, [slug, fetchRestaurant]);
+  }, [slug, fetchRestaurant, reset]);
 
   if (!restaurant.item) return <Loading />;
 
@@ -49,16 +49,16 @@ export default function RestaurantDetailsPage() {
             {restaurant.item.name}
           </span>
           <div className='flex flex-row items-center gap-2'>
-            <AddTripButton elementId={restaurant.item.elementId} />
+            <AddTripButton elementId={restaurant.item.element_id} />
             <SavePlaceButton
-              elementId={restaurant.item.elementId}
-              isFavorite={restaurant.item.isFavorite}
+              elementId={restaurant.item.element_id}
+              isFavorite={restaurant.item.is_favorite}
             />
           </div>
         </div>
         <Rating
           rating={restaurant.item.rating}
-          ratingHistorgram={restaurant.item.ratingHistogram}
+          ratingHistorgram={restaurant.item.rating_histogram}
         />
         <Address
           street={restaurant.item.street}
@@ -139,8 +139,8 @@ export default function RestaurantDetailsPage() {
             <div className='flex flex-col'>
               <SectionTitle text='Meal Types' />
               <div className='text-muted-foreground flex flex-col gap-1.5'>
-                {restaurant.item.mealTypes.length > 0 ? (
-                  restaurant.item.mealTypes.map((type) => (
+                {restaurant.item.meal_types.length > 0 ? (
+                  restaurant.item.meal_types.map((type) => (
                     <span key={type}>{type}</span>
                   ))
                 ) : (
@@ -151,8 +151,8 @@ export default function RestaurantDetailsPage() {
             <div className='flex flex-col'>
               <SectionTitle text='Dietary Restrictions' />
               <div className='text-muted-foreground flex flex-col gap-1.5'>
-                {restaurant.item.dietaryRestrictions.length > 0 ? (
-                  restaurant.item.dietaryRestrictions.map((restriction) => (
+                {restaurant.item.dietary_restrictions.length > 0 ? (
+                  restaurant.item.dietary_restrictions.map((restriction) => (
                     <span key={restriction}>{restriction}</span>
                   ))
                 ) : (
@@ -163,7 +163,7 @@ export default function RestaurantDetailsPage() {
             <div className='flex flex-col'>
               <SectionTitle text='Price' />
               <span className='text-muted-foreground'>
-                {restaurant.item.priceLevels.join(' - ')}
+                {restaurant.item.price_levels.join(' - ')}
               </span>
             </div>
           </div>
@@ -200,13 +200,13 @@ export default function RestaurantDetailsPage() {
                 <div>
                   <SquareMenu size={20} className='stroke-primary' />
                 </div>
-                {restaurant.item.menuWebUrl ? (
+                {restaurant.item.menu_web_url ? (
                   <Link
                     target='_blank'
-                    href={restaurant.item.menuWebUrl}
+                    href={restaurant.item.menu_web_url}
                     className='hover:text-primary underline underline-offset-4'
                   >
-                    {restaurant.item.menuWebUrl}
+                    {restaurant.item.menu_web_url}
                   </Link>
                 ) : (
                   <span>No information</span>
@@ -218,7 +218,7 @@ export default function RestaurantDetailsPage() {
         <div className='col-span-full grid grid-rows-2 gap-10 md:col-span-1'>
           <div className='col-span-1 flex flex-col'>
             <SectionTitle text='Rating Distribution' />
-            <RatingChart histogram={restaurant.item.ratingHistogram} />
+            <RatingChart histogram={restaurant.item.rating_histogram} />
           </div>
           <div className='col-span-1 flex flex-col'>
             <SectionTitle text='Amenities' />

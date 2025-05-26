@@ -3,7 +3,9 @@
 import { Heart } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
+import { useStore } from 'zustand';
 
+import { useAuthStore } from '@/stores/auth-store';
 import { useFavouriteStore } from '@/stores/favourite-store';
 
 import { Button } from './ui/button';
@@ -25,19 +27,26 @@ export default function SavePlaceButton({
   isFavorite,
   iconOnly = false,
 }: Props) {
-  const { add, remove } = useFavouriteStore();
-  const [favorite, setFavorite] = useState(isFavorite);
+  const me = useStore(useAuthStore, (state) => state.me);
+  const { add, remove } = useStore(useFavouriteStore, (state) => state);
+  const [favorite, setFavorite] = useState<boolean>(isFavorite);
 
   const handleClick = useCallback(async () => {
-    try {
-      if (favorite) await remove(elementId);
-      else await add(elementId);
-      setFavorite((prev) => !prev);
-      toast.success('Success');
-    } catch {
-      toast.error('Something went wrong');
+    if (!me) {
+      toast.error('You need to be logged in to save places');
+      return;
     }
-  }, [favorite, elementId, add, remove]);
+    if (favorite) await remove(elementId);
+    else await add(elementId);
+
+    const error = useFavouriteStore.getState().error;
+    if (error) {
+      toast.error(error);
+      return;
+    }
+    setFavorite((prev) => !prev);
+    toast.success('Success');
+  }, [elementId, favorite, me, add, remove]);
 
   return (
     <TooltipProvider>

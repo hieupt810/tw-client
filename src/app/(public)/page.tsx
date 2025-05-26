@@ -11,15 +11,21 @@ import { useRestaurantStore } from '@/stores/restaurant-store';
 import { useThingToDoStore } from '@/stores/thing-to-do-store';
 
 export default function HomePage() {
-  const { hotels, fetchHotels } = useStore(useHotelStore, (state) => state);
-  const { restaurants, fetchRestaurants } = useStore(
-    useRestaurantStore,
-    (state) => state,
-  );
-  const { thingsToDo, fetchThingsToDo } = useStore(
-    useThingToDoStore,
-    (state) => state,
-  );
+  const {
+    hotels,
+    reset: resetHotels,
+    fetchHotels,
+  } = useStore(useHotelStore, (state) => state);
+  const {
+    restaurants,
+    reset: resetRestaurants,
+    fetchRestaurants,
+  } = useStore(useRestaurantStore, (state) => state);
+  const {
+    thingsToDo,
+    reset: resetThingsToDo,
+    fetchThingsToDo,
+  } = useStore(useThingToDoStore, (state) => state);
 
   const fetchAll = useCallback(async () => {
     await Promise.all([
@@ -27,6 +33,11 @@ export default function HomePage() {
       fetchRestaurants(1, 10),
       fetchThingsToDo(1, 10),
     ]);
+    return () => {
+      resetHotels();
+      resetRestaurants();
+      resetThingsToDo();
+    };
   }, [fetchHotels, fetchRestaurants, fetchThingsToDo]);
 
   useEffect(() => {

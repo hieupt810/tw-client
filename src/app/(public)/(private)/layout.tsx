@@ -21,7 +21,7 @@ export default function PrivateLayout({
       router.push('/sign-in');
       toast.error('You need to sign in to access this page');
     }
-  }, [me, isLoading]);
+  }, [me, isLoading, router]);
 
   if (!me) return <Loading />;
   return children;

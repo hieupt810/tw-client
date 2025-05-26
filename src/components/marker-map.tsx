@@ -138,7 +138,7 @@ export default function MarkerMap({
             icon = RED_MARKER;
           }
           return (
-            <Marker key={item.elementId} position={position} icon={icon}>
+            <Marker key={item.element_id} position={position} icon={icon}>
               <Popup>
                 {idx + 1}. {item.name}
               </Popup>

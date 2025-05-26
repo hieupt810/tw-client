@@ -66,7 +66,7 @@ export default function HotelAdminPage() {
         {hotels.items.length === 0 && <div>No hotels found.</div>}
         {hotels.items.map((hotel) => (
           <Card
-            key={hotel.elementId}
+            key={hotel.element_id}
             className='flex flex-row items-center justify-between p-4'
           >
             <div>
@@ -80,7 +80,7 @@ export default function HotelAdminPage() {
               <Button
                 variant='outline'
                 onClick={() =>
-                  router.push(`/admin/hotel/edit/${hotel.elementId}`)
+                  router.push(`/admin/hotel/edit/${hotel.element_id}`)
                 }
               >
                 Edit

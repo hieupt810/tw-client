@@ -101,7 +101,7 @@ export default function ThingToDoAdminPage() {
         {things.length === 0 && <div>No things to do found.</div>}
         {things.map((thing) => (
           <Card
-            key={thing.elementId}
+            key={thing.element_id}
             className='flex flex-row items-center justify-between p-4'
           >
             <div>
@@ -115,14 +115,14 @@ export default function ThingToDoAdminPage() {
               <Button
                 variant='outline'
                 onClick={() =>
-                  router.push(`/admin/thing-to-do/edit/${thing.elementId}`)
+                  router.push(`/admin/thing-to-do/edit/${thing.element_id}`)
                 }
               >
                 Edit
               </Button>
               <Button
                 variant='destructive'
-                onClick={() => setDeleteId(thing.elementId)}
+                onClick={() => setDeleteId(thing.element_id)}
               >
                 Delete
               </Button>

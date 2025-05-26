@@ -53,7 +53,7 @@ export default function HotelsPage() {
       />
       <div className='my-10 grid grid-cols-2 gap-6 md:grid-cols-4'>
         {hotels.items.map((hotel) => (
-          <CardItem key={hotel.elementId} item={hotel} />
+          <CardItem key={hotel.element_id} item={hotel} />
         ))}
       </div>
       <div className='flex items-center justify-center pb-10'>

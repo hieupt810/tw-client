@@ -101,7 +101,7 @@ export default function RestaurantAdminPage() {
         {restaurants.length === 0 && <div>No restaurants found.</div>}
         {restaurants.map((restaurant) => (
           <Card
-            key={restaurant.elementId}
+            key={restaurant.element_id}
             className='flex flex-row items-center justify-between p-4'
           >
             <div>
@@ -117,14 +117,14 @@ export default function RestaurantAdminPage() {
               <Button
                 variant='outline'
                 onClick={() =>
-                  router.push(`/admin/restaurant/edit/${restaurant.elementId}`)
+                  router.push(`/admin/restaurant/edit/${restaurant.element_id}`)
                 }
               >
                 Edit
               </Button>
               <Button
                 variant='destructive'
-                onClick={() => setDeleteId(restaurant.elementId)}
+                onClick={() => setDeleteId(restaurant.element_id)}
               >
                 Delete
               </Button>

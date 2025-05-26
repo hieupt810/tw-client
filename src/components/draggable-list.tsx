@@ -8,9 +8,11 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Grip, Loader2 } from 'lucide-react';
+import { Loader2, Minus } from 'lucide-react';
+import { useStore } from 'zustand';
 
 import { cn } from '@/lib/utils';
+import { useTripStore } from '@/stores/trip-store';
 import { IAttraction } from '@/types/IAttraction';
 
 import ImageWithFallback from './image-with-fallback';
@@ -18,9 +20,11 @@ import SectionTitle from './section-title';
 import { AspectRatio } from './ui/aspect-ratio';
 import { Button } from './ui/button';
 
-function SortableItem({ item }: { item: IAttraction }) {
+function SortableItem({ item }: { elementId: string; item: IAttraction }) {
+  const {} = useStore(useTripStore, (state) => state);
+
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: item.elementId });
+    useSortable({ id: item.element_id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -64,14 +68,15 @@ function SortableItem({ item }: { item: IAttraction }) {
           {item.type.toLowerCase().replace(/-/g, ' ')}
         </div>
       </div>
-      <div className='mr-3.5 hidden md:block'>
-        <Grip size={16} />
-      </div>
+      <button className='mr-2 cursor-pointer overflow-hidden rounded-md p-2 hover:bg-red-400/80'>
+        <Minus size={16} />
+      </button>
     </div>
   );
 }
 
 export default function DraggableList({
+  elementId,
   isLoading,
   items,
   setItems,
@@ -79,6 +84,7 @@ export default function DraggableList({
   onSave,
   className,
 }: {
+  elementId: string;
   isLoading: boolean;
   items: IAttraction[];
   setItems: React.Dispatch<React.SetStateAction<IAttraction[]>>;
@@ -91,10 +97,10 @@ export default function DraggableList({
     if (over && active.id !== over.id) {
       setItems((prevItems) => {
         const oldIndex = prevItems.findIndex(
-          (item) => item.elementId === active.id,
+          (item) => item.element_id === active.id,
         );
         const newIndex = prevItems.findIndex(
-          (item) => item.elementId === over.id,
+          (item) => item.element_id === over.id,
         );
         return arrayMove(prevItems, oldIndex, newIndex);
       });
@@ -102,21 +108,35 @@ export default function DraggableList({
   }
 
   return (
-    <div className={cn('flex flex-col', className)}>
-      <SectionTitle text='Places' />
-      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext
-          items={items.map((item) => item.elementId)}
-          strategy={verticalListSortingStrategy}
+    <div
+      className={cn(
+        'flex h-[calc(100dvh-11.5rem)] flex-col justify-between overflow-hidden',
+        className,
+      )}
+    >
+      <div className='flex max-h-[calc(100%-3rem)] grow flex-col'>
+        <SectionTitle text='Places' />
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
         >
-          <div className='max-h-[45rem] space-y-4 overflow-x-hidden overflow-y-auto'>
-            {items.map((item) => (
-              <SortableItem key={item.elementId} item={item} />
-            ))}
-          </div>
-        </SortableContext>
-      </DndContext>
-      <div className='mt-4 flex flex-row items-center justify-end gap-2.5'>
+          <SortableContext
+            items={items.map((item) => item.element_id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className='max-h-full space-y-3.5 overflow-x-hidden overflow-y-auto'>
+              {items.map((item) => (
+                <SortableItem
+                  key={item.element_id}
+                  elementId={elementId}
+                  item={item}
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
+      </div>
+      <div className='flex h-9 flex-row items-center justify-end gap-2.5'>
         {isLoading && (
           <Loader2 size={16} className='stroke-primary animate-spin' />
         )}

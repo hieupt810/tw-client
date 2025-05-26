@@ -10,7 +10,7 @@ export interface IRestaurant extends IAttraction {
   photos: string[];
   website: string | null;
   description: string | null;
-  menuWebUrl: string | null;
+  menu_web_url: string | null;
   hours: {
     monday: SimplifiedHour;
     tuesday: SimplifiedHour;
@@ -23,8 +23,8 @@ export interface IRestaurant extends IAttraction {
   } | null;
   dishes: string[];
   features: string[];
-  dietaryRestrictions: string[];
-  mealTypes: string[];
+  dietary_restrictions: string[];
+  meal_types: string[];
   cuisines: string[];
-  travelerChoiceAward: boolean;
+  traveler_choice_award: boolean;
 }

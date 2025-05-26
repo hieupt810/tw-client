@@ -3,19 +3,19 @@ import { IPaging } from './IPaging';
 export interface IAttraction {
   city: {
     name: string;
-    postalCode: string;
+    postal_code: string;
   };
-  createdAt: string;
-  elementId: string;
+  created_at: string;
+  element_id: string;
   email: string | null;
   image: string;
-  isFavorite: boolean;
+  is_favorite: boolean;
   latitude: number;
   longitude: number;
   name: string;
-  priceLevels: string[];
+  price_levels: string[];
   rating: number;
-  ratingHistogram: number[];
+  rating_histogram: number[];
   street: string | null;
   type: 'HOTEL' | 'RESTAURANT' | 'THING-TO-DO';
 }

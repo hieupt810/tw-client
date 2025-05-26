@@ -16,7 +16,7 @@ export default function CardItem({ item }: Props) {
   return (
     <div className='group relative flex cursor-pointer flex-col select-none'>
       <Link
-        href={`/${item.type.toLowerCase()}/${item.elementId}`}
+        href={`/${item.type.toLowerCase()}/${item.element_id}`}
         className='relative flex flex-col transition-colors group-hover:opacity-90'
       >
         <AspectRatio ratio={1 / 1}>
@@ -35,15 +35,15 @@ export default function CardItem({ item }: Props) {
         </h3>
         <Rating
           rating={item.rating}
-          ratingHistorgram={item.ratingHistogram}
+          ratingHistorgram={item.rating_histogram}
           className='group-hover:opacity-90'
         />
       </Link>
       <div className='absolute top-2 right-2 z-10 flex items-center gap-1.5'>
-        <AddTripButton elementId={item.elementId} iconOnly />
+        <AddTripButton elementId={item.element_id} iconOnly />
         <SavePlaceButton
-          elementId={item.elementId}
-          isFavorite={item.isFavorite}
+          elementId={item.element_id}
+          isFavorite={item.is_favorite}
           iconOnly
         />
       </div>

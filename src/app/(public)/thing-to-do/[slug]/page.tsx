@@ -36,7 +36,7 @@ export default function ThingToDoDetailsPage() {
     return () => {
       reset();
     };
-  }, [slug, fetchThingToDo]);
+  }, [slug, fetchThingToDo, reset]);
 
   if (!thingToDo.item) return <Loading />;
 
@@ -48,16 +48,16 @@ export default function ThingToDoDetailsPage() {
             {thingToDo.item.name}
           </span>
           <div className='flex flex-row items-center gap-2'>
-            <AddTripButton elementId={thingToDo.item.elementId} />
+            <AddTripButton elementId={thingToDo.item.element_id} />
             <SavePlaceButton
-              elementId={thingToDo.item.elementId}
-              isFavorite={thingToDo.item.isFavorite}
+              elementId={thingToDo.item.element_id}
+              isFavorite={thingToDo.item.is_favorite}
             />
           </div>
         </div>
         <Rating
           rating={thingToDo.item.rating}
-          ratingHistorgram={thingToDo.item.ratingHistogram}
+          ratingHistorgram={thingToDo.item.rating_histogram}
         />
         <Address
           street={thingToDo.item.street}
@@ -131,7 +131,7 @@ export default function ThingToDoDetailsPage() {
         </div>
         <div className='col-span-full flex flex-col md:col-span-1'>
           <SectionTitle text='Rating Distribution' />
-          <RatingChart histogram={thingToDo.item.ratingHistogram} />
+          <RatingChart histogram={thingToDo.item.rating_histogram} />
         </div>
       </div>
       <div className='flex flex-col py-10'>

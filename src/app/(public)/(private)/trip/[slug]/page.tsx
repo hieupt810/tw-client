@@ -65,7 +65,7 @@ export default function TripPage() {
         setIsSaving(true);
         await TripService.reorder(
           slug,
-          items.map((item) => item.elementId),
+          items.map((item) => item.element_id),
         );
         toast.success('Order saved successfully');
       } catch {
@@ -88,16 +88,17 @@ export default function TripPage() {
   if (isLoading) return <Loading />;
 
   return (
-    <div className='grid grid-cols-5 gap-4 py-10'>
+    <div className='grid grid-cols-5 gap-1.5 py-10'>
       <DraggableList
         items={items}
         setItems={setItems}
+        elementId={slug as string}
         isLoading={isLoading || isSaving}
         onOptimize={handleOptimizeTrip}
         onSave={handleSaveOrder}
         className='col-span-2'
       />
-      <div className='col-span-3 flex max-h-[50rem] flex-col'>
+      <div className='col-span-3 flex flex-col'>
         <SectionTitle text='Map' />
         <MarkerMap zoom={11} items={items} />
       </div>

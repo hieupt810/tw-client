@@ -49,7 +49,7 @@ export default function ThingsToDoPage() {
       />
       <div className='my-10 grid grid-cols-2 gap-6 md:grid-cols-4'>
         {thingsToDo.items.map((thing) => (
-          <CardItem key={thing.elementId} item={thing} />
+          <CardItem key={thing.element_id} item={thing} />
         ))}
       </div>
       <div className='flex items-center justify-center pb-10'>

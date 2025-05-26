@@ -40,7 +40,7 @@ export const useFavouriteStore = create<State & Action>((set) => ({
   },
 
   async add(id: string) {
-    set({ isLoading: true });
+    set({ error: '', isLoading: true });
     try {
       await FavouriteService.add(id);
     } catch {

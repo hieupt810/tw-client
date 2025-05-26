@@ -37,7 +37,7 @@ export default function HotelDetailsPage() {
     return () => {
       reset();
     };
-  }, [slug, fetchHotel]);
+  }, [slug, fetchHotel, reset]);
 
   if (!hotel.item) return <Loading />;
 
@@ -49,16 +49,16 @@ export default function HotelDetailsPage() {
             {hotel.item.name}
           </span>
           <div className='flex flex-row items-center gap-2'>
-            <AddTripButton elementId={hotel.item.elementId} />
+            <AddTripButton elementId={hotel.item.element_id} />
             <SavePlaceButton
-              elementId={hotel.item.elementId}
-              isFavorite={hotel.item.isFavorite}
+              elementId={hotel.item.element_id}
+              isFavorite={hotel.item.is_favorite}
             />
           </div>
         </div>
         <Rating
           rating={hotel.item.rating}
-          ratingHistorgram={hotel.item.ratingHistogram}
+          ratingHistorgram={hotel.item.rating_histogram}
         />
         <Address street={hotel.item.street} city={hotel.item.city.name} />
         <ThumbnailsCarousel images={hotel.item.photos} className='mt-4' />
@@ -68,7 +68,7 @@ export default function HotelDetailsPage() {
           <TextSection
             title='AI Review Summary'
             text={
-              hotel.item.aiReviewsSummary ||
+              hotel.item.ai_reviews_summary ||
               'Do not have enough reviews for AI summary.'
             }
           />
@@ -108,16 +108,16 @@ export default function HotelDetailsPage() {
           <div className='flex flex-col'>
             <SectionTitle text='Additional Information' />
             <div className='text-muted-foreground flex flex-col gap-1.5'>
-              <span>Price: {hotel.item.priceLevels.join(' - ')}</span>
-              <span>Hotel Class: {hotel.item.hotelClass}</span>
-              <span>Number of Rooms: {hotel.item.numberOfRooms}</span>
+              <span>Price: {hotel.item.price_levels.join(' - ')}</span>
+              <span>Hotel Class: {hotel.item.hotel_class}</span>
+              <span>Number of Rooms: {hotel.item.number_of_rooms}</span>
             </div>
           </div>
         </div>
         <div className='col-span-full grid grid-rows-2 gap-10 md:col-span-1'>
           <div className='col-span-1 flex flex-col'>
             <SectionTitle text='Rating Distribution' />
-            <RatingChart histogram={hotel.item.ratingHistogram} />
+            <RatingChart histogram={hotel.item.rating_histogram} />
           </div>
           <div className='col-span-1 flex flex-col'>
             <SectionTitle text='Amenities' />

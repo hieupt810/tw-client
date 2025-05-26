@@ -50,7 +50,7 @@ export default function RestaurantsPage() {
       />
       <div className='my-10 grid grid-cols-2 gap-6 md:grid-cols-4'>
         {restaurants.items.map((restaurant) => (
-          <CardItem key={restaurant.elementId} item={restaurant} />
+          <CardItem key={restaurant.element_id} item={restaurant} />
         ))}
       </div>
       <div className='flex items-center justify-center pb-10'>

@@ -27,6 +27,12 @@ export class TripService {
     });
   }
 
+  static removePlaceFromTrip(tripId: string, placeId: string) {
+    return api
+      .delete(`${Routes.DEFAULT}${tripId}/places/${placeId}`)
+      .json<IAttraction[]>();
+  }
+
   static optimizeTrip(tripId: string) {
     return api
       .post(`${Routes.DEFAULT}${tripId}/optimize`)
