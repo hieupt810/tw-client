@@ -119,10 +119,15 @@ export default function TripsComponent() {
             href={`/trip/${trip.id}`}
             className='flex h-36 cursor-pointer flex-col justify-between overflow-hidden rounded-md bg-white p-5 shadow-md transition-all duration-200 ease-in-out select-none hover:shadow-lg'
           >
-            <div className='flex flex-row items-center gap-5'>
+            <div className='flex flex-row items-center justify-between gap-5'>
               <span className='text-primary grow truncate text-lg font-bold capitalize'>
                 {trip.name}
               </span>
+              {trip.is_optimized && (
+                <span className='border-primary text-primary rounded-md border px-1.5 text-xs font-medium'>
+                  Optimized
+                </span>
+              )}
             </div>
 
             <div className='flex flex-row gap-14 text-sm'>

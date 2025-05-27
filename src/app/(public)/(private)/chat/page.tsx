@@ -6,10 +6,10 @@ import { useEffect, useRef, useState } from 'react';
 import Message from '@/components/message';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { streamResponse } from '@/lib/utils';
+import api from '@/lib/api';
 
 const HELLO_MESSAGE =
-  "Hello! I'm your enthusiastic guide to the wonders of Vietnam! I'm here to help you plan an unforgettable adventure, filled with stunning landscapes, rich culture, delicious food, and warm hospitality. Whether you're dreaming of bustling city streets, tranquil beaches, ancient temples, or vibrant markets, I'm ready to share my knowledge and help you discover the very best of Vietnam. So, where in Vietnam does your heart long to explore? Let's start planning your dream trip!";
+  'Hello! I am your knowledgeable assistant specializing in tourism in Da Nang, Vietnam. What can I help you with today?';
 
 interface IChat {
   text: string;
@@ -35,20 +35,10 @@ export default function ChatPage() {
   async function handleRequestMessage() {
     setHistory((prev) => [...prev, { text: input, isUser: true }]);
     setInput('');
-    let botMessage = '';
-    for await (const chunk of streamResponse(input)) {
-      botMessage += chunk;
-      setHistory((prev) => {
-        if (prev.length && !prev[prev.length - 1].isUser) {
-          return [
-            ...prev.slice(0, -1),
-            { ...prev[prev.length - 1], text: botMessage },
-          ];
-        } else {
-          return [...prev, { text: botMessage, isUser: false }];
-        }
-      });
-    }
+    const response = await api
+      .post('conversations/', { json: { message: input } })
+      .json<{ message: string }>();
+    setHistory((prev) => [...prev, { text: response.message, isUser: false }]);
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
