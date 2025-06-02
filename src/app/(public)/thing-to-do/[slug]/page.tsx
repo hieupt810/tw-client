@@ -12,6 +12,7 @@ import Address from '@/components/address';
 import Loading from '@/components/loading';
 import Rating from '@/components/rating';
 import RatingChart from '@/components/rating-chart';
+import { ReviewSection } from '@/components/review-section';
 import SavePlaceButton from '@/components/save-place-button';
 import SectionTitle from '@/components/section-title';
 import ThumbnailsCarousel from '@/components/thumbnails-carousel';
@@ -140,6 +141,11 @@ export default function ThingToDoDetailsPage() {
       </div>
       <div className='border-grid border-t py-10'>
         <SectionTitle text='Reviews' />
+        {slug && typeof slug === 'string' ? (
+          <ReviewSection placeId={slug as string} />
+        ) : (
+          <p>There is no review.</p>
+        )}
       </div>
     </>
   );

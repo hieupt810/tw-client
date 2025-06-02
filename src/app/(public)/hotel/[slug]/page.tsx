@@ -10,9 +10,11 @@ import { useStore } from 'zustand';
 import AddTripButton from '@/components/add-trip-button';
 import Address from '@/components/address';
 import Feature from '@/components/feature';
+import { HotelClass } from '@/components/hotel-class';
 import Loading from '@/components/loading';
 import Rating from '@/components/rating';
 import RatingChart from '@/components/rating-chart';
+import { ReviewSection } from '@/components/review-section';
 import SavePlaceButton from '@/components/save-place-button';
 import SectionTitle from '@/components/section-title';
 import ThumbnailsCarousel from '@/components/thumbnails-carousel';
@@ -46,7 +48,8 @@ export default function HotelDetailsPage() {
       <div className='border-grid flex flex-col gap-0.5 border-b py-10'>
         <div className='flex flex-row justify-between'>
           <span className='text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl'>
-            {hotel.item.name}
+            {hotel.item.name}&nbsp;&nbsp;
+            <HotelClass levelClass={hotel.item.hotel_class} />
           </span>
           <div className='flex flex-row items-center gap-2'>
             <AddTripButton elementId={hotel.item.element_id} />
@@ -108,7 +111,7 @@ export default function HotelDetailsPage() {
           <div className='flex flex-col'>
             <SectionTitle text='Additional Information' />
             <div className='text-muted-foreground flex flex-col gap-1.5'>
-              <span>Price: {hotel.item.price_levels.join(' - ')}</span>
+              <span>Price: {hotel.item.price_range}</span>
               <span>Hotel Class: {hotel.item.hotel_class}</span>
               <span>Number of Rooms: {hotel.item.number_of_rooms}</span>
             </div>
@@ -131,6 +134,11 @@ export default function HotelDetailsPage() {
       </div>
       <div className='border-grid border-t py-10'>
         <SectionTitle text='Reviews' />
+        {slug && typeof slug === 'string' ? (
+          <ReviewSection placeId={slug as string} />
+        ) : (
+          <p>There is no review.</p>
+        )}
       </div>
     </>
   );
