@@ -1,12 +1,12 @@
 'use client';
 
 import Autoplay from 'embla-carousel-autoplay';
+import { Loader2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { IAttraction } from '@/types/IAttraction';
 
 import CardItem from './card-item';
-import Loading from './loading';
 import { Carousel, CarouselContent, CarouselItem } from './ui/carousel';
 
 type Props = {
@@ -15,6 +15,7 @@ type Props = {
   autoplay?: boolean;
   description?: string;
   autoplayDelay?: number;
+  isContentLoading?: boolean;
   className?: React.HTMLAttributes<HTMLDivElement>['className'];
 };
 
@@ -24,10 +25,9 @@ export default function PlaceCarousel({
   className,
   description,
   autoplay = false,
+  isContentLoading = false,
   autoplayDelay = 8000,
 }: Props) {
-  if (!items || items.length === 0) return <Loading />;
-
   return (
     <div className={cn('flex w-full flex-col', className)}>
       <div className='mb-5 space-y-1'>
@@ -37,19 +37,29 @@ export default function PlaceCarousel({
         {description && <p className='text-muted-foreground'>{description}</p>}
       </div>
       <div className='w-full'>
-        <Carousel
-          plugins={autoplay ? [Autoplay({ delay: autoplayDelay })] : []}
-          opts={{ align: 'start' }}
-          className='mx-auto'
-        >
-          <CarouselContent>
-            {items.map((item, index) => (
-              <CarouselItem key={index} className='max-w-2xs'>
-                <CardItem item={item} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+        {isContentLoading ? (
+          <div className='flex items-center justify-center'>
+            <Loader2 size={40} className='stroke-primary animate-spin' />
+          </div>
+        ) : items && items.length > 0 ? (
+          <Carousel
+            plugins={autoplay ? [Autoplay({ delay: autoplayDelay })] : []}
+            opts={{ align: 'start' }}
+            className='mx-auto'
+          >
+            <CarouselContent>
+              {items.map((item, index) => (
+                <CarouselItem key={index} className='max-w-2xs'>
+                  <CardItem item={item} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        ) : (
+          <p className='text-center text-sm text-gray-500 italic'>
+            Your favorite list is empty
+          </p>
+        )}
       </div>
     </div>
   );

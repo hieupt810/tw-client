@@ -10,7 +10,7 @@ import { useFavouriteStore } from '@/stores/favourite-store';
 
 export default function AccountComponent() {
   const me = useStore(useAuthStore, (state) => state.me);
-  const { favourites, reset, list } = useStore(
+  const { favourites, reset, list, isLoading } = useStore(
     useFavouriteStore,
     (state) => state,
   );
@@ -64,6 +64,7 @@ export default function AccountComponent() {
         autoplay
         title='Favourites'
         items={favourites}
+        isContentLoading={isLoading}
         autoplayDelay={5000}
       />
     </div>

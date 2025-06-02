@@ -14,6 +14,7 @@ export interface IAttraction {
   longitude: number;
   name: string;
   price_levels: string[];
+  price_range: string | null;
   rating: number;
   rating_histogram: number[];
   street: string | null;

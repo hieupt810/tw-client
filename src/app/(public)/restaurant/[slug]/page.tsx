@@ -13,6 +13,7 @@ import Feature from '@/components/feature';
 import Loading from '@/components/loading';
 import Rating from '@/components/rating';
 import RatingChart from '@/components/rating-chart';
+import { ReviewSection } from '@/components/review-section';
 import SavePlaceButton from '@/components/save-place-button';
 import SectionTitle from '@/components/section-title';
 import ThumbnailsCarousel from '@/components/thumbnails-carousel';
@@ -70,50 +71,64 @@ export default function RestaurantDetailsPage() {
         <div className='col-span-full flex flex-col gap-10 md:col-span-2'>
           <div className='flex flex-col'>
             <SectionTitle text='Opening Hours' />
-            {restaurant.item.hours ? (
+            {restaurant.item.hours?.monday && restaurant.item.hours ? (
               <div className='grid grid-cols-2 gap-x-10 gap-y-4 md:grid-cols-3'>
-                <div className='flex flex-col gap-0.5'>
-                  <span className='font-semibold'>Monday</span>
-                  <span>
-                    {`${restaurant.item.hours.monday.open} - ${restaurant.item.hours.monday.close}`}
-                  </span>
-                </div>
-                <div className='flex flex-col gap-0.5'>
-                  <span className='font-semibold'>Tuesday</span>
-                  <span>
-                    {`${restaurant.item.hours.tuesday.open} - ${restaurant.item.hours.tuesday.close}`}
-                  </span>
-                </div>
-                <div className='flex flex-col gap-0.5'>
-                  <span className='font-semibold'>Wednesday</span>
-                  <span>
-                    {`${restaurant.item.hours.wednesday.open} - ${restaurant.item.hours.wednesday.close}`}
-                  </span>
-                </div>
-                <div className='flex flex-col gap-0.5'>
-                  <span className='font-semibold'>Thursday</span>
-                  <span>
-                    {`${restaurant.item.hours.thursday.open} - ${restaurant.item.hours.thursday.close}`}
-                  </span>
-                </div>
-                <div className='flex flex-col gap-0.5'>
-                  <span className='font-semibold'>Friday</span>
-                  <span>
-                    {`${restaurant.item.hours.friday.open} - ${restaurant.item.hours.friday.close}`}
-                  </span>
-                </div>
-                <div className='flex flex-col gap-0.5'>
-                  <span className='font-semibold'>Saturday</span>
-                  <span>
-                    {`${restaurant.item.hours.saturday.open} - ${restaurant.item.hours.saturday.close}`}
-                  </span>
-                </div>
-                <div className='flex flex-col gap-0.5'>
-                  <span className='font-semibold'>Sunday</span>
-                  <span>
-                    {`${restaurant.item.hours.sunday.open} - ${restaurant.item.hours.sunday.close}`}
-                  </span>
-                </div>
+                {
+                  <div className='flex flex-col gap-0.5'>
+                    <span className='font-semibold'>Monday</span>
+                    <span>
+                      {`${restaurant.item.hours?.monday?.open} - ${restaurant.item.hours?.monday?.close}`}
+                    </span>
+                  </div>
+                }
+                {restaurant.item.hours?.tuesday && (
+                  <div className='flex flex-col gap-0.5'>
+                    <span className='font-semibold'>Tuesday</span>
+                    <span>
+                      {`${restaurant.item.hours?.tuesday?.open} - ${restaurant.item.hours?.tuesday?.close}`}
+                    </span>
+                  </div>
+                )}
+                {restaurant.item.hours?.wednesday && (
+                  <div className='flex flex-col gap-0.5'>
+                    <span className='font-semibold'>Wednesday</span>
+                    <span>
+                      {`${restaurant.item.hours?.wednesday?.open} - ${restaurant.item.hours?.wednesday?.close}`}
+                    </span>
+                  </div>
+                )}
+                {restaurant.item.hours?.thursday && (
+                  <div className='flex flex-col gap-0.5'>
+                    <span className='font-semibold'>Thursday</span>
+                    <span>
+                      {`${restaurant.item.hours?.thursday?.open} - ${restaurant.item.hours?.thursday?.close}`}
+                    </span>
+                  </div>
+                )}
+                {restaurant.item.hours?.friday && (
+                  <div className='flex flex-col gap-0.5'>
+                    <span className='font-semibold'>Friday</span>
+                    <span>
+                      {`${restaurant.item.hours?.friday?.open} - ${restaurant.item.hours?.friday?.close}`}
+                    </span>
+                  </div>
+                )}
+                {restaurant.item.hours?.saturday && (
+                  <div className='flex flex-col gap-0.5'>
+                    <span className='font-semibold'>Saturday</span>
+                    <span>
+                      {`${restaurant.item.hours?.saturday?.open} - ${restaurant.item.hours?.saturday?.close}`}
+                    </span>
+                  </div>
+                )}
+                {restaurant.item.hours?.sunday && (
+                  <div className='flex flex-col gap-0.5'>
+                    <span className='font-semibold'>Sunday</span>
+                    <span>
+                      {`${restaurant.item.hours?.sunday?.open} - ${restaurant.item.hours?.sunday?.close}`}
+                    </span>
+                  </div>
+                )}
               </div>
             ) : (
               <span>No information</span>
@@ -244,6 +259,11 @@ export default function RestaurantDetailsPage() {
       </div>
       <div className='border-grid border-t py-10'>
         <SectionTitle text='Reviews' />
+        {slug && typeof slug === 'string' ? (
+          <ReviewSection placeId={slug as string} />
+        ) : (
+          <p>There is no review.</p>
+        )}
       </div>
     </>
   );
