@@ -57,7 +57,7 @@ export default function PlaceCarousel({
           </Carousel>
         ) : (
           <p className='text-center text-sm text-gray-500 italic'>
-            Your favorite list is empty
+            List is empty.
           </p>
         )}
       </div>

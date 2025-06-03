@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from 'clsx';
+import moment from 'moment';
 import { twMerge } from 'tailwind-merge';
 
 import { Constant } from '@/constants';
@@ -52,4 +53,8 @@ export async function* streamResponse(message: string) {
     done = readerDone;
     if (value) yield decoder.decode(value, { stream: !done });
   }
+}
+
+export function timeAgo(date: Date | string | number) {
+  return moment.utc(date).fromNow();
 }

@@ -10,3 +10,11 @@ export default function Loading() {
     </div>
   );
 }
+
+export const LoadingOnlyIcon = () => {
+  return (
+    <div className='flex items-center justify-center'>
+      <Loader2 size={24} className='stroke-primary animate-spin' />
+    </div>
+  );
+};
