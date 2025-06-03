@@ -10,3 +10,11 @@ export interface IPagingMeta {
   size: number;
   totalCount: number;
 }
+
+export const defaultPaging: IPagingMeta = {
+  offset: 0,
+  page: 0,
+  pageCount: 0,
+  size: 0,
+  totalCount: 0,
+};
