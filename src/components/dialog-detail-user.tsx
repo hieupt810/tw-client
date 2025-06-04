@@ -1,56 +1,87 @@
-'use client';
-
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  Calendar,
+  Edit,
   Eye,
   Heart,
-  Mail,
+  Loader2,
   MapPin,
   MessageSquare,
-  Phone,
   Star,
   User,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useStore } from 'zustand';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { useUserStore } from '@/stores/user.store';
+import {
+  UpdateProfileSchema,
+  updateProfileSchema,
+} from '@/types/IUpdateProfileSchema';
 
 import Loading from './loading';
 
 export function UserDetailsDialog(props: { id: string }) {
+  const [isEditing, setIsEditing] = useState(false);
   const [open, setOpen] = useState(false);
-  const id = props.id;
-  const { user, fetchUser } = useStore(useUserStore, (state) => state);
+  const { id } = props;
+  const { user, fetchUser, fetchEditUser } = useStore(
+    useUserStore,
+    (state) => state,
+  );
 
-  // Fetch user data only when the dialog is opened
+  const form = useForm({
+    resolver: zodResolver(updateProfileSchema),
+    defaultValues: {
+      avatar: user.item?.avatar || '/fallback-avatar.jpg',
+      full_name: user.item?.full_name || '',
+      email: user.item?.email || '',
+      phone_number: user.item?.phone_number || '',
+      birthday: user.item?.birthday || '',
+    },
+  });
+
   useEffect(() => {
     if (open) {
-      // console.log('Fetching user details for ID:', id);
       fetchUser(id);
     }
   }, [open, id, fetchUser]);
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('vi-VN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
+  useEffect(() => {
+    if (user.item) {
+      form.reset({
+        avatar: user.item.avatar || '/fallback-avatar.jpg',
+        full_name: user.item.full_name || '',
+        email: user.item.email || '',
+        phone_number: user.item.phone_number || '',
+        birthday: user.item.birthday || '',
+      });
+    }
+  }, [user.item, form]);
+
+  // const formatDate = (dateString: string) => {
+  //   return new Date(dateString).toLocaleDateString('vi-VN', {
+  //     year: 'numeric',
+  //     month: 'long',
+  //     day: 'numeric',
+  //     hour: '2-digit',
+  //     minute: '2-digit',
+  //   });
+  // };
 
   const getInitials = (name: string) => {
     return name
@@ -61,16 +92,20 @@ export function UserDetailsDialog(props: { id: string }) {
       .slice(0, 2);
   };
 
-  // Show loading state when dialog is open and user data is not yet available
-  if ((open && !user.item) || user.isLoading) {
+  const onSubmit = async (data: UpdateProfileSchema) => {
+    console.log('Form submitted with data:', data);
+    if (user.item?.id) {
+      await fetchEditUser(user.item.id, data);
+      await fetchUser(user.item.id);
+      setIsEditing(false);
+    }
+  };
+
+  if (open && !user.item) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button
-            variant='outline'
-            size='sm'
-            className='flex items-center space-x-1'
-          >
+          <Button variant='outline'>
             <Eye className='h-3 w-3 md:h-4 md:w-4' />
             <span className='hidden sm:inline'>Detail</span>
           </Button>
@@ -81,24 +116,16 @@ export function UserDetailsDialog(props: { id: string }) {
       </Dialog>
     );
   }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant='outline'
-          size='sm'
-          className='flex items-center space-x-1'
-        >
+        <Button variant='outline'>
           <Eye className='h-3 w-3 md:h-4 md:w-4' />
-          <span className='hidden sm:inline'>Edit</span>
+          <span className='hidden sm:inline'>Detail</span>
         </Button>
       </DialogTrigger>
       <DialogContent className='max-h-[90vh] overflow-y-auto sm:max-w-[600px]'>
-        <DialogHeader className='pb-6'>
-          <DialogTitle className='text-center text-2xl font-bold'>
-            User
-          </DialogTitle>
-        </DialogHeader>
         {/* User Profile Section */}
         <div className='flex flex-col items-center gap-6 pb-2'>
           <div className='relative'>
@@ -121,43 +148,136 @@ export function UserDetailsDialog(props: { id: string }) {
         {/* Personal Information */}
         <div className='space-y-6'>
           <div>
-            <h3 className='mb-4 flex items-center gap-2 text-lg font-semibold'>
-              <User className='h-5 w-5' />
-              Detail Of User
-            </h3>
-            <div className='grid gap-4'>
-              <div className='bg-muted/30 flex items-center justify-between rounded-lg p-3'>
-                <div className='flex items-center gap-3'>
-                  <Mail className='text-muted-foreground h-4 w-4' />
-                  <span className='font-medium'>Email</span>
+            <div className='mb-4 flex items-center justify-between'>
+              <h3 className='flex items-center gap-2 text-lg font-semibold'>
+                <User className='h-5 w-5' />
+                Detail of User
+              </h3>
+              {!isEditing ? (
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={() => setIsEditing(true)}
+                >
+                  <Edit className='h-4 w-4' />
+                  Edit
+                </Button>
+              ) : (
+                <div className='space-x-3'>
+                  <Button
+                    variant='outline'
+                    onClick={() => {
+                      setIsEditing(false);
+                      form.reset();
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type='submit'
+                    className='bg-purple-600 hover:bg-purple-700'
+                    disabled={form.formState.isSubmitting}
+                    aria-disabled={form.formState.isSubmitting}
+                    onClick={form.handleSubmit(onSubmit)}
+                  >
+                    {form.formState.isSubmitting ? (
+                      <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                    ) : null}
+                    Save Changes
+                  </Button>
                 </div>
-                <span className='text-muted-foreground text-sm'>
-                  {user.item?.email || 'Unknown'}
-                </span>
-              </div>
-              <div className='bg-muted/30 flex items-center justify-between rounded-lg p-3'>
-                <div className='flex items-center gap-3'>
-                  <Calendar className='text-muted-foreground h-4 w-4' />
-                  <span className='font-medium'>Birth Of Date</span>
-                </div>
-                <span className='text-muted-foreground text-sm'>
-                  {user.item?.birthday
-                    ? formatDate(user.item.birthday)
-                    : 'Unknown'}
-                </span>
-              </div>
-
-              <div className='bg-muted/30 flex items-center justify-between rounded-lg p-3'>
-                <div className='flex items-center gap-3'>
-                  <Phone className='text-muted-foreground h-4 w-4' />
-                  <span className='font-medium'>Phone</span>
-                </div>
-                <span className='text-muted-foreground text-sm'>
-                  {user.item?.phone_number || 'Unknown'}
-                </span>
-              </div>
+              )}
             </div>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className='space-y-4'
+              >
+                <div className='grid gap-4'>
+                  <FormField
+                    control={form.control}
+                    name='full_name'
+                    render={({ field }) => (
+                      <FormItem className='space-y-2'>
+                        <FormLabel className='text-sm font-medium text-gray-700'>
+                          Full Name
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            disabled={!isEditing}
+                            placeholder='Enter full name'
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name='email'
+                    render={({ field }) => (
+                      <FormItem className='space-y-2'>
+                        <FormLabel className='text-sm font-medium text-gray-700'>
+                          Email
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type='email'
+                            disabled={true}
+                            placeholder='Enter email'
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name='phone_number'
+                    render={({ field }) => (
+                      <FormItem className='space-y-2'>
+                        <FormLabel className='text-sm font-medium text-gray-700'>
+                          Phone Number
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type='tel'
+                            disabled={!isEditing}
+                            placeholder='Enter phone number'
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name='birthday'
+                    render={({ field }) => (
+                      <FormItem className='space-y-2'>
+                        <FormLabel className='text-sm font-medium text-gray-700'>
+                          Birthday
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type='date'
+                            disabled={!isEditing}
+                            placeholder='Enter birthday'
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </form>
+            </Form>
           </div>
+
           {/* Statistics */}
           <div>
             <h3 className='mb-4 flex items-center gap-2 text-lg font-semibold'>

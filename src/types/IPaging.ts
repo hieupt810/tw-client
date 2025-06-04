@@ -18,3 +18,8 @@ export const defaultPaging: IPagingMeta = {
   size: 0,
   totalCount: 0,
 };
+
+export interface ISearch<T> {
+  data: T[];
+  total: number;
+}

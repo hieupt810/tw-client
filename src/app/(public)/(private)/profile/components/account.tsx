@@ -127,7 +127,7 @@ export default function AccountComponent() {
                         variant='outline'
                         onClick={() => {
                           setIsEditing(false);
-                          form.reset(); // Reset form to initial values
+                          form.reset();
                         }}
                       >
                         Cancel
@@ -180,7 +180,7 @@ export default function AccountComponent() {
                         <Input
                           {...field}
                           type='email'
-                          disabled={!isEditing}
+                          disabled={true}
                           placeholder='Enter your email'
                         />
                       </FormControl>
