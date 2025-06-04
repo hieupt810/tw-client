@@ -89,6 +89,9 @@ export default function AppNavbar() {
                     <Link href='/profile' passHref>
                       <DropdownMenuItem>Profile</DropdownMenuItem>
                     </Link>
+                    <Link href='/profile?tab=trips' passHref>
+                      <DropdownMenuItem>Trips</DropdownMenuItem>
+                    </Link>
                     <DropdownMenuItem
                       variant='destructive'
                       onClick={() => logOut()}

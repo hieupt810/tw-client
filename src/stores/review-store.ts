@@ -76,12 +76,15 @@ export const useReviewStore = create<State & Action>()((set) => ({
     }));
     try {
       const { data, paging } = await ReviewService.list(placeId, query);
+
       set((state) => ({
         ...state,
         reviews: {
           ...state.reviews,
           items: {
-            data,
+            data: state.myReview
+              ? data.filter((r) => r.id !== state.myReview?.id)
+              : data,
             paging,
           },
         },
@@ -115,13 +118,7 @@ export const useReviewStore = create<State & Action>()((set) => ({
       const newReview = await ReviewService.create(id, review);
       set((state) => ({
         ...state,
-        reviews: {
-          ...state.reviews,
-          items: {
-            ...state.reviews.items,
-            data: [newReview, ...state.reviews.items.data],
-          },
-        },
+
         myReview: newReview, // Update myReview with the newly created review
       }));
     } catch {
@@ -189,9 +186,6 @@ export const useReviewStore = create<State & Action>()((set) => ({
           ...state.reviews,
           items: {
             ...state.reviews.items,
-            data: state.reviews.items.data.map((r) =>
-              r.id === updatedReview.id ? updatedReview : r,
-            ),
           },
         },
         myReview: updatedReview, // Update myReview with the updated review

@@ -46,4 +46,17 @@ export class TripService {
       })
       .json<IAttraction[]>();
   }
+
+  static updateTrip(
+    tripId: string,
+    payload: Partial<Pick<ITrip, 'name' | 'status'>>,
+  ) {
+    return api
+      .patch(`${Routes.DEFAULT}${tripId}`, { json: payload })
+      .json<ITrip>();
+  }
+
+  static deleteTrip(tripId: string) {
+    return api.delete(`${Routes.DEFAULT}${tripId}`);
+  }
 }
