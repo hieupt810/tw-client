@@ -1,19 +1,8 @@
 'use client';
 
-import {
-  Calendar,
-  Eye,
-  KeyRound,
-  Mail,
-  MessageSquare,
-  MoreHorizontal,
-  Phone,
-  Search,
-  Trash2,
-} from 'lucide-react';
+import { Calendar, Mail, Phone, Search } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
 
 import { UserDetailsDialog } from '@/components/dialog-detail-user';
@@ -22,11 +11,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -44,11 +34,40 @@ export default function UserAdminPage() {
   const page = parseInt(searchParams.get('page') || '1');
   const size = parseInt(searchParams.get('size') || '5');
   const [searchTerm, setSearchTerm] = useState('');
-  const { users, fetchUsers } = useStore(useUserStore, (state) => state);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const { users, fetchUsers, fetchDeleteUser } = useStore(
+    useUserStore,
+    (state) => state,
+  );
   const debouncedSearchTerm = useDebounce<string>(searchTerm, 1000);
+
   useEffect(() => {
     fetchUsers(page, size, debouncedSearchTerm);
   }, [fetchUsers, page, size, debouncedSearchTerm]);
+
+  const handleDeleteClick = (userId: string) => {
+    setSelectedUserId(userId);
+    setIsDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (selectedUserId) {
+      try {
+        await fetchDeleteUser(selectedUserId);
+        setIsDialogOpen(false);
+        setSelectedUserId(null);
+        fetchUsers(page, size, debouncedSearchTerm);
+      } catch (error) {
+        console.error('Error deleting user:', error);
+      }
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setIsDialogOpen(false);
+    setSelectedUserId(null);
+  };
 
   if (users.isLoading) return <Loading />;
 
@@ -68,7 +87,7 @@ export default function UserAdminPage() {
             <div className='relative flex-1'>
               <Search className='absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400' />
               <Input
-                placeholder='Search users by name or email...'
+                placeholder='Search users by name '
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className='pl-10'
@@ -157,43 +176,13 @@ export default function UserAdminPage() {
                   </div>
 
                   <div className='flex items-center justify-end space-x-2 lg:flex-shrink-0'>
-                    {/* <Button
-                      variant='outline'
-                      size='sm'
-                      className='flex items-center space-x-1'
-                    >
-                      <Eye className='h-3 w-3 md:h-4 md:w-4' />
-                      <span className='hidden sm:inline'>Edit</span>
-                    </Button> */}
                     <UserDetailsDialog id={user.id} />
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant='outline' size='sm'>
-                          <MoreHorizontal className='h-3 w-3 md:h-4 md:w-4' />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align='end'>
-                        <DropdownMenuItem className='flex items-center space-x-2'>
-                          <Eye className='h-4 w-4' />
-                          <span>View Profile</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className='flex items-center space-x-2'>
-                          <MessageSquare className='h-4 w-4' />
-                          <span>Send Message</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className='flex items-center space-x-2'>
-                          <KeyRound className='h-4 w-4' />
-                          <span>Reset Password</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className='flex items-center space-x-2 text-red-600'
-                          // onClick={() => handleDeleteUser(user.id)}
-                        >
-                          <Trash2 className='h-4 w-4' />
-                          <span>Delete User</span>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <Button
+                      variant='destructive'
+                      onClick={() => handleDeleteClick(user.id)}
+                    >
+                      Delete
+                    </Button>
                   </div>
                 </div>
               </CardContent>
@@ -234,6 +223,22 @@ export default function UserAdminPage() {
           </Button>
         </div>
       </main>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Delete</DialogTitle>
+          </DialogHeader>
+          <div>Are you sure you want to delete this user?</div>
+          <DialogFooter>
+            <Button variant='outline' onClick={handleCancelDelete}>
+              Cancel
+            </Button>
+            <Button variant='destructive' onClick={handleConfirmDelete}>
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

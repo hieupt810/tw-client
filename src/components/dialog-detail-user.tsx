@@ -27,6 +27,8 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { useUserStore } from '@/stores/user.store';
 
+import Loading from './loading';
+
 export function UserDetailsDialog(props: { id: string }) {
   const [open, setOpen] = useState(false);
   const id = props.id;
@@ -59,7 +61,26 @@ export function UserDetailsDialog(props: { id: string }) {
       .slice(0, 2);
   };
 
-  if (!id) return null;
+  // Show loading state when dialog is open and user data is not yet available
+  if ((open && !user.item) || user.isLoading) {
+    return (
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button
+            variant='outline'
+            size='sm'
+            className='flex items-center space-x-1'
+          >
+            <Eye className='h-3 w-3 md:h-4 md:w-4' />
+            <span className='hidden sm:inline'>Detail</span>
+          </Button>
+        </DialogTrigger>
+        <DialogContent className='h-[550px] max-h-[90vh] overflow-y-auto sm:max-w-[600px]'>
+          <Loading />
+        </DialogContent>
+      </Dialog>
+    );
+  }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

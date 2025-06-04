@@ -22,4 +22,12 @@ export class AuthService {
   static me() {
     return api.get(AuthRoutes.ME).json<IMe>();
   }
+
+  static updateMe(data: Partial<IMe>) {
+    return api
+      .patch(AuthRoutes.ME, {
+        json: data,
+      })
+      .json<IMe>();
+  }
 }

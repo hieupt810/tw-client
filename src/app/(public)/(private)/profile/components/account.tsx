@@ -1,70 +1,243 @@
-import { useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Edit, Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useStore } from 'zustand';
 
 import ImageWithFallback from '@/components/image-with-fallback';
+import Loading from '@/components/loading';
 import PlaceCarousel from '@/components/place-carousel';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useAuthStore } from '@/stores/auth-store';
 import { useFavouriteStore } from '@/stores/favourite-store';
+import { useUserStore } from '@/stores/user.store';
+import {
+  UpdateProfileSchema,
+  updateProfileSchema,
+} from '@/types/IUpdateProfileSchema';
 
 export default function AccountComponent() {
+  const [isEditing, setIsEditing] = useState(false);
   const me = useStore(useAuthStore, (state) => state.me);
+  const { fetchEditUser, fetchMe, user } = useStore(
+    useUserStore,
+    (state) => state,
+  );
   const { favourites, reset, list, isLoading } = useStore(
     useFavouriteStore,
     (state) => state,
   );
+  const form = useForm({
+    resolver: zodResolver(updateProfileSchema),
+    defaultValues: {
+      avatar: user.item?.avatar || '/fallback-avatar.jpg',
+      full_name: user.item?.full_name || '',
+      email: user.item?.email || '',
+      phone_number: user.item?.phone_number || '',
+      birthday: user.item?.birthday || '',
+    },
+  });
 
   useEffect(() => {
+    if (user.item) {
+      form.reset({
+        avatar: user.item.avatar || '/fallback-avatar.jpg',
+        full_name: user.item.full_name || '',
+        email: user.item.email || '',
+        phone_number: user.item.phone_number || '',
+        birthday: user.item.birthday || '',
+      });
+    }
+  }, [user.item, form]);
+
+  useEffect(() => {
+    fetchMe();
     list();
     return () => {
       reset();
     };
-  }, [list, reset]);
+  }, [fetchMe, list, reset]);
 
-  if (!me) return null;
+  const onSubmit = async (data: UpdateProfileSchema) => {
+    if (me) {
+      await fetchEditUser(me.id, data);
+      await fetchMe();
+      setIsEditing(false);
+    }
+  };
+
+  if (!user.item) {
+    return <Loading />;
+  }
+
   return (
-    <div className='flex flex-col gap-10'>
-      <div className='flex flex-col'>
-        <span className='text-lg font-bold tracking-tight md:text-xl lg:text-2xl'>
-          Account
-        </span>
-        <div className='mt-5 grid grid-cols-3 gap-5'>
-          <div
-            className='border-primary mx-auto size-28 overflow-hidden rounded-full border select-none'
-            aria-label='User Avatar'
-          >
-            <ImageWithFallback
-              width={5000}
-              height={5000}
-              src={me.avatar || '/fallback-avatar.jpg'}
-              alt={me.full_name}
-            />
-          </div>
-          <div className='col-span-2 flex flex-col justify-center gap-3'>
-            <div className='grid grid-cols-3 gap-4'>
-              <Label htmlFor='userId'>User ID</Label>
-              <span id='userId' className='col-span-2 text-sm'>
-                {me.id}
-              </span>
-            </div>
-            <div className='grid grid-cols-3 gap-4'>
-              <Label htmlFor='fullName'>Full Name</Label>
-              <Input
-                disabled
-                id='fullName'
-                value={me.full_name}
-                className='col-span-2'
+    <div>
+      <div className='flex-1'>
+        <div className='mb-3 flex items-center space-x-6'>
+          <div className='relative'>
+            <div
+              className='border-primary mx-auto size-28 overflow-hidden rounded-full border select-none'
+              aria-label='User Avatar'
+            >
+              <ImageWithFallback
+                width={5000}
+                height={5000}
+                src={user.item?.avatar || '/fallback-avatar.jpg'}
+                alt={user.item?.full_name || 'User Avatar'}
               />
             </div>
           </div>
+          <div>
+            <h2 className='text-2xl font-semibold'>{user.item?.full_name}</h2>
+          </div>
+        </div>
+
+        <div className='max-w-4xl'>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              // onKeyDown={handleOnKeyDown}
+              className='space-y-6 pb-4'
+            >
+              {/* Edit Button */}
+              <div className='mb-6 flex justify-end'>
+                {!isEditing ? (
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    className='flex items-center gap-1'
+                    onClick={() => setIsEditing(true)}
+                  >
+                    <Edit className='h-4 w-4' />
+                    Edit
+                  </Button>
+                ) : (
+                  <div className='flex justify-end pt-4'>
+                    <div className='space-x-3'>
+                      <Button
+                        variant='outline'
+                        onClick={() => {
+                          setIsEditing(false);
+                          form.reset(); // Reset form to initial values
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type='submit'
+                        className='bg-purple-600 hover:bg-purple-700'
+                        disabled={isLoading || form.formState.isSubmitting}
+                        aria-disabled={isLoading || form.formState.isSubmitting}
+                      >
+                        {isLoading || form.formState.isSubmitting ? (
+                          <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                        ) : null}
+                        Save Changes
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+                <FormField
+                  control={form.control}
+                  name='full_name'
+                  render={({ field }) => (
+                    <FormItem className='space-y-2'>
+                      <FormLabel className='text-sm font-medium text-gray-700'>
+                        Full Name
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          disabled={!isEditing}
+                          placeholder='Enter your full name'
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='email'
+                  render={({ field }) => (
+                    <FormItem className='space-y-2'>
+                      <FormLabel className='text-sm font-medium text-gray-700'>
+                        Email
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type='email'
+                          disabled={!isEditing}
+                          placeholder='Enter your email'
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='phone_number'
+                  render={({ field }) => (
+                    <FormItem className='space-y-2'>
+                      <FormLabel className='text-sm font-medium text-gray-700'>
+                        Phone Number
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type='tel'
+                          disabled={!isEditing}
+                          placeholder='Enter your phone number'
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='birthday'
+                  render={({ field }) => (
+                    <FormItem className='space-y-2'>
+                      <FormLabel className='text-sm font-medium text-gray-700'>
+                        Birthday
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type='date'
+                          disabled={!isEditing}
+                          placeholder='Enter your birthday'
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </form>
+          </Form>
         </div>
       </div>
       <PlaceCarousel
         autoplay
         title='Favourites'
         items={favourites}
-        isContentLoading={isLoading}
+        // isContentLoading={isLoading}
         autoplayDelay={5000}
       />
     </div>

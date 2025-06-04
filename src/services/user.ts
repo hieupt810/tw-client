@@ -1,5 +1,5 @@
 import api from '@/lib/api';
-import { IRestaurant } from '@/types/IRestaurant';
+import { UpdateProfileSchema } from '@/types/IUpdateProfileSchema';
 import { IUser, IUserPaging } from '@/types/IUser';
 
 class Routes {
@@ -14,14 +14,18 @@ export class UserService {
   }
 
   static details(id: string) {
-    return api.get(`${Routes.DEFAULT}${id}/`).json<IUser>();
+    return api.get(`${Routes.DEFAULT}${id}`).json<IUser>();
   }
 
   static delete(id: string) {
     return api.delete(`${Routes.DEFAULT}${id}`).json();
   }
 
-  static edit(id: string, data: IRestaurant) {
-    return api.put(`${Routes.DEFAULT}${id}`, { json: data }).json();
+  static edit(id: string, data: UpdateProfileSchema) {
+    return api.patch(`${Routes.DEFAULT}${id}`, { json: data }).json<IUser>();
+  }
+
+  static me() {
+    return api.get(`${Routes.DEFAULT}me`).json<IUser>();
   }
 }

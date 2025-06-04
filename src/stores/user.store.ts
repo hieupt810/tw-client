@@ -4,6 +4,8 @@ import { UserService } from '@/services/user';
 import { IPagingMeta } from '@/types/IPaging';
 import { IUser } from '@/types/IUser';
 
+import { UpdateProfileSchema } from './../types/IUpdateProfileSchema';
+
 type State = {
   user: {
     item: IUser | null;
@@ -22,6 +24,9 @@ type Action = {
   reset: () => void;
   fetchUser: (id: string) => Promise<void>;
   fetchUsers: (page: number, size: number, name: string) => Promise<void>;
+  fetchDeleteUser: (id: string) => Promise<void>;
+  fetchEditUser: (id: string, data: UpdateProfileSchema) => Promise<void>;
+  fetchMe: () => Promise<void>;
 };
 
 const initialState: State = {
@@ -93,6 +98,79 @@ export const useUserStore = create<State & Action>()((set) => ({
     } finally {
       set((state) => ({
         users: { ...state.users, isLoading: false },
+      }));
+    }
+  },
+
+  async fetchDeleteUser(id) {
+    set((state) => ({
+      users: { ...state.users, isLoading: true },
+    }));
+    try {
+      await UserService.delete(id);
+      set((state) => ({
+        users: {
+          ...state.users,
+          items: state.users.items.filter((user) => user.id !== id),
+        },
+      }));
+    } catch {
+      set((state) => ({
+        users: {
+          ...state.users,
+          error: 'Failed to delete user',
+        },
+      }));
+    } finally {
+      set((state) => ({
+        users: { ...state.users, isLoading: false },
+      }));
+    }
+  },
+
+  async fetchEditUser(id, data: UpdateProfileSchema) {
+    set((state) => ({
+      user: { ...state.user, isLoading: true },
+    }));
+    try {
+      const updatedUser = await UserService.edit(id, data);
+      set((state) => ({
+        user: { ...state.user, item: updatedUser },
+      }));
+    } catch (error) {
+      console.error('Error updating user:', error);
+      set((state) => ({
+        user: {
+          ...state.user,
+          error: 'Failed to update user',
+        },
+      }));
+    } finally {
+      set((state) => ({
+        user: { ...state.user, isLoading: false },
+      }));
+    }
+  },
+
+  async fetchMe() {
+    set((state) => ({
+      user: { ...state.user, isLoading: true },
+    }));
+    try {
+      const data = await UserService.me();
+      set((state) => ({
+        user: { ...state.user, item: data },
+      }));
+    } catch {
+      set((state) => ({
+        user: {
+          ...state.user,
+          error: 'Failed to fetch user',
+        },
+      }));
+    } finally {
+      set((state) => ({
+        user: { ...state.user, isLoading: false },
       }));
     }
   },

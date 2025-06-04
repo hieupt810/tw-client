@@ -1,7 +1,8 @@
 'use client';
 
+import { Search } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
 
 import Loading from '@/components/loading';
@@ -15,6 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -22,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useDebounce } from '@/hooks/useDebounce';
 import { useHotelStore } from '@/stores/hotel-store';
 
 export default function HotelAdminPage() {
@@ -29,26 +32,44 @@ export default function HotelAdminPage() {
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1');
   const size = parseInt(searchParams.get('size') || '10');
-
-  const { hotels, fetchHotels } = useStore(useHotelStore, (state) => state);
-
+  const [searchTerm, setSearchTerm] = useState('');
+  const { hotels, fetchHotels, fetchSearchHotels } = useStore(
+    useHotelStore,
+    (state) => state,
+  );
+  const debouncedSearchTerm = useDebounce<string>(searchTerm, 1000);
   useEffect(() => {
     fetchHotels(page, size);
   }, [fetchHotels, page, size]);
-
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      fetchSearchHotels(debouncedSearchTerm);
+    } else {
+      fetchHotels(page, size);
+    }
+  }, [debouncedSearchTerm]);
   if (hotels.isLoading) return <Loading />;
 
   return (
     <div className='py-5'>
       <div className='flex items-center justify-between'>
         <SectionTitle text='Manage Hotels' />
-        <div className='flex items-center gap-2'>
-          <span>Page size:</span>
+        <div className='flex items-center space-x-4'>
+          <div className='relative flex-1'>
+            <Search className='absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400' />
+            <Input
+              placeholder='Search hotel by name '
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className='pl-10'
+            />
+          </div>
+          <span className='text-sm text-gray-500'>Page size:</span>
           <Select
             value={String(size)}
             onValueChange={(newValue) => {
               const newSize = Number(newValue);
-              router.push(`/admin/hotel?page=1&size=${newSize}`);
+              router.push(`/admin/user?page=1&size=${newSize}`);
             }}
           >
             <SelectTrigger className='min-w-[70px]'>
