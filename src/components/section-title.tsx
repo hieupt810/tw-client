@@ -1,11 +1,18 @@
+import { cn } from '@/lib/utils';
+
 interface Props {
   text: string;
   className?: React.HTMLAttributes<HTMLElement>['className'];
 }
 
-export default function SectionTitle({ text }: Props) {
+export default function SectionTitle({ text, className }: Props) {
   return (
-    <span className='mb-4 text-lg font-bold tracking-tight capitalize md:text-xl'>
+    <span
+      className={cn(
+        'mb-4 text-lg font-bold tracking-tight capitalize md:text-xl',
+        className,
+      )}
+    >
       {text}
     </span>
   );

@@ -16,6 +16,11 @@ type Action = {
   createTrip: (name: string) => Promise<void>;
   fetchTrips: () => Promise<void>;
   addPlaceToTrip: (tripId: string, placeId: string) => Promise<void>;
+  updateTrip: (
+    tripId: string,
+    payload: Partial<Pick<ITrip, 'name' | 'status'>>,
+  ) => Promise<void>;
+  deleteTrip: (tripId: string) => Promise<void>;
 };
 
 const initialState: State = {
@@ -104,6 +109,70 @@ export const useTripStore = create<State & Action>((set) => ({
         trips: {
           ...state.trips,
           error: 'Failed to add place to trip',
+        },
+      }));
+    } finally {
+      set((state) => ({
+        trips: {
+          ...state.trips,
+          isLoading: false,
+        },
+      }));
+    }
+  },
+  async updateTrip(tripId, payload) {
+    set((state) => ({
+      trips: {
+        ...state.trips,
+        isLoading: true,
+      },
+    }));
+    try {
+      const data = await TripService.updateTrip(tripId, payload);
+      set((state) => ({
+        trips: {
+          ...state.trips,
+          item: state.trips.item.map((trip) =>
+            trip.id === data.id ? data : trip,
+          ),
+        },
+      }));
+    } catch {
+      set((state) => ({
+        trips: {
+          ...state.trips,
+          error: 'Failed to update trip',
+        },
+      }));
+    } finally {
+      set((state) => ({
+        trips: {
+          ...state.trips,
+          isLoading: false,
+        },
+      }));
+    }
+  },
+  async deleteTrip(tripId) {
+    set((state) => ({
+      trips: {
+        ...state.trips,
+        isLoading: true,
+      },
+    }));
+    try {
+      await TripService.deleteTrip(tripId);
+      set((state) => ({
+        trips: {
+          ...state.trips,
+          item: state.trips.item.filter((trip) => trip.id !== tripId),
+        },
+      }));
+    } catch {
+      set((state) => ({
+        trips: {
+          ...state.trips,
+          error: 'Failed to delete trip',
         },
       }));
     } finally {
