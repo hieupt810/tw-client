@@ -23,6 +23,7 @@ type Action = {
   reset: () => void;
   fetchHotel: (id: string) => Promise<void>;
   fetchHotels: (page: number, size: number) => Promise<void>;
+  fetchSearchHotels: (name: string) => Promise<void>;
 };
 
 const initialState: State = {
@@ -88,6 +89,29 @@ export const useHotelStore = create<State & Action>()((set) => ({
         hotels: {
           ...state.hotels,
           error: 'Failed to fetch hotels',
+        },
+      }));
+    } finally {
+      set((state) => ({
+        hotels: { ...state.hotels, isLoading: false },
+      }));
+    }
+  },
+
+  async fetchSearchHotels(name) {
+    set((state) => ({
+      hotels: { ...state.hotels, isLoading: true },
+    }));
+    try {
+      const data = await HotelService.search(name);
+      set((state) => ({
+        hotels: { ...state.hotels, items: data.data, paging: data.paging },
+      }));
+    } catch {
+      set((state) => ({
+        hotels: {
+          ...state.hotels,
+          error: 'Failed to search hotels',
         },
       }));
     } finally {

@@ -4,6 +4,7 @@ import { IHotel } from '@/types/IHotel';
 
 class Routes {
   static DEFAULT = 'hotels/';
+  static PLACE = 'places/';
 }
 
 export class HotelService {
@@ -23,5 +24,12 @@ export class HotelService {
 
   static edit(id: string, data: IHotel) {
     return api.put(`${Routes.DEFAULT}${id}`, { json: data }).json();
+  }
+
+  static search(name: string) {
+    const type = 'hotel';
+    return api
+      .get(`${Routes.PLACE}search`, { searchParams: { name, type } })
+      .json<IAttractionPaging>();
   }
 }
