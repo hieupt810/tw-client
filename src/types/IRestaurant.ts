@@ -1,4 +1,5 @@
 import { IAttraction } from './IAttraction';
+import { ISearch } from './IPaging';
 
 interface SimplifiedHour {
   open: string;
@@ -28,3 +29,4 @@ export interface IRestaurant extends IAttraction {
   cuisines: string[];
   traveler_choice_award: boolean;
 }
+export type IRestaurantSearch = ISearch<IRestaurant>;
