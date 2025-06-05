@@ -64,11 +64,20 @@ export default function Search() {
   const [selectedItem, setSelectedItem] = useState<ISearchItem>(searchItems[0]);
   const [search, setSearch] = useState<string>('');
   const [isFocus, setIsFocus] = useState<boolean>(false);
-  const { fetchSearch, items } = useStore(usePlaceStore, (state) => state);
+  const { searchPlaces, items } = useStore(usePlaceStore, (state) => state);
   const debouncedSearchTerm = useDebounce<string>(search, 1000);
 
   useEffect(() => {
-    fetchSearch(search, selectedItem.type);
+    const getPlaceType = (
+      type: string,
+    ): 'hotel' | 'restaurant' | 'thingtodo' | undefined => {
+      if (type === 'all') return undefined;
+      if (type === 'hotel' || type === 'restaurant' || type === 'thingtodo')
+        return type;
+      return undefined;
+    };
+
+    searchPlaces(search, getPlaceType(selectedItem.type), 10);
   }, [debouncedSearchTerm, selectedItem.type]);
 
   return (
@@ -111,9 +120,9 @@ export default function Search() {
         </div>
         {isFocus && (
           <CommandList className='absolute top-full right-0 left-0 z-[1000] mt-2 max-h-[400px] overflow-y-auto rounded-md border bg-white shadow-lg'>
-            {items.item && items.item.length > 0 ? (
+            {items && items.length > 0 ? (
               <CommandGroup>
-                {items.item.map((place) => (
+                {items.map((place) => (
                   <Link
                     href={`/${place.type}/${place.element_id}`}
                     key={place.element_id}

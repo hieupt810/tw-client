@@ -22,15 +22,17 @@ export class TripService {
   }
 
   static addPlaceToTrip(tripId: string, placeId: string) {
-    return api.post(`${Routes.DEFAULT}${tripId}`, {
-      json: { place_id: placeId },
-    });
+    return api
+      .post(`${Routes.DEFAULT}${tripId}`, {
+        json: { place_id: placeId },
+      })
+      .json<IAttraction>();
   }
 
   static removePlaceFromTrip(tripId: string, placeId: string) {
     return api
       .delete(`${Routes.DEFAULT}${tripId}/places/${placeId}`)
-      .json<IAttraction[]>();
+      .json<{ message: string }>();
   }
 
   static optimizeTrip(tripId: string) {
