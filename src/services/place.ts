@@ -1,14 +1,25 @@
 import api from '@/lib/api';
-import { IRestaurantSearch } from '@/types/IRestaurant';
+import { IHotel } from '@/types/IHotel';
+import { IRestaurant } from '@/types/IRestaurant';
 
-class Routes {
-  static DEFAULT = 'places/';
-}
+const Route = {
+  DEFAULT: 'places/',
+};
 
 export class PlaceService {
-  static search(name: string, type: string) {
+  static async searchPlaces(
+    name: string,
+    type?: 'restaurant' | 'hotel' | 'thingtodo',
+    limit: number = 5,
+  ) {
     return api
-      .get(`${Routes.DEFAULT}search`, { searchParams: { name, type } })
-      .json<IRestaurantSearch>();
+      .get(`${Route.DEFAULT}search`, {
+        searchParams: { name, ...(type && { type }), limit },
+      })
+      .json<{ data: Array<IRestaurant | IHotel>; total: number }>()
+      .then((res) => {
+        const { data } = res;
+        return data || [];
+      });
   }
 }

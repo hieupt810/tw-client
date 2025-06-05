@@ -1,47 +1,58 @@
 import { create } from 'zustand';
 
 import { PlaceService } from '@/services/place';
+import { IHotel } from '@/types/IHotel';
 import { IRestaurant } from '@/types/IRestaurant';
 
 type State = {
-  items: {
-    item: IRestaurant[] | null;
-    error: string;
-    isLoading: boolean;
-  };
+  items: Array<IRestaurant | IHotel>;
+  error: string;
+  isLoading: boolean;
 };
 
 type Action = {
-  reset: () => void;
-  fetchSearch: (name: string, type: string) => Promise<void>;
+  searchPlaces: (
+    name: string,
+    type?: 'restaurant' | 'hotel' | 'thingtodo',
+    limit?: number,
+  ) => Promise<void>;
 };
 
 const initialState: State = {
-  items: {
-    item: null,
-    error: '',
-    isLoading: false,
-  },
+  items: [],
+  error: '',
+  isLoading: true,
 };
 
-export const usePlaceStore = create<State & Action>()((set) => ({
+export const usePlaceStore = create<State & Action>((set) => ({
   ...initialState,
-  reset() {
-    set(() => ({ ...initialState }));
-  },
-  async fetchSearch(name, type) {
+
+  async searchPlaces(
+    name: string,
+    type?: 'restaurant' | 'hotel' | 'thingtodo',
+    limit?: number,
+  ) {
     set((state) => ({
-      items: { ...state.items, isLoading: true },
+      ...state,
+      isLoading: true,
+      error: '',
+      items: [],
     }));
     try {
-      const temp = await PlaceService.search(name, type);
-      console.log('Search results:', temp.data.length);
+      const data = await PlaceService.searchPlaces(name, type, limit);
       set((state) => ({
-        items: { ...state.items, item: temp?.data || [], isLoading: false },
+        ...state,
+        items: data || [],
       }));
     } catch {
       set((state) => ({
-        items: { ...state.items, isLoading: false },
+        ...state,
+        error: 'Failed to fetch places',
+      }));
+    } finally {
+      set((state) => ({
+        ...state,
+        isLoading: false,
       }));
     }
   },

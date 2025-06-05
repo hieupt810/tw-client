@@ -278,7 +278,7 @@ export const TripCard = ({ trip }: { trip: ITrip }) => {
               </div>
             </TooltipTrigger>
             <TooltipContent>
-              <span>Restaurants: {trip?.numberHotel || 0}</span>
+              <span>Restaurants: {trip?.numberRestaurant || 0}</span>
             </TooltipContent>
           </Tooltip>
           <Tooltip>
