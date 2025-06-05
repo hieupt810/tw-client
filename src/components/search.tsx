@@ -144,7 +144,9 @@ export default function Search() {
               </CommandGroup>
             ) : (
               <CommandGroup>
-                <CommandItem>No results found</CommandItem>
+                <CommandItem>
+                  <span>No results found</span>
+                </CommandItem>
               </CommandGroup>
             )}
           </CommandList>

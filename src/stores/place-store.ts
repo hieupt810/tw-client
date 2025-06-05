@@ -35,7 +35,7 @@ export const usePlaceStore = create<State & Action>()((set) => ({
     }));
     try {
       const temp = await PlaceService.search(name, type);
-      console.log('API Response:', temp);
+      console.log('Search results:', temp.data.length);
       set((state) => ({
         items: { ...state.items, item: temp?.data || [], isLoading: false },
       }));

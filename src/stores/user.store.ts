@@ -11,6 +11,7 @@ type State = {
     item: IUser | null;
     error: string;
     isLoading: boolean;
+    isSuccess?: boolean;
   };
   users: {
     items: IUser[];
@@ -34,6 +35,7 @@ const initialState: State = {
     item: null,
     error: '',
     isLoading: true,
+    isSuccess: false,
   },
   users: {
     items: [],
@@ -129,20 +131,18 @@ export const useUserStore = create<State & Action>()((set) => ({
   },
 
   async fetchEditUser(id, data: UpdateProfileSchema) {
-    set((state) => ({
-      user: { ...state.user, isLoading: true },
-    }));
+    set((state) => ({ users: { ...state.users } }));
     try {
       const updatedUser = await UserService.edit(id, data);
       set((state) => ({
-        user: { ...state.user, item: updatedUser },
+        user: { ...state.user, item: updatedUser, isSuccess: true, error: '' },
       }));
-    } catch (error) {
-      console.error('Error updating user:', error);
+    } catch {
       set((state) => ({
         user: {
           ...state.user,
           error: 'Failed to update user',
+          isSuccess: false,
         },
       }));
     } finally {

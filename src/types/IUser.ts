@@ -8,7 +8,7 @@ export interface Statistics {
 }
 export interface IUser {
   avatar: string;
-  birthday: string;
+  birthday: string | null;
   created_at: string;
   email: string;
   full_name: string;

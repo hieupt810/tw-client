@@ -221,7 +221,11 @@ export default function AccountComponent() {
                           {...field}
                           type='date'
                           disabled={!isEditing}
-                          placeholder='Enter your birthday'
+                          placeholder='Enter birthday'
+                          value={field.value ?? ''}
+                          onChange={(e) =>
+                            field.onChange(e.target.value || null)
+                          }
                         />
                       </FormControl>
                       <FormMessage />

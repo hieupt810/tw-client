@@ -161,14 +161,16 @@ export default function UserAdminPage() {
                           <Calendar className='h-3 w-3 flex-shrink-0 text-gray-400' />
                           <p className='text-xs text-gray-400'>
                             Birthday:{' '}
-                            {new Date(user.birthday).toLocaleDateString(
-                              'en-US',
-                              {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric',
-                              },
-                            )}
+                            {user.birthday
+                              ? new Date(user.birthday).toLocaleDateString(
+                                  'en-US',
+                                  {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric',
+                                  },
+                                )
+                              : 'N/A'}
                           </p>
                         </div>
                       </div>
