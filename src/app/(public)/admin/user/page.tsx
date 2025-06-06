@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
 
 import { UserDetailsDialog } from '@/components/dialog-detail-user';
-import Loading from '@/components/loading';
+import SkeletonListUser from '@/components/skeleton/skeleton-list-user';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -69,7 +69,7 @@ export default function UserAdminPage() {
     setSelectedUserId(null);
   };
 
-  if (users.isLoading) return <Loading />;
+  // if (users.isLoading) return <Loading />;
 
   return (
     <div className='min-h-screen'>
@@ -114,82 +114,86 @@ export default function UserAdminPage() {
         </div>
         {/* User List */}
         <div className='space-y-4'>
-          {users.items.map((user) => (
-            <Card
-              key={user.id}
-              className='p-2 transition-shadow duration-200 hover:shadow-md'
-            >
-              <CardContent className='p-3 md:p-4'>
-                <div className='flex flex-col space-y-2 lg:flex-row lg:items-center lg:justify-between lg:space-y-0'>
-                  <div className='flex flex-1 items-start space-x-3 sm:items-center'>
-                    <Avatar className='h-8 w-8 flex-shrink-0 md:h-10 md:w-10'>
-                      <AvatarImage
-                        src={user.avatar || '/placeholder.svg'}
-                        alt={user.full_name}
-                      />
-                      <AvatarFallback className='bg-purple-100 text-xs font-semibold text-purple-600'>
-                        {user.full_name}
-                      </AvatarFallback>
-                    </Avatar>
-
-                    <div className='min-w-0 flex-1'>
-                      <div className='mb-1 flex flex-col space-y-1 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-3'>
-                        <h3 className='truncate text-base font-semibold text-gray-900 md:text-lg'>
+          {users.isLoading ? (
+            <SkeletonListUser />
+          ) : (
+            users.items.map((user) => (
+              <Card
+                key={user.id}
+                className='p-2 transition-shadow duration-200 hover:shadow-md'
+              >
+                <CardContent className='p-3 md:p-4'>
+                  <div className='flex flex-col space-y-2 lg:flex-row lg:items-center lg:justify-between lg:space-y-0'>
+                    <div className='flex flex-1 items-start space-x-3 sm:items-center'>
+                      <Avatar className='h-8 w-8 flex-shrink-0 md:h-10 md:w-10'>
+                        <AvatarImage
+                          src={user.avatar || '/placeholder.svg'}
+                          alt={user.full_name}
+                        />
+                        <AvatarFallback className='bg-purple-100 text-xs font-semibold text-purple-600'>
                           {user.full_name}
-                        </h3>
-                        <div className='flex flex-wrap gap-1'></div>
-                      </div>
+                        </AvatarFallback>
+                      </Avatar>
 
-                      <div className='space-y-1'>
-                        <div className='flex items-center space-x-2'>
-                          <Mail className='h-3 w-3 flex-shrink-0 text-gray-400' />
-                          <p className='truncate text-xs text-gray-600 md:text-sm'>
-                            {user.email}
-                          </p>
+                      <div className='min-w-0 flex-1'>
+                        <div className='mb-1 flex flex-col space-y-1 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-3'>
+                          <h3 className='truncate text-base font-semibold text-gray-900 md:text-lg'>
+                            {user.full_name}
+                          </h3>
+                          <div className='flex flex-wrap gap-1'></div>
                         </div>
-                        <div className='flex items-center space-x-2'>
-                          <Phone className='h-3 w-3 flex-shrink-0 text-gray-400' />
-                          <p
-                            className={`truncate text-xs text-gray-500 md:text-sm ${
-                              user.phone_number ? '' : 'italic'
-                            }`}
-                          >
-                            {user.phone_number || 'Unknown'}
-                          </p>
-                        </div>
-                        <div className='flex items-center space-x-2'>
-                          <Calendar className='h-3 w-3 flex-shrink-0 text-gray-400' />
-                          <p className='text-xs text-gray-400'>
-                            Birthday:{' '}
-                            {user.birthday
-                              ? new Date(user.birthday).toLocaleDateString(
-                                  'en-US',
-                                  {
-                                    year: 'numeric',
-                                    month: 'short',
-                                    day: 'numeric',
-                                  },
-                                )
-                              : 'N/A'}
-                          </p>
+
+                        <div className='space-y-1'>
+                          <div className='flex items-center space-x-2'>
+                            <Mail className='h-3 w-3 flex-shrink-0 text-gray-400' />
+                            <p className='truncate text-xs text-gray-600 md:text-sm'>
+                              {user.email}
+                            </p>
+                          </div>
+                          <div className='flex items-center space-x-2'>
+                            <Phone className='h-3 w-3 flex-shrink-0 text-gray-400' />
+                            <p
+                              className={`truncate text-xs text-gray-500 md:text-sm ${
+                                user.phone_number ? '' : 'italic'
+                              }`}
+                            >
+                              {user.phone_number || 'Unknown'}
+                            </p>
+                          </div>
+                          <div className='flex items-center space-x-2'>
+                            <Calendar className='h-3 w-3 flex-shrink-0 text-gray-400' />
+                            <p className='text-xs text-gray-400'>
+                              Birthday:{' '}
+                              {user.birthday
+                                ? new Date(user.birthday).toLocaleDateString(
+                                    'en-US',
+                                    {
+                                      year: 'numeric',
+                                      month: 'short',
+                                      day: 'numeric',
+                                    },
+                                  )
+                                : 'N/A'}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className='flex items-center justify-end space-x-2 lg:flex-shrink-0'>
-                    <UserDetailsDialog id={user.id} />
-                    <Button
-                      variant='destructive'
-                      onClick={() => handleDeleteClick(user.id)}
-                    >
-                      Delete
-                    </Button>
+                    <div className='flex items-center justify-end space-x-2 lg:flex-shrink-0'>
+                      <UserDetailsDialog id={user.id} />
+                      <Button
+                        variant='destructive'
+                        onClick={() => handleDeleteClick(user.id)}
+                      >
+                        Delete
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            ))
+          )}
         </div>
         <div className='mt-6 flex flex-row items-center justify-center gap-2 text-sm font-medium'>
           <Button

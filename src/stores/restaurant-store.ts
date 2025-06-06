@@ -22,7 +22,11 @@ type State = {
 type Action = {
   reset: () => void;
   fetchRestaurant: (id: string) => Promise<void>;
-  fetchRestaurants: (page: number, size: number) => Promise<void>;
+  fetchRestaurants: (
+    page: number,
+    size: number,
+    search?: string,
+  ) => Promise<void>;
 };
 
 const initialState: State = {
@@ -74,12 +78,12 @@ export const useRestaurantStore = create<State & Action>()((set) => ({
     }
   },
 
-  async fetchRestaurants(page, size) {
+  async fetchRestaurants(page, size, search) {
     set((state) => ({
       restaurants: { ...state.restaurants, isLoading: true },
     }));
     try {
-      const data = await RestaurantService.list(page, size);
+      const data = await RestaurantService.list(page, size, search || '');
       set((state) => ({
         restaurants: {
           ...state.restaurants,
