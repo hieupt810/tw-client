@@ -10,8 +10,10 @@ type State = {
     error: string;
     isLoading: boolean;
   };
+
   placesInTrip: {
     item: IAttraction[];
+    oldItem: IAttraction[];
     error: string;
     isLoading: boolean;
   };
@@ -35,6 +37,7 @@ type Action = {
   deleteTrip: (tripId: string) => Promise<void>;
   optimizeTrip: (tripId: string) => Promise<void>;
   reorderPlaces: (tripId: string, places: string[]) => Promise<void>;
+  compareChangePlacesInTrip: () => boolean;
 };
 
 const initialState: State = {
@@ -45,12 +48,13 @@ const initialState: State = {
   },
   placesInTrip: {
     item: [],
+    oldItem: [],
     error: '',
     isLoading: true,
   },
 };
 
-export const useTripStore = create<State & Action>((set) => ({
+export const useTripStore = create<State & Action>((set, get) => ({
   ...initialState,
 
   reset: () => set(initialState),
@@ -123,13 +127,29 @@ export const useTripStore = create<State & Action>((set) => ({
     }));
     try {
       const newPlace = await TripService.addPlaceToTrip(tripId, placeId);
-      set((state) => ({
-        ...state,
-        placesInTrip: {
-          ...state.placesInTrip,
-          item: [...state.placesInTrip.item, newPlace],
-        },
-      }));
+      set((state) => {
+        const updatedTrip = [...state.placesInTrip.item, newPlace];
+        return {
+          ...state,
+          trips: {
+            ...state.trips,
+            item: state.trips.item.map((trip) =>
+              trip.id === tripId
+                ? {
+                    ...trip,
+                    is_optimized: false,
+                  }
+                : trip,
+            ),
+            isLoading: false,
+          },
+          placesInTrip: {
+            ...state.placesInTrip,
+            item: updatedTrip,
+            oldItem: updatedTrip,
+          },
+        };
+      });
     } catch {
       set((state) => ({
         trips: {
@@ -218,18 +238,30 @@ export const useTripStore = create<State & Action>((set) => ({
       },
     }));
     try {
-      set((state) => ({
-        trips: {
-          ...state.trips,
-          isLoading: true,
-        },
-        placesInTrip: {
-          ...state.placesInTrip,
-          item: state.placesInTrip.item.filter(
-            (place) => place.element_id !== placeId,
-          ),
-        },
-      }));
+      set((state) => {
+        const updatedTrip = state.placesInTrip.item.filter(
+          (place) => place.element_id !== placeId,
+        );
+        return {
+          trips: {
+            ...state.trips,
+            item: state.trips.item.map((trip) =>
+              trip.id === tripId
+                ? {
+                    ...trip,
+                    is_optimized: false,
+                  }
+                : trip,
+            ),
+            isLoading: true,
+          },
+          placesInTrip: {
+            ...state.placesInTrip,
+            item: updatedTrip,
+            oldItem: updatedTrip,
+          },
+        };
+      });
       return await TripService.removePlaceFromTrip(tripId, placeId);
     } catch (error) {
       set((state) => ({
@@ -264,6 +296,7 @@ export const useTripStore = create<State & Action>((set) => ({
         placesInTrip: {
           ...state.placesInTrip,
           item: data.places || [],
+          oldItem: data.places || [],
         },
       }));
     } catch {
@@ -304,9 +337,16 @@ export const useTripStore = create<State & Action>((set) => ({
       const data = await TripService.optimizeTrip(tripId);
       set((state) => ({
         ...state,
+        trips: {
+          ...state.trips,
+          item: state.trips.item.map((trip) =>
+            trip.id === tripId ? { ...trip, is_optimized: true } : trip,
+          ),
+        },
         placesInTrip: {
           ...state.placesInTrip,
           item: data.places || [],
+          oldItem: data.places || [],
         },
       }));
     } catch {
@@ -340,9 +380,16 @@ export const useTripStore = create<State & Action>((set) => ({
       const data = await TripService.reorder(tripId, places);
       set((state) => ({
         ...state,
+        trips: {
+          ...state.trips,
+          item: state.trips.item.map((trip) =>
+            trip.id === tripId ? { ...trip, is_optimized: false } : trip,
+          ),
+        },
         placesInTrip: {
           ...state.placesInTrip,
           item: data || [],
+          oldItem: data || [],
         },
       }));
     } catch {
@@ -363,5 +410,17 @@ export const useTripStore = create<State & Action>((set) => ({
         },
       }));
     }
+  },
+  compareChangePlacesInTrip: () => {
+    // compare change and order of places in trip
+    const { placesInTrip } = get();
+    for (let i = 0; i < placesInTrip.item.length; i++) {
+      if (
+        placesInTrip.item[i].element_id !== placesInTrip.oldItem[i].element_id
+      ) {
+        return true;
+      }
+    }
+    return false;
   },
 }));

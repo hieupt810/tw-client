@@ -3,7 +3,7 @@
 import { MapPin } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useParams, useRouter } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import DraggableList from '@/components/draggable-list';
@@ -27,10 +27,17 @@ export default function TripPage() {
     reorderPlaces,
     fetchPlacesInTrip,
     fetchTrips,
+    compareChangePlacesInTrip,
     trips,
   } = useTripStore((state) => state);
 
-  const thisTrip = trips.item.find((trip) => trip.id === slug);
+  const [thisTrip, setThisTrip] = useState(
+    trips.item.find((trip) => trip.id === slug),
+  );
+
+  useEffect(() => {
+    setThisTrip(trips.item.find((trip) => trip.id === slug));
+  }, [slug, trips.item]);
 
   useEffect(() => {
     fetchTrips();
@@ -56,6 +63,10 @@ export default function TripPage() {
   const handleSaveOrder = useCallback(
     async function () {
       if (!slug || typeof slug !== 'string') return;
+      if (!compareChangePlacesInTrip()) {
+        toast.info('No changes to save.');
+        return;
+      }
       await reorderPlaces(
         slug,
         placesInTrip.item.map((item: IAttraction) => item.element_id),
@@ -80,10 +91,7 @@ export default function TripPage() {
       <div>
         <div className='mt-4 grid grid-cols-5'>
           <div className='col-span-2'>
-            {/* <p className='text-primary my-4 text-xl font-semibold italic'>
-              About this trip
-            </p> */}
-            <h3 className='flex items-start gap-2 text-2xl font-bold'>
+            <h3 className='mb-2 flex items-start gap-2 text-2xl font-bold'>
               {thisTrip?.name}
 
               {thisTrip?.is_optimized && (

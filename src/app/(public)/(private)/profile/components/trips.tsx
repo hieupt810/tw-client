@@ -21,7 +21,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Separator } from '@/components/ui/separator';
 import {
   Tooltip,
   TooltipContent,
@@ -116,7 +115,7 @@ export default function TripsComponent() {
           </div>
         )}
         {dividedTrips.done.length > 0 && dividedTrips.upComing.length > 0 && (
-          <Separator className='col-span-full' />
+          <hr className='col-span-full border-1' />
         )}
         {dividedTrips.upComing.length > 0 && (
           <div className='col-span-2 space-y-2'>
@@ -221,7 +220,7 @@ export const TripCard = ({ trip }: { trip: ITrip }) => {
         className='space-y-5 overflow-hidden'
       >
         <div className='gap-5'>
-          <span className='text-primary mb-4 grow truncate text-lg font-bold capitalize'>
+          <span className='mb-4 grow truncate text-lg font-bold text-black capitalize'>
             {trip.name}
           </span>
 
