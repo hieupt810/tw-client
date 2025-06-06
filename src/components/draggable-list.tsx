@@ -123,6 +123,7 @@ export default function DraggableList({
     placesInTrip,
     setPlacesInTrip,
     fetchPlacesInTrip,
+    compareChangePlacesInTrip,
   } = useStore(useTripStore, (state) => state);
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -219,7 +220,7 @@ export default function DraggableList({
             variant='outline'
             size='default'
             onClick={onSave}
-            disabled={isLoading}
+            disabled={isLoading || !compareChangePlacesInTrip()}
             aria-disabled={isLoading}
           >
             Save changes

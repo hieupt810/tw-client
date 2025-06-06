@@ -2,6 +2,7 @@
 
 import { Heart } from 'lucide-react';
 import { useCallback, useState } from 'react';
+import { FaHeart } from 'react-icons/fa';
 import { toast } from 'sonner';
 import { useStore } from 'zustand';
 
@@ -57,13 +58,13 @@ export default function SavePlaceButton({
             size={iconOnly ? 'icon' : 'default'}
             className={
               favorite
-                ? 'bg-primary !text-primary-foreground border-primary hover:bg-primary/90'
+                ? 'border-primary hover:bg-primary !text-primary bg-white hover:!text-white'
                 : ''
             }
             aria-pressed={favorite}
             onClick={handleClick}
           >
-            <Heart />
+            {favorite ? <FaHeart /> : <Heart />}
             {!iconOnly && <span>Save</span>}
           </Button>
         </TooltipTrigger>
