@@ -175,7 +175,7 @@ export const SearchAndAddPlaceDialog = ({
   const debouncedSearch = useDebounce(searchQuery.trim(), 500);
 
   useEffect(() => {
-    if (debouncedSearch) {
+    if (debouncedSearch || debouncedSearch === '') {
       searchPlaces(
         debouncedSearch,
         selectedType === 'all' ? undefined : selectedType,
@@ -219,7 +219,7 @@ export const SearchAndAddPlaceDialog = ({
                 <SelectItem value='all'>All</SelectItem>
                 <SelectItem value='restaurant'>Restaurant</SelectItem>
                 <SelectItem value='hotel'>Hotel</SelectItem>
-                <SelectItem value='thingtodo'>Thing to do</SelectItem>
+                <SelectItem value='thingtodo'>Attraction</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -307,7 +307,11 @@ export const SearchedPlaceItem = ({
                       : 'bg-amber-600',
                 )}
               >
-                {capitalize(item.type)}
+                {capitalize(
+                  item.type === 'HOTEL' || item.type === 'RESTAURANT'
+                    ? item.type
+                    : 'attraction',
+                )}
               </i>
             </h3>
             <p className='text-sm text-gray-700 italic'>

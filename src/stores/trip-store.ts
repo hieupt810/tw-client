@@ -33,6 +33,8 @@ type Action = {
     payload: Partial<Pick<ITrip, 'name' | 'status'>>,
   ) => Promise<void>;
   deleteTrip: (tripId: string) => Promise<void>;
+  optimizeTrip: (tripId: string) => Promise<void>;
+  reorderPlaces: (tripId: string, places: string[]) => Promise<void>;
 };
 
 const initialState: State = {
@@ -289,4 +291,77 @@ export const useTripStore = create<State & Action>((set) => ({
         item: places,
       },
     })),
+
+  optimizeTrip: async (tripId) => {
+    set((state) => ({
+      ...state,
+      placesInTrip: {
+        ...state.placesInTrip,
+        isLoading: true,
+      },
+    }));
+    try {
+      const data = await TripService.optimizeTrip(tripId);
+      set((state) => ({
+        ...state,
+        placesInTrip: {
+          ...state.placesInTrip,
+          item: data.places || [],
+        },
+      }));
+    } catch {
+      set((state) => ({
+        ...state,
+        placesInTrip: {
+          ...state.placesInTrip,
+          error: 'Failed to optimize trip',
+        },
+      }));
+      throw new Error('Failed to optimize trip');
+    } finally {
+      set((state) => ({
+        ...state,
+        placesInTrip: {
+          ...state.placesInTrip,
+          isLoading: false,
+        },
+      }));
+    }
+  },
+  reorderPlaces: async (tripId, places) => {
+    set((state) => ({
+      ...state,
+      placesInTrip: {
+        ...state.placesInTrip,
+        isLoading: true,
+      },
+    }));
+    try {
+      const data = await TripService.reorder(tripId, places);
+      set((state) => ({
+        ...state,
+        placesInTrip: {
+          ...state.placesInTrip,
+          item: data || [],
+        },
+      }));
+    } catch {
+      set((state) => ({
+        ...state,
+        placesInTrip: {
+          ...state.placesInTrip,
+          error: 'Failed to reorder places',
+        },
+      }));
+      throw new Error('Failed to reorder places');
+    } finally {
+      set((state) => ({
+        ...state,
+        placesInTrip: {
+          ...state.placesInTrip,
+          isLoading: false,
+        },
+      }));
+    }
+  },
 }));

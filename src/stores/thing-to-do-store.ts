@@ -64,7 +64,7 @@ export const useThingToDoStore = create<State & Action>()((set) => ({
       set((state) => ({
         thingToDo: {
           ...state.thingToDo,
-          error: 'Failed to fetch thing to do',
+          error: 'Failed to fetch attraction',
         },
       }));
     } finally {
@@ -91,7 +91,7 @@ export const useThingToDoStore = create<State & Action>()((set) => ({
       set((state) => ({
         thingsToDo: {
           ...state.thingsToDo,
-          error: 'Failed to fetch things to do',
+          error: 'Failed to fetch attractions',
         },
       }));
     } finally {

@@ -59,7 +59,7 @@ export default function ThingToDoAdminPage() {
     setDeleting(true);
     try {
       await ThingToDoService.delete(deleteId);
-      toast.success('Thing to do deleted');
+      toast.success('Attraction deleted');
       setDeleteId(null);
       fetchThings();
     } catch (error) {
@@ -76,7 +76,7 @@ export default function ThingToDoAdminPage() {
   return (
     <div className='py-5'>
       <div className='flex items-center justify-between'>
-        <SectionTitle text='Manage Things To Do' />
+        <SectionTitle text='Manage Attractions' />
         <div className='flex items-center gap-2'>
           <span>Page size:</span>
           <Select
@@ -98,7 +98,7 @@ export default function ThingToDoAdminPage() {
         </div>
       </div>
       <div className='mt-6 grid gap-4'>
-        {things.length === 0 && <div>No things to do found.</div>}
+        {things.length === 0 && <div>No attractions found.</div>}
         {things.map((thing) => (
           <Card
             key={thing.element_id}
@@ -168,7 +168,7 @@ export default function ThingToDoAdminPage() {
           <DialogHeader>
             <DialogTitle>Confirm Delete</DialogTitle>
           </DialogHeader>
-          <div>Are you sure you want to delete this thing to do?</div>
+          <div>Are you sure you want to delete this attraction?</div>
           <DialogFooter>
             <Button
               variant='outline'
