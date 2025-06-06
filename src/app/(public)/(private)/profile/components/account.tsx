@@ -5,8 +5,8 @@ import { useForm } from 'react-hook-form';
 import { useStore } from 'zustand';
 
 import ImageWithFallback from '@/components/image-with-fallback';
-import Loading from '@/components/loading';
 import PlaceCarousel from '@/components/place-carousel';
+import SkeletonProfile from '@/components/skeleton/skeleton-profile';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -75,11 +75,13 @@ export default function AccountComponent() {
     }
   };
 
-  if (!user.item) {
-    return <Loading />;
-  }
+  // if (!user.item) {
+  //   return <Loading />;
+  // }
 
-  return (
+  return isLoading ? (
+    <SkeletonProfile />
+  ) : (
     <div>
       <div className='flex-1'>
         <div className='mb-3 flex items-center space-x-6'>

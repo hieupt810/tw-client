@@ -53,7 +53,7 @@ const searchItems: ISearchItem[] = [
   },
   {
     icon: <Camera size={20} />,
-    type: 'thingtodo',
+    type: 'thing-to-do',
     title: 'Do something fun',
     placeholder: 'Attraction, activity or destination',
     description: 'Attractions',
@@ -103,7 +103,7 @@ export default function Search() {
         ))}
       </div>
       <Command className='relative max-w-3xl overflow-visible rounded-md border px-2.5 py-1.5 shadow-md'>
-        <div className='flex w-full items-center gap-2'>
+        <div className='itemsthingtodo-center flex w-full gap-2'>
           <SearchIcon />
           <CommandInput
             value={search}
