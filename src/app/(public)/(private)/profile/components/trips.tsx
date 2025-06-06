@@ -176,10 +176,10 @@ export const TripCard = ({ trip }: { trip: ITrip }) => {
   return (
     <div
       className={cn(
-        'group relative flex flex-col justify-between rounded-md p-2 shadow-sm drop-shadow-md transition-all duration-200 ease-in-out select-none hover:shadow-lg',
+        'group relative flex flex-col justify-between rounded-md p-2 transition-all duration-200 ease-in-out select-none hover:shadow-lg',
         trip.is_optimized
-          ? 'bg-primary/5 shadow-primary'
-          : 'border-muted border',
+          ? 'bg-primary/5 shadow-primary shadow-sm drop-shadow-md'
+          : 'border-muted border shadow-sm',
       )}
     >
       <DropdownMenu>
@@ -289,12 +289,12 @@ export const TripCard = ({ trip }: { trip: ITrip }) => {
                 </div>
                 <span className='text-start text-yellow-500'>
                   {trip?.numberThingtodo || 0}
-                  <p className='text-[12px] italic'>todos</p>
+                  <p className='text-[12px] italic'>attractions</p>
                 </span>
               </div>
             </TooltipTrigger>
             <TooltipContent>
-              <span>Things to do: {trip?.numberHotel || 0}</span>
+              <span>Attractions: {trip?.numberHotel || 0}</span>
             </TooltipContent>
           </Tooltip>
         </div>

@@ -56,7 +56,7 @@ const searchItems: ISearchItem[] = [
     type: 'thingtodo',
     title: 'Do something fun',
     placeholder: 'Attraction, activity or destination',
-    description: 'Things to Do',
+    description: 'Attractions',
   },
 ];
 
@@ -85,7 +85,7 @@ export default function Search() {
       <span className='text-3xl font-black tracking-tight lg:text-5xl'>
         {selectedItem.title}
       </span>
-      <div className='my-4 mt-8 grid grid-cols-2 sm:grid-cols-4'>
+      <div className='my-4 mt-8 flex items-center justify-between gap-8'>
         {searchItems.map((item, index) => (
           <button
             key={index}

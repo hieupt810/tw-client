@@ -8,7 +8,9 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { lowerCase, upperCase } from 'lodash';
 import { Loader2, Minus } from 'lucide-react';
+import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useStore } from 'zustand';
@@ -82,7 +84,9 @@ function SortableItem({
             item.type === 'THING-TO-DO' && 'bg-amber-600',
           )}
         >
-          {item.type.toLowerCase().replace(/-/g, ' ')}
+          {item.type === 'HOTEL' || item.type === 'RESTAURANT'
+            ? item.type.toLowerCase().replace(/-/g, ' ')
+            : 'Attraction'}
         </div>
       </div>
       <button
@@ -157,40 +161,51 @@ export default function DraggableList({
     >
       <div className='flex max-h-[calc(100%-3rem)] grow flex-col'>
         <SectionTitle text='Places' />
-        <DndContext
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext
-            items={placesInTrip.item.map((item) => item.element_id)}
-            strategy={verticalListSortingStrategy}
-          >
-            <div className='max-h-full space-y-3.5 overflow-x-hidden overflow-y-auto'>
-              {placesInTrip.item.map((item) => (
-                <Tooltip key={item.element_id}>
-                  <TooltipTrigger asChild>
-                    <div>
-                      <SortableItem
-                        key={item.element_id}
-                        elementId={elementId}
-                        item={item}
-                        onRemovePlaceFromTrip={handleRemovePlaceFromTrip}
-                      />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent
-                    align='center'
-                    side='right'
-                    className='z-[9999] bg-white text-black shadow-md drop-shadow-lg'
-                    arrowClassName='bg-white fill-white max-w-[200px] '
-                  >
-                    <TooltipContentDetails key={item.element_id} item={item} />
-                  </TooltipContent>
-                </Tooltip>
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
+        <div className='flex-1 overflow-y-auto rounded-md border'>
+          {placesInTrip.item.length > 0 ? (
+            <DndContext
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={placesInTrip.item.map((item) => item.element_id)}
+                strategy={verticalListSortingStrategy}
+              >
+                <div className='max-h-full space-y-3.5 overflow-x-hidden overflow-y-auto'>
+                  {placesInTrip.item.map((item) => (
+                    <Tooltip key={item.element_id}>
+                      <TooltipTrigger asChild>
+                        <div>
+                          <SortableItem
+                            key={item.element_id}
+                            elementId={elementId}
+                            item={item}
+                            onRemovePlaceFromTrip={handleRemovePlaceFromTrip}
+                          />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent
+                        align='center'
+                        side='right'
+                        className='z-[9999] bg-white text-black shadow-md drop-shadow-lg'
+                        arrowClassName='bg-white fill-white max-w-[200px] '
+                      >
+                        <TooltipContentDetails
+                          key={item.element_id}
+                          item={item}
+                        />
+                      </TooltipContent>
+                    </Tooltip>
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
+          ) : (
+            <p className='my-10 text-center text-sm text-gray-500 italic'>
+              There are no places in this trip
+            </p>
+          )}
+        </div>
       </div>
       <div className='flex h-9 flex-row items-center justify-between gap-2.5'>
         {isLoading && (
@@ -239,7 +254,7 @@ export const TooltipContentDetails = ({ item }: { item: IAttraction }) => {
   >(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleGetDetails = async () => {
+  const handleGetDetails = useCallback(async () => {
     setIsLoading(true);
     const savedContent = JSON.parse(
       sessionStorage.getItem('savedContent') || 'null',
@@ -262,7 +277,7 @@ export const TooltipContentDetails = ({ item }: { item: IAttraction }) => {
       handleSaveContent(data);
     }
     setIsLoading(false);
-  };
+  }, [item.element_id, item.type]);
 
   const handleSaveContent = (data: IHotel | IRestaurant | IThingToDo) => {
     setContent(data);
@@ -316,6 +331,13 @@ export const TooltipContentDetails = ({ item }: { item: IAttraction }) => {
   return (
     <div className='max-w-xl'>
       <h5 className='text-lg font-bold'>{content?.name}</h5>
+      <Link
+        target='_blank'
+        href={`${upperCase(item.type) === 'HOTEL' || upperCase(item.type) === 'RESTAURANT' ? `/${lowerCase(item.type)}` : '/thing-to-do'}/${item.element_id}`}
+        className='mt-2 flex items-center gap-1 text-sm text-blue-500 italic hover:text-blue-600 hover:underline'
+      >
+        Visit now
+      </Link>
       <div className='flex items-center gap-2 text-base'>
         <InteractedRating
           size='xs'

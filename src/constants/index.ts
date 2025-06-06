@@ -13,7 +13,7 @@ export class Constant {
   static NAVIGATION_MENU_ITEMS: { label: string; href: string }[] = [
     { label: 'Hotels', href: '/hotel' },
     { label: 'Restaurants', href: '/restaurant' },
-    { label: 'Things to Do', href: '/thing-to-do' },
+    { label: 'Attractions', href: '/thing-to-do' },
   ];
 
   static REGEX = {
