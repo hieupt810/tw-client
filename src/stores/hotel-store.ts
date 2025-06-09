@@ -22,7 +22,7 @@ type State = {
 type Action = {
   reset: () => void;
   fetchHotel: (id: string) => Promise<void>;
-  fetchHotels: (page: number, size: number) => Promise<void>;
+  fetchHotels: (page: number, size: number, search?: string) => Promise<void>;
   fetchSearchHotels: (name: string) => Promise<void>;
 };
 
@@ -75,12 +75,12 @@ export const useHotelStore = create<State & Action>()((set) => ({
     }
   },
 
-  async fetchHotels(page, size) {
+  async fetchHotels(page: number, size: number, search: string = '') {
     set((state) => ({
       hotels: { ...state.hotels, isLoading: true },
     }));
     try {
-      const data = await HotelService.list(page, size);
+      const data = await HotelService.list(page, size, search);
       set((state) => ({
         hotels: { ...state.hotels, items: data.data, paging: data.paging },
       }));

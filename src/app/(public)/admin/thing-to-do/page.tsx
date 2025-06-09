@@ -1,12 +1,14 @@
 'use client';
 
 import { HTTPError } from 'ky';
+import { Search } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import Loading from '@/components/loading';
+import { ThingToDoDetailDialog } from '@/components/dialog-detail-thing-to-do';
 import SectionTitle from '@/components/section-title';
+import SkeletonListRestaurant from '@/components/skeleton/skeleton-list-restaurant';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
@@ -16,6 +18,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -23,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useDebounce } from '@/hooks/useDebounce';
 import { ThingToDoService } from '@/services/thing-to-do';
 import { IThingToDo } from '@/types/IThingToDo';
 
@@ -32,15 +36,16 @@ export default function ThingToDoAdminPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1');
-  const size = parseInt(searchParams.get('size') || '10');
-
+  const size = parseInt(searchParams.get('size') || '5');
+  const debouncedSearchTerm = useDebounce<string>(searchTerm, 1000);
   const fetchThings = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await ThingToDoService.list(page, size);
+      const data = await ThingToDoService.list(page, size, debouncedSearchTerm);
       setThings(data.data as IThingToDo[]);
       setTotalPages(data.paging.pageCount || 1);
     } catch {
@@ -48,7 +53,7 @@ export default function ThingToDoAdminPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, size]);
+  }, [page, size, debouncedSearchTerm]);
 
   useEffect(() => {
     fetchThings();
@@ -72,12 +77,20 @@ export default function ThingToDoAdminPage() {
     }
   };
 
-  if (loading) return <Loading />;
   return (
     <div className='py-5'>
       <div className='flex items-center justify-between'>
         <SectionTitle text='Manage Attractions' />
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center space-x-4'>
+          <div className='relative flex-1'>
+            <Search className='absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400' />
+            <Input
+              placeholder='Search restaurant by name '
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className='pl-10'
+            />
+          </div>
           <span>Page size:</span>
           <Select
             value={String(size)}
@@ -98,37 +111,38 @@ export default function ThingToDoAdminPage() {
         </div>
       </div>
       <div className='mt-6 grid gap-4'>
-        {things.length === 0 && <div>No attractions found.</div>}
-        {things.map((thing) => (
-          <Card
-            key={thing.element_id}
-            className='flex flex-row items-center justify-between p-4'
-          >
-            <div>
-              <div className='text-lg font-bold'>{thing.name}</div>
-              <div className='text-muted-foreground text-sm'>
-                {thing.city?.name} | {thing.street}
-              </div>
-              <div className='text-muted-foreground text-xs'>{thing.email}</div>
-            </div>
-            <div className='flex gap-2'>
-              <Button
-                variant='outline'
-                onClick={() =>
-                  router.push(`/admin/thing-to-do/edit/${thing.element_id}`)
-                }
+        {loading ? (
+          <SkeletonListRestaurant />
+        ) : (
+          <>
+            {things.length === 0 && <div>No attractions found.</div>}
+            {things.map((thing) => (
+              <Card
+                key={thing.element_id}
+                className='flex flex-row items-center justify-between p-4'
               >
-                Edit
-              </Button>
-              <Button
-                variant='destructive'
-                onClick={() => setDeleteId(thing.element_id)}
-              >
-                Delete
-              </Button>
-            </div>
-          </Card>
-        ))}
+                <div>
+                  <div className='text-lg font-bold'>{thing.name}</div>
+                  <div className='text-muted-foreground text-sm'>
+                    {thing.city?.name} | {thing.street}
+                  </div>
+                  <div className='text-muted-foreground text-xs'>
+                    {thing.email}
+                  </div>
+                </div>
+                <div className='flex gap-2'>
+                  <ThingToDoDetailDialog id={thing.element_id} />
+                  <Button
+                    variant='destructive'
+                    onClick={() => setDeleteId(thing.element_id)}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </Card>
+            ))}
+          </>
+        )}
       </div>
       {/* Pagination Controls - HorizontalPlace style */}
       <div className='mt-6 flex flex-row items-center justify-center gap-2 text-sm font-medium'>

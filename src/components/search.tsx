@@ -53,7 +53,7 @@ const searchItems: ISearchItem[] = [
   },
   {
     icon: <Camera size={20} />,
-    type: 'thing-to-do',
+    type: 'thingtodo',
     title: 'Do something fun',
     placeholder: 'Attraction, activity or destination',
     description: 'Attractions',
@@ -79,7 +79,10 @@ export default function Search() {
 
     searchPlaces(search, getPlaceType(selectedItem.type), 10);
   }, [debouncedSearchTerm, selectedItem.type]);
-
+  const getUrlType = (type: string): string => {
+    if (type === 'thingtodo') return 'thing-to-do';
+    return type;
+  };
   return (
     <div className='mt-16 flex flex-col items-center justify-center md:mt-24 md:mb-12'>
       <span className='text-3xl font-black tracking-tight lg:text-5xl'>
@@ -124,7 +127,7 @@ export default function Search() {
               <CommandGroup>
                 {items.map((place) => (
                   <Link
-                    href={`/${place.type}/${place.element_id}`}
+                    href={`/${getUrlType(place.type)}/${place.element_id}`}
                     key={place.element_id}
                   >
                     <CommandItem
