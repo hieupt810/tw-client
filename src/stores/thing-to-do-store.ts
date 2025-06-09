@@ -22,7 +22,11 @@ type State = {
 type Action = {
   reset: () => void;
   fetchThingToDo: (id: string) => Promise<void>;
-  fetchThingsToDo: (page: number, size: number) => Promise<void>;
+  fetchThingsToDo: (
+    page: number,
+    size: number,
+    search?: string,
+  ) => Promise<void>;
 };
 
 const initialState: State = {
@@ -74,12 +78,12 @@ export const useThingToDoStore = create<State & Action>()((set) => ({
     }
   },
 
-  async fetchThingsToDo(page = 1, size = 10) {
+  async fetchThingsToDo(page = 1, size = 10, search: string = '') {
     set((state) => ({
       thingsToDo: { ...state.thingsToDo, isLoading: true },
     }));
     try {
-      const data = await ThingToDoService.list(page, size);
+      const data = await ThingToDoService.list(page, size, search);
       set((state) => ({
         thingsToDo: {
           ...state.thingsToDo,

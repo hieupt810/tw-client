@@ -7,9 +7,9 @@ class Routes {
 }
 
 export class ThingToDoService {
-  static list(page: number = 1, size: number = 10) {
+  static list(page: number = 1, size: number = 10, search: string) {
     return api
-      .get(Routes.DEFAULT, { searchParams: { page, size } })
+      .get(Routes.DEFAULT, { searchParams: { page, size, search } })
       .json<IAttractionPaging>();
   }
 

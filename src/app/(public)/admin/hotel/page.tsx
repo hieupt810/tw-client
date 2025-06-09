@@ -5,8 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
 
-import Loading from '@/components/loading';
 import SectionTitle from '@/components/section-title';
+import SkeletonListRestaurant from '@/components/skeleton/skeleton-list-restaurant';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
@@ -31,24 +31,13 @@ export default function HotelAdminPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1');
-  const size = parseInt(searchParams.get('size') || '10');
+  const size = parseInt(searchParams.get('size') || '5');
   const [searchTerm, setSearchTerm] = useState('');
-  const { hotels, fetchHotels, fetchSearchHotels } = useStore(
-    useHotelStore,
-    (state) => state,
-  );
+  const { hotels, fetchHotels } = useStore(useHotelStore, (state) => state);
   const debouncedSearchTerm = useDebounce<string>(searchTerm, 1000);
   useEffect(() => {
-    fetchHotels(page, size);
-  }, [fetchHotels, page, size]);
-  useEffect(() => {
-    if (debouncedSearchTerm) {
-      fetchSearchHotels(debouncedSearchTerm);
-    } else {
-      fetchHotels(page, size);
-    }
-  }, [debouncedSearchTerm]);
-  if (hotels.isLoading) return <Loading />;
+    fetchHotels(page, size, debouncedSearchTerm);
+  }, [fetchHotels, page, size, debouncedSearchTerm]);
 
   return (
     <div className='py-5'>
@@ -84,32 +73,40 @@ export default function HotelAdminPage() {
         </div>
       </div>
       <div className='mt-6 grid gap-4'>
-        {hotels.items.length === 0 && <div>No hotels found.</div>}
-        {hotels.items.map((hotel) => (
-          <Card
-            key={hotel.element_id}
-            className='flex flex-row items-center justify-between p-4'
-          >
-            <div>
-              <div className='text-lg font-bold'>{hotel.name}</div>
-              <div className='text-muted-foreground text-sm'>
-                {hotel.city?.name} | {hotel.street}
-              </div>
-              <div className='text-muted-foreground text-xs'>{hotel.email}</div>
-            </div>
-            <div className='flex gap-2'>
-              <Button
-                variant='outline'
-                onClick={() =>
-                  router.push(`/admin/hotel/edit/${hotel.element_id}`)
-                }
+        {hotels.isLoading ? (
+          <SkeletonListRestaurant />
+        ) : (
+          <>
+            {hotels.items.length === 0 && <div>No hotels found.</div>}
+            {hotels.items.map((hotel) => (
+              <Card
+                key={hotel.element_id}
+                className='flex flex-row items-center justify-between p-4'
               >
-                Edit
-              </Button>
-              <Button variant='destructive'>Delete</Button>
-            </div>
-          </Card>
-        ))}
+                <div>
+                  <div className='text-lg font-bold'>{hotel.name}</div>
+                  <div className='text-muted-foreground text-sm'>
+                    {hotel.city?.name} | {hotel.street}
+                  </div>
+                  <div className='text-muted-foreground text-xs'>
+                    {hotel.email}
+                  </div>
+                </div>
+                <div className='flex gap-2'>
+                  <Button
+                    variant='outline'
+                    onClick={() =>
+                      router.push(`/admin/hotel/edit/${hotel.element_id}`)
+                    }
+                  >
+                    Edit
+                  </Button>
+                  <Button variant='destructive'>Delete</Button>
+                </div>
+              </Card>
+            ))}
+          </>
+        )}
       </div>
       <div className='mt-6 flex flex-row items-center justify-center gap-2 text-sm font-medium'>
         <Button
