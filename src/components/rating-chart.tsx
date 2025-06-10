@@ -3,6 +3,8 @@ import { Label, Pie, PieChart } from 'recharts';
 
 import {
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
@@ -19,26 +21,31 @@ export default function RatingChart({ histogram }: Props) {
       rating: 'Excellent',
       number: histogram[4],
       fill: 'var(--color-chart-1)',
+      browser: 'excellent',
     },
     {
       rating: 'Good',
       number: histogram[3],
       fill: 'var(--color-chart-2)',
+      browser: 'good',
     },
     {
       rating: 'Average',
       number: histogram[2],
       fill: 'var(--color-chart-3)',
+      browser: 'average',
     },
     {
       rating: 'Poor',
       number: histogram[1],
       fill: 'var(--color-chart-4)',
+      browser: 'poor',
     },
     {
       rating: 'Terrible',
       number: histogram[0],
       fill: 'var(--color-chart-5)',
+      browser: 'terrible',
     },
   ];
 
@@ -51,10 +58,7 @@ export default function RatingChart({ histogram }: Props) {
     <div className='mx-auto aspect-square h-full max-h-80 min-h-60 w-auto'>
       <ChartContainer config={CHART_CONFIG} className='aspect-square'>
         <PieChart>
-          <ChartTooltip
-            cursor={false}
-            content={<ChartTooltipContent hideLabel />}
-          />
+          <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
           <Pie
             data={data}
             dataKey='number'
@@ -92,6 +96,7 @@ export default function RatingChart({ histogram }: Props) {
               }}
             />
           </Pie>
+          <ChartLegend content={<ChartLegendContent nameKey='browser' />} />
         </PieChart>
       </ChartContainer>
     </div>

@@ -16,6 +16,8 @@ import {
   Wine,
 } from 'lucide-react';
 
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+
 function getIcon(content: string) {
   const lowerContent = content.toLowerCase();
   switch (true) {
@@ -63,14 +65,26 @@ export default function Feature({ features }: Props) {
       {features.slice(0, 18).map((item) => {
         const Icon = getIcon(item) || CircleEllipsis;
         return (
-          <div key={item} className='inline-flex items-center space-x-1.5'>
-            <div>
-              <Icon size={18} />
-            </div>
-            <p className='max-w-full truncate text-sm tracking-tight md:text-base'>
+          <Tooltip key={item}>
+            <TooltipTrigger asChild>
+              <div className='inline-flex items-center space-x-1.5'>
+                <div>
+                  <Icon size={18} />
+                </div>
+                <p className='max-w-full truncate text-sm tracking-tight md:text-base'>
+                  {item}
+                </p>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent
+              className='bg-white text-black shadow-sm'
+              arrowClassName='bg-white fill-white'
+              side='bottom'
+              align='end'
+            >
               {item}
-            </p>
-          </div>
+            </TooltipContent>
+          </Tooltip>
         );
       })}
     </div>

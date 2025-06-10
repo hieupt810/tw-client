@@ -55,7 +55,17 @@ export class TripService {
   ) {
     return api
       .patch(`${Routes.DEFAULT}${tripId}`, { json: payload })
-      .json<ITrip>();
+      .json<
+        Pick<
+          ITrip,
+          | 'id'
+          | 'is_optimized'
+          | 'name'
+          | 'status'
+          | 'status_text'
+          | 'updated_at'
+        >
+      >();
   }
 
   static deleteTrip(tripId: string) {
