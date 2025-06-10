@@ -179,7 +179,7 @@ export const useTripStore = create<State & Action>((set, get) => ({
         trips: {
           ...state.trips,
           item: state.trips.item.map((trip) =>
-            trip.id === data.id ? data : trip,
+            trip.id === data.id ? { ...trip, ...data } : trip,
           ),
         },
       }));

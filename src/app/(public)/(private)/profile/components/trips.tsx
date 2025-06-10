@@ -8,6 +8,7 @@ import {
   Loader2,
   UtensilsCrossed,
 } from 'lucide-react';
+import * as moment from 'moment';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
@@ -293,12 +294,12 @@ export const TripCard = ({ trip }: { trip: ITrip }) => {
               </div>
             </TooltipTrigger>
             <TooltipContent>
-              <span>Attractions: {trip?.numberHotel || 0}</span>
+              <span>Attractions: {trip?.numberThingtodo || 0}</span>
             </TooltipContent>
           </Tooltip>
         </div>
         <span className='text-muted-foreground text-sm'>
-          Last updated: {formatDate(trip.updated_at)}
+          Last updated: {formatDate(moment.utc(trip.updated_at).toString())}
         </span>
       </Link>
 
