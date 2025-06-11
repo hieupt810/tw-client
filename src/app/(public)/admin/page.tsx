@@ -1,7 +1,8 @@
 'use client';
 
+import { SelectValue } from '@radix-ui/react-select';
 import { Star } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Bar,
   BarChart,
@@ -25,6 +26,14 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+} from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Tooltip,
@@ -34,6 +43,8 @@ import {
 import { useDashboardStore } from '@/stores/dashboard-store';
 
 export default function AdminPage() {
+  const [selectIntoTrip, setSelectIntoTrip] = useState('all');
+  const [selectRanking, setSelectRanking] = useState('all');
   const {
     summary,
     userRegister,
@@ -48,10 +59,9 @@ export default function AdminPage() {
   useEffect(() => {
     fetchSummary();
     fetchChartUserRegister();
-    fetchTopPlaceIntoTrip('restaurants', 'desc', 1, 5);
-    fetchTopPlaceRanking('restaurants', 'desc', 1, 5);
-  }, [fetchSummary]);
-
+    fetchTopPlaceIntoTrip(selectIntoTrip, 'desc', 1, 5);
+    fetchTopPlaceRanking(selectRanking, 'desc', 1, 5);
+  }, [fetchSummary, selectIntoTrip, selectRanking]);
   const monthlyData = userRegister?.item
     ? Object.entries(userRegister.item)
         .filter(([key]) => key !== 'total_user')
@@ -60,6 +70,12 @@ export default function AdminPage() {
           count,
         }))
     : [];
+  const handleSelectIntoTrip = (value: string) => {
+    setSelectIntoTrip(value);
+  };
+  const handleSelectRanking = (value: string) => {
+    setSelectRanking(value);
+  };
   return (
     <div className='flex flex-col gap-4 p-4 md:p-8'>
       <SectionTitle text='Admin Dashboard' />
@@ -105,14 +121,14 @@ export default function AdminPage() {
           <Card>
             <CardHeader className='flex flex-row items-center justify-between pb-2'>
               <CardTitle className='text-sm font-medium'>
-                Unique Places
+                Total Optimized Trip
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className='text-2xl font-bold'>
                 {summary.item?.total_unique_places_in_trips}
               </div>
-              <p className='text-muted-foreground text-xs'>Added to trips</p>
+              <p className='text-muted-foreground text-xs'>Created by users</p>
             </CardContent>
           </Card>
           <Card>
@@ -219,6 +235,22 @@ export default function AdminPage() {
             <CardHeader>
               <CardTitle>Top Places Added to Trips</CardTitle>
               <CardDescription>Most frequently added places</CardDescription>
+              <Select
+                onValueChange={handleSelectIntoTrip}
+                value={selectIntoTrip}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder='Select Type' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Type</SelectLabel>
+                    <SelectItem value='all'>All</SelectItem>
+                    <SelectItem value='restaurants'>Restaurant</SelectItem>
+                    <SelectItem value='hotels'>Hotel</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </CardHeader>
             <CardContent>
               <div className='space-y-4'>
@@ -279,6 +311,19 @@ export default function AdminPage() {
             <CardHeader>
               <CardTitle>Top Ranked Places</CardTitle>
               <CardDescription>Places with highest ratings</CardDescription>
+              <Select onValueChange={handleSelectRanking} value={selectRanking}>
+                <SelectTrigger>
+                  <SelectValue placeholder='Select Type' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Type</SelectLabel>
+                    <SelectItem value='all'>All Of Types</SelectItem>
+                    <SelectItem value='restaurants'>Restaurant</SelectItem>
+                    <SelectItem value='hotels'>Hotel</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </CardHeader>
             <CardContent>
               <div className='space-y-4'>
