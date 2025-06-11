@@ -3,7 +3,7 @@ import { IPaging } from './IPaging';
 export interface ISummary {
   average_places_per_trip: string;
   total_trips: number;
-  total_unique_places_in_trips: number;
+  total_optimized_trips: number;
   total_users: number;
 }
 

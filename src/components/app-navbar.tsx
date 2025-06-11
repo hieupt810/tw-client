@@ -92,6 +92,11 @@ export default function AppNavbar() {
                     <Link href='/profile?tab=trips' passHref>
                       <DropdownMenuItem>Trips</DropdownMenuItem>
                     </Link>
+                    {me.is_admin ? (
+                      <Link href='/admin' passHref>
+                        <DropdownMenuItem>Admin</DropdownMenuItem>
+                      </Link>
+                    ) : null}
                     <DropdownMenuItem
                       variant='destructive'
                       onClick={() => logOut()}
