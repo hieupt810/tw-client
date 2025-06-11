@@ -126,7 +126,7 @@ export default function AdminPage() {
             </CardHeader>
             <CardContent>
               <div className='text-2xl font-bold'>
-                {summary.item?.total_unique_places_in_trips}
+                {summary.item?.total_optimized_trips}
               </div>
               <p className='text-muted-foreground text-xs'>Created by users</p>
             </CardContent>
