@@ -1,7 +1,9 @@
+import { HTTPError } from 'ky';
 import { create } from 'zustand';
 
 import { TripService } from '@/services/trip';
 import { IAttraction } from '@/types/IAttraction';
+import { IError } from '@/types/IError';
 import { ITrip } from '@/types/ITrip';
 
 type State = {
@@ -150,13 +152,17 @@ export const useTripStore = create<State & Action>((set, get) => ({
           },
         };
       });
-    } catch {
+    } catch (error: unknown) {
+      const err = (await (error as HTTPError).response.json()) as IError;
+      const errorMessage = err?.error || 'Failed to add place to trip';
       set((state) => ({
         trips: {
           ...state.trips,
-          error: 'Failed to add place to trip',
+          error: errorMessage,
         },
       }));
+
+      throw errorMessage;
     } finally {
       set((state) => ({
         trips: {

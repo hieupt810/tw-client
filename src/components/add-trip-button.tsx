@@ -75,8 +75,8 @@ export default function AddTripButton({ elementId, iconOnly = false }: Props) {
         await addPlaceToTrip(tripId, elementId);
         toast.success('Item added to trip successfully!');
         setDialogOpen(false);
-      } catch {
-        toast.error('Failed to add item to trip.');
+      } catch (error: unknown) {
+        toast.error(error as string);
       }
     },
     [elementId, addPlaceToTrip],

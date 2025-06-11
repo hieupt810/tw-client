@@ -15,7 +15,7 @@ export class HotelService {
   }
 
   static details(id: string) {
-    return api.get(`${Routes.DEFAULT}${id}/`).json<IHotel>();
+    return api.get(`${Routes.DEFAULT}${id}`).json<IHotel>();
   }
 
   static delete(id: string) {
