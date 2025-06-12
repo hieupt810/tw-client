@@ -1,8 +1,6 @@
 'use client';
 
-import { SelectValue } from '@radix-ui/react-select';
-import { Star } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
   Bar,
   BarChart,
@@ -14,6 +12,8 @@ import {
 import { useStore } from 'zustand';
 
 import SectionTitle from '@/components/section-title';
+import TopPlacesAddedToTrip from '@/components/top-places-added-to-trip';
+import TopRanking from '@/components/top-ranking';
 import {
   Card,
   CardContent,
@@ -26,42 +26,17 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-} from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import { useDashboardStore } from '@/stores/dashboard-store';
 
 export default function AdminPage() {
-  const [selectIntoTrip, setSelectIntoTrip] = useState('all');
-  const [selectRanking, setSelectRanking] = useState('all');
-  const {
-    summary,
-    userRegister,
-    topPlaceIntoTrip,
-    topPlaceRanking,
-    fetchSummary,
-    fetchChartUserRegister,
-    fetchTopPlaceRanking,
-    fetchTopPlaceIntoTrip,
-  } = useStore(useDashboardStore, (state) => state);
+  const { summary, userRegister, fetchSummary, fetchChartUserRegister } =
+    useStore(useDashboardStore, (state) => state);
 
   useEffect(() => {
     fetchSummary();
     fetchChartUserRegister();
-    fetchTopPlaceIntoTrip(selectIntoTrip, 'desc', 1, 5);
-    fetchTopPlaceRanking(selectRanking, 'desc', 1, 5);
-  }, [fetchSummary, selectIntoTrip, selectRanking]);
+  }, [fetchSummary]);
   const monthlyData = userRegister?.item
     ? Object.entries(userRegister.item)
         .filter(([key]) => key !== 'total_user')
@@ -70,12 +45,7 @@ export default function AdminPage() {
           count,
         }))
     : [];
-  const handleSelectIntoTrip = (value: string) => {
-    setSelectIntoTrip(value);
-  };
-  const handleSelectRanking = (value: string) => {
-    setSelectRanking(value);
-  };
+
   return (
     <div className='flex flex-col gap-4 p-4 md:p-8'>
       <SectionTitle text='Admin Dashboard' />
@@ -205,162 +175,9 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* Top Places Tables */}
       <div className='grid gap-4 md:grid-cols-2'>
-        {topPlaceIntoTrip.isLoading ? (
-          <Card>
-            <CardHeader>
-              <Skeleton className='mb-2 h-6 w-48' />
-              <Skeleton className='h-4 w-64' />
-            </CardHeader>
-            <CardContent>
-              <div className='space-y-4'>
-                {[...Array(5)].map((_, index) => (
-                  <div
-                    key={index}
-                    className='flex items-center justify-between'
-                  >
-                    <div className='flex items-center gap-2'>
-                      <Skeleton className='h-8 w-8 rounded-full' />
-                      <Skeleton className='h-4 w-40' />
-                    </div>
-                    <Skeleton className='h-4 w-20' />
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        ) : (
-          <Card>
-            <CardHeader>
-              <CardTitle>Top Places Added to Trips</CardTitle>
-              <CardDescription>Most frequently added places</CardDescription>
-              <Select
-                onValueChange={handleSelectIntoTrip}
-                value={selectIntoTrip}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder='Select Type' />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Type</SelectLabel>
-                    <SelectItem value='all'>All</SelectItem>
-                    <SelectItem value='restaurants'>Restaurant</SelectItem>
-                    <SelectItem value='hotels'>Hotel</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </CardHeader>
-            <CardContent>
-              <div className='space-y-4'>
-                {topPlaceIntoTrip.item.map((place, i) => (
-                  <div
-                    key={place.element_id}
-                    className='flex items-center justify-between'
-                  >
-                    <div className='flex items-center gap-2'>
-                      <div className='bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full'>
-                        <span className='text-sm font-medium'>{i + 1}</span>
-                      </div>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <div>
-                            {place.name.length > 30
-                              ? `${place.name.substring(0, 27)}...`
-                              : place.name}
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <span>{place.name}</span>
-                        </TooltipContent>
-                      </Tooltip>
-                    </div>
-                    <div className='font-medium'>{place.trip_count} trips</div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-        {topPlaceRanking.isLoading ? (
-          <Card>
-            <CardHeader>
-              <Skeleton className='mb-2 h-6 w-48' />
-              <Skeleton className='h-4 w-64' />
-            </CardHeader>
-            <CardContent>
-              <div className='space-y-4'>
-                {[...Array(5)].map((_, index) => (
-                  <div
-                    key={index}
-                    className='flex items-center justify-between'
-                  >
-                    <div className='flex items-center gap-2'>
-                      <Skeleton className='h-8 w-8 rounded-full' />
-                      <Skeleton className='h-4 w-40' />
-                    </div>
-                    <Skeleton className='h-4 w-20' />
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        ) : (
-          <Card>
-            <CardHeader>
-              <CardTitle>Top Ranked Places</CardTitle>
-              <CardDescription>Places with highest ratings</CardDescription>
-              <Select onValueChange={handleSelectRanking} value={selectRanking}>
-                <SelectTrigger>
-                  <SelectValue placeholder='Select Type' />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Type</SelectLabel>
-                    <SelectItem value='all'>All Of Types</SelectItem>
-                    <SelectItem value='restaurants'>Restaurant</SelectItem>
-                    <SelectItem value='hotels'>Hotel</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </CardHeader>
-            <CardContent>
-              <div className='space-y-4'>
-                {topPlaceRanking.item.map((place, i) => (
-                  <div
-                    key={place.element_id}
-                    className='flex items-center justify-between'
-                  >
-                    <div className='flex items-center gap-2'>
-                      <div className='bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full'>
-                        <span className='text-sm font-medium'>{i + 1}</span>
-                      </div>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <div>
-                            {place.name.length > 30
-                              ? `${place.name.substring(0, 27)}...`
-                              : place.name}
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <span>{place.name}</span>
-                        </TooltipContent>
-                      </Tooltip>
-                    </div>
-                    <div className='flex flex-row gap-2 font-medium'>
-                      {place.rating !== undefined
-                        ? place.rating.toFixed(1)
-                        : 'N/A'}{' '}
-                      <Star className='h-5 w-5 fill-yellow-400 text-yellow-400' />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        <TopPlacesAddedToTrip />
+        <TopRanking />
       </div>
     </div>
   );
