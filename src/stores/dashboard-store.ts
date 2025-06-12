@@ -18,12 +18,16 @@ type State = {
     error: string;
     isLoading: boolean;
     item: Place[];
+    pageCount: number;
+    totalCount: number;
   };
 
   topPlaceIntoTrip: {
     error: string;
     isLoading: boolean;
     item: Place[];
+    pageCount: number;
+    totalCount: number;
   };
 };
 
@@ -60,11 +64,15 @@ const initialState: State = {
     error: '',
     isLoading: true,
     item: [],
+    pageCount: 0,
+    totalCount: 0,
   },
   topPlaceRanking: {
     error: '',
     isLoading: true,
     item: [],
+    pageCount: 0,
+    totalCount: 0,
   },
 };
 
@@ -76,7 +84,7 @@ export const useDashboardStore = create<State & Action>((set) => ({
   },
 
   async fetchSummary() {
-    set(initialState);
+    // set(initialState);
     try {
       set((state) => ({
         summary: { ...state.summary, isLoading: true },
@@ -97,7 +105,7 @@ export const useDashboardStore = create<State & Action>((set) => ({
   },
 
   async fetchChartUserRegister() {
-    set(initialState);
+    // set(initialState);
     try {
       set((state) => ({
         userRegister: { ...state.userRegister, isLoading: true },
@@ -123,7 +131,7 @@ export const useDashboardStore = create<State & Action>((set) => ({
     page: number,
     size: number,
   ) {
-    set(initialState);
+    // set(initialState);
     try {
       set((state) => ({
         topPlaceRanking: { ...state.topPlaceRanking, isLoading: true },
@@ -139,6 +147,8 @@ export const useDashboardStore = create<State & Action>((set) => ({
           ...state.topPlaceRanking,
           item: data.data,
           isLoading: false,
+          pageCount: data.paging.pageCount,
+          totalCount: data.paging.totalCount,
         },
       }));
     } catch {
@@ -158,7 +168,7 @@ export const useDashboardStore = create<State & Action>((set) => ({
     page: number,
     size: number,
   ) {
-    set(initialState);
+    // set(initialState);
     try {
       set((state) => ({
         topPlaceIntoTrip: { ...state.topPlaceIntoTrip, isLoading: true },
@@ -174,6 +184,8 @@ export const useDashboardStore = create<State & Action>((set) => ({
           ...state.topPlaceIntoTrip,
           item: data.data,
           isLoading: false,
+          pageCount: data.paging.pageCount,
+          totalCount: data.paging.totalCount,
         },
       }));
     } catch {

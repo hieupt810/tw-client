@@ -34,6 +34,7 @@ export interface Place {
   trip_count: number;
   type: string;
   website: string;
+  review_number?: number;
 }
 
 export type IPlaceDashboardPaging = IPaging<Place>;
