@@ -73,18 +73,25 @@ export default function HomePage() {
       <div className='my-10 flex flex-col gap-10'>
         <PlaceCarousel
           autoplay
+          isContentLoading={recommendations.isLoading}
           items={recommendations.items}
           title='Top destinations for your next vacation'
           description='Discover the most popular places with the highest rankings'
         />
-        <PlaceCarousel items={hotels.items} title='Stay at top hotels' />
+        <PlaceCarousel
+          items={hotels.items}
+          title='Stay at top hotels'
+          isContentLoading={hotels.isLoading}
+        />
         <PlaceCarousel
           items={restaurants.items}
           title='Experience at top restaurants'
+          isContentLoading={restaurants.isLoading}
         />
         <PlaceCarousel
           items={thingsToDo.items}
           title='Enjoy the things people love to do'
+          isContentLoading={thingsToDo.isLoading}
         />
       </div>
       <HeroSection title='Da Nang, Vietnam' image='/home-2.jpeg' />

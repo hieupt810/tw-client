@@ -3,7 +3,7 @@
 import { MapPin } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useParams, useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 
 import DraggableList from '@/components/draggable-list';
@@ -28,16 +28,7 @@ export default function TripPage() {
     fetchPlacesInTrip,
     fetchTrips,
     compareChangePlacesInTrip,
-    trips,
   } = useTripStore((state) => state);
-
-  const [thisTrip, setThisTrip] = useState(
-    trips.item.find((trip) => trip.id === slug),
-  );
-
-  useEffect(() => {
-    setThisTrip(trips.item.find((trip) => trip.id === slug));
-  }, [slug, trips.item]);
 
   useEffect(() => {
     fetchTrips();
@@ -92,9 +83,9 @@ export default function TripPage() {
         <div className='mt-4 grid grid-cols-5'>
           <div className='col-span-2'>
             <h3 className='mb-2 flex items-start gap-2 text-2xl font-bold'>
-              {thisTrip?.name}
+              {placesInTrip.trip?.name}
 
-              {thisTrip?.is_optimized && (
+              {placesInTrip.trip?.isOptimized && (
                 <span
                   className={cn(
                     'bg-primary-foreground text-primary inline-block rounded-md px-2 py-0.5 text-base font-semibold',
@@ -108,12 +99,12 @@ export default function TripPage() {
             <span
               className={cn(
                 'inline-block rounded-md px-2 py-0.5 text-sm font-normal',
-                !thisTrip?.status
+                !placesInTrip.trip?.status
                   ? 'bg-green-50 text-green-500'
                   : 'bg-orange-100 text-orange-500',
               )}
             >
-              {thisTrip?.status_text}
+              {placesInTrip.trip?.statusText}
             </span>
           </div>
           <div className='col-span-3'>

@@ -45,8 +45,14 @@ export default function SavePlaceButton({
       toast.error(error);
       return;
     }
-    setFavorite((prev) => !prev);
-    toast.success('Success');
+    setFavorite((prev) => {
+      if (prev) {
+        toast.success('Removed the place from profile');
+      } else {
+        toast.success('Added the place to profile');
+      }
+      return !prev;
+    });
   }, [elementId, favorite, me, add, remove]);
 
   return (

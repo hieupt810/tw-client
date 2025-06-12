@@ -5,6 +5,7 @@ import { TripService } from '@/services/trip';
 import { IAttraction } from '@/types/IAttraction';
 import { IError } from '@/types/IError';
 import { ITrip } from '@/types/ITrip';
+import { ITripDetails } from '@/types/ITripDetails';
 
 type State = {
   trips: {
@@ -18,7 +19,7 @@ type State = {
     oldItem: IAttraction[];
     error: string;
     isLoading: boolean;
-  };
+  } & Pick<ITripDetails, 'trip'>;
 };
 
 type Action = {
@@ -50,6 +51,17 @@ const initialState: State = {
   },
   placesInTrip: {
     item: [],
+    trip: {
+      created_at: '',
+      id: '',
+      isOptimized: false,
+      name: '',
+      total_places: 0,
+      updated_at: '',
+      user_id: '',
+      status: false,
+      statusText: '',
+    },
     oldItem: [],
     error: '',
     isLoading: true,
@@ -147,6 +159,11 @@ export const useTripStore = create<State & Action>((set, get) => ({
           },
           placesInTrip: {
             ...state.placesInTrip,
+            trip: {
+              ...state.placesInTrip.trip,
+              total_places: updatedTrip.length,
+              isOptimized: false,
+            },
             item: updatedTrip,
             oldItem: updatedTrip,
           },
@@ -263,8 +280,14 @@ export const useTripStore = create<State & Action>((set, get) => ({
           },
           placesInTrip: {
             ...state.placesInTrip,
+            trip: {
+              ...state.placesInTrip.trip,
+              total_places: updatedTrip.length,
+              isOptimized: false,
+            },
             item: updatedTrip,
             oldItem: updatedTrip,
+            isOptimized: false,
           },
         };
       });
@@ -291,18 +314,21 @@ export const useTripStore = create<State & Action>((set, get) => ({
       ...state,
       placesInTrip: {
         ...state.placesInTrip,
+
         isLoading: true,
       },
     }));
 
     try {
       const data = await TripService.getTripById(tripId);
+      console.log(data.trip);
       set((state) => ({
         ...state,
         placesInTrip: {
           ...state.placesInTrip,
           item: data.places || [],
           oldItem: data.places || [],
+          trip: data.trip || {},
         },
       }));
     } catch {
@@ -351,6 +377,10 @@ export const useTripStore = create<State & Action>((set, get) => ({
         },
         placesInTrip: {
           ...state.placesInTrip,
+          trip: {
+            ...state.placesInTrip.trip,
+            isOptimized: true,
+          },
           item: data.places || [],
           oldItem: data.places || [],
         },
@@ -380,6 +410,10 @@ export const useTripStore = create<State & Action>((set, get) => ({
       placesInTrip: {
         ...state.placesInTrip,
         isLoading: true,
+        trip: {
+          ...state.placesInTrip.trip,
+          isOptimized: false,
+        },
       },
     }));
     try {
@@ -396,6 +430,7 @@ export const useTripStore = create<State & Action>((set, get) => ({
           ...state.placesInTrip,
           item: data || [],
           oldItem: data || [],
+          isOptimized: false,
         },
       }));
     } catch {
