@@ -221,14 +221,14 @@ export default function DraggableList({
             size='default'
             onClick={onSave}
             disabled={isLoading || !compareChangePlacesInTrip()}
-            aria-disabled={isLoading}
+            aria-disabled={isLoading || !compareChangePlacesInTrip()}
           >
             Save changes
           </Button>
           <Button
             onClick={() => onOptimize()}
-            disabled={isLoading}
-            aria-disabled={isLoading}
+            disabled={isLoading || placesInTrip.trip.isOptimized}
+            aria-disabled={isLoading || placesInTrip.trip.isOptimized}
           >
             Optimize Route
           </Button>
