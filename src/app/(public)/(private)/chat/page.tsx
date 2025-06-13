@@ -11,17 +11,29 @@ import api from '@/lib/api';
 const HELLO_MESSAGE =
   'Hello! I am your knowledgeable assistant specializing in tourism in Da Nang, Vietnam. What can I help you with today?';
 
-interface IChat {
-  text: string;
-  isUser: boolean;
+interface IMessage {
+  parts: [
+    {
+      text?: string;
+      function_call?: {
+        args: object;
+        name: string;
+      };
+      function_response?: {
+        name: string;
+        response: {
+          result: { id: string; name: string }[];
+        };
+      };
+    },
+  ];
+  role: 'user' | 'model';
 }
 
 export default function ChatPage() {
   const ref = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState<string>('');
-  const [history, setHistory] = useState<IChat[]>([
-    { text: HELLO_MESSAGE, isUser: false },
-  ]);
+  const [contents, setContents] = useState<IMessage[]>([]);
 
   useEffect(() => {
     if (ref.current) {
@@ -30,15 +42,20 @@ export default function ChatPage() {
         top: ref.current.scrollHeight,
       });
     }
-  }, [history]);
+  }, [contents]);
 
   async function handleRequestMessage() {
-    setHistory((prev) => [...prev, { text: input, isUser: true }]);
+    const message: IMessage = { parts: [{ text: input }], role: 'user' };
+    setContents((prev) => [...prev, message]);
     setInput('');
+
     const response = await api
-      .post('conversations/', { json: { message: input } })
-      .json<{ message: string }>();
-    setHistory((prev) => [...prev, { text: response.message, isUser: false }]);
+      .post('conversations/', {
+        json: { contents: [...contents, message] },
+      })
+      .json<{ contents: IMessage[] }>();
+
+    setContents(response.contents);
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -53,9 +70,23 @@ export default function ChatPage() {
         ref={ref}
         className='flex max-h-[75dvh] grow flex-col gap-4 overflow-y-auto px-10 pb-4'
       >
-        {history.map((message, index) => (
-          <Message key={index} text={message.text} isUser={message.isUser} />
-        ))}
+        <Message text={HELLO_MESSAGE} />
+        {contents.map((message, index) => {
+          const hasText = message.parts[0]?.text;
+          const hasFunctionCall = message.parts[0]?.function_call;
+          const hasFunctionResponse = message.parts[0]?.function_response;
+
+          if (!hasFunctionCall && !hasFunctionResponse && hasText) {
+            return (
+              <Message
+                key={index}
+                text={hasText}
+                isUser={message.role === 'user'}
+              />
+            );
+          }
+          return null;
+        })}
       </div>
       <div className='flex flex-row items-center justify-center gap-4 px-10'>
         <Input
