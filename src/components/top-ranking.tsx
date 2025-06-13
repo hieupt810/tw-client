@@ -107,6 +107,7 @@ export default function TopRanking() {
                     <SelectItem value='all'>All</SelectItem>
                     <SelectItem value='restaurants'>Restaurant</SelectItem>
                     <SelectItem value='hotels'>Hotel</SelectItem>
+                    <SelectItem value='things-to-do'>Thing To Do</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
