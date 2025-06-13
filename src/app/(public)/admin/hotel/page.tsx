@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
 
+import { DialogDetailHotel } from '@/components/dialog-detail-hotel';
 import SectionTitle from '@/components/section-title';
 import SkeletonListRestaurant from '@/components/skeleton/skeleton-list-restaurant';
 import { Button } from '@/components/ui/button';
@@ -93,14 +94,7 @@ export default function HotelAdminPage() {
                   </div>
                 </div>
                 <div className='flex gap-2'>
-                  <Button
-                    variant='outline'
-                    onClick={() =>
-                      router.push(`/admin/hotel/edit/${hotel.element_id}`)
-                    }
-                  >
-                    Edit
-                  </Button>
+                  <DialogDetailHotel id={hotel.element_id} />
                   <Button variant='destructive'>Delete</Button>
                 </div>
               </Card>
