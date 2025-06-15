@@ -8,10 +8,22 @@ class Routes {
 }
 
 export class HotelService {
-  static list(page: number = 1, size: number = 10, search: string) {
-    return api
-      .get(Routes.DEFAULT, { searchParams: { page, size, search } })
-      .json<IAttractionPaging>();
+  static list(
+    page: number = 1,
+    size: number = 10,
+    search: string,
+    hotelClass?: string,
+    rating?: number,
+    priceRange?: number,
+    features?: string,
+  ) {
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
+    const searchParams: any = { page, size, search };
+    if (hotelClass) searchParams.hotel_class = hotelClass;
+    if (rating) searchParams.rating = rating;
+    if (priceRange) searchParams.price = priceRange;
+    if (features) searchParams.features = features;
+    return api.get(Routes.DEFAULT, { searchParams }).json<IAttractionPaging>();
   }
 
   static details(id: string) {
@@ -31,5 +43,9 @@ export class HotelService {
     return api
       .get(`${Routes.PLACE}search`, { searchParams: { name, type } })
       .json<IAttractionPaging>();
+  }
+
+  static feature() {
+    return api.get(`${Routes.DEFAULT}features/`).json<{ features: string[] }>();
   }
 }
