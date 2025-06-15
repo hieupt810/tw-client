@@ -11,3 +11,13 @@ export interface IHotel extends IAttraction {
   hotel_class: string;
   number_of_rooms: number;
 }
+
+export interface IFilterStateHotel {
+  price?: number;
+  starRating?: string;
+  amenities?: string[];
+  location?: string[];
+  sortBy?: string;
+  minRating?: number;
+  features?: string[];
+}
