@@ -95,7 +95,7 @@ export default function TopRanking() {
         <Card>
           <CardHeader>
             <CardTitle>Top Ranked Places</CardTitle>
-            <CardDescription>Places with highest ratings</CardDescription>
+            <CardDescription>Popular Places</CardDescription>
             <div className='flex flex-row gap-5'>
               <Select onValueChange={handleSelectRanking} value={selectRanking}>
                 <SelectTrigger>
@@ -130,7 +130,7 @@ export default function TopRanking() {
               {topPlaceRanking.item.map((place, i) => (
                 <div
                   key={place.element_id}
-                  className='flex items-center justify-between'
+                  className='flex h-10 items-center justify-between'
                 >
                   <div className='flex items-center gap-2'>
                     <div className='bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full'>
@@ -138,18 +138,40 @@ export default function TopRanking() {
                         {(page - 1) * 5 + i + 1}
                       </span>
                     </div>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <div>
-                          {place.name.length > 30
-                            ? `${place.name.substring(0, 27)}...`
-                            : place.name}
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <span>{place.name}</span>
-                      </TooltipContent>
-                    </Tooltip>
+                    <div>
+                      <div className='text-sm'>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <div>
+                              {place.name.length > 30
+                                ? `${place.name.substring(0, 27)}...`
+                                : place.name}
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <span>{place.name}</span>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                      <div className='text-muted-foreground text-sm'>
+                        {place.raw_ranking ? (
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <span>
+                                {place.raw_ranking > 4
+                                  ? Number(place.raw_ranking).toFixed(4)
+                                  : place.raw_ranking.toString().slice(0, 4)}
+                                {'... '}
+                                point
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent>{place.raw_ranking}</TooltipContent>
+                          </Tooltip>
+                        ) : (
+                          <span className='text-gray-400 italic'>Unknown</span>
+                        )}
+                      </div>
+                    </div>
                   </div>
                   <div className='flex flex-row gap-2 font-medium'>
                     {place.rating !== undefined

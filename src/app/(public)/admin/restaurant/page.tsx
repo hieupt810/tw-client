@@ -126,12 +126,42 @@ export default function RestaurantAdminPage() {
               className='flex flex-row items-center justify-between p-4'
             >
               <div>
-                <div className='text-lg font-bold'>{restaurant.name}</div>
-                <div className='text-muted-foreground text-sm'>
-                  {restaurant.city?.name} | {restaurant.street}
+                <div className='text-lg font-bold'>
+                  {restaurant.name ? (
+                    restaurant.name
+                  ) : (
+                    <span className='text-gray-400 italic'>Unknown</span>
+                  )}
                 </div>
+
+                <div className='text-muted-foreground text-sm'>
+                  {restaurant.city?.name || restaurant.street ? (
+                    <>
+                      {restaurant.city?.name || (
+                        <span className='text-gray-400 italic'>
+                          Unknown City
+                        </span>
+                      )}{' '}
+                      |{' '}
+                      {restaurant.street || (
+                        <span className='text-gray-400 italic'>
+                          Unknown Street
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <span className='text-gray-400 italic'>
+                      Unknown Address
+                    </span>
+                  )}
+                </div>
+
                 <div className='text-muted-foreground text-xs'>
-                  {restaurant.email}
+                  {restaurant.email ? (
+                    restaurant.email
+                  ) : (
+                    <span className='text-gray-400 italic'>Unknown Email</span>
+                  )}
                 </div>
               </div>
               <div className='flex gap-2'>

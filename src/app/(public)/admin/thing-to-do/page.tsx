@@ -122,14 +122,47 @@ export default function ThingToDoAdminPage() {
                 className='flex flex-row items-center justify-between p-4'
               >
                 <div>
-                  <div className='text-lg font-bold'>{thing.name}</div>
-                  <div className='text-muted-foreground text-sm'>
-                    {thing.city?.name} | {thing.street}
+                  <div className='text-lg font-bold'>
+                    {thing.name ? (
+                      thing.name
+                    ) : (
+                      <span className='text-gray-400 italic'>Unknown Name</span>
+                    )}
                   </div>
+
+                  <div className='text-muted-foreground text-sm'>
+                    {thing.city?.name || thing.street ? (
+                      <>
+                        {thing.city?.name || (
+                          <span className='text-gray-400 italic'>
+                            Unknown City
+                          </span>
+                        )}{' '}
+                        |{' '}
+                        {thing.street || (
+                          <span className='text-gray-400 italic'>
+                            Unknown Street
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      <span className='text-gray-400 italic'>
+                        Unknown Address
+                      </span>
+                    )}
+                  </div>
+
                   <div className='text-muted-foreground text-xs'>
-                    {thing.email}
+                    {thing.email ? (
+                      thing.email
+                    ) : (
+                      <span className='text-gray-400 italic'>
+                        Unknown Email
+                      </span>
+                    )}
                   </div>
                 </div>
+
                 <div className='flex gap-2'>
                   <ThingToDoDetailDialog id={thing.element_id} />
                   <Button
