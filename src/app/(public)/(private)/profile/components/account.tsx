@@ -150,12 +150,12 @@ export default function AccountComponent() {
                 )}
               </div>
 
-              <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+              <div className='grid grid-cols-1 gap-6 pb-12 md:grid-cols-2'>
                 <FormField
                   control={form.control}
                   name='full_name'
                   render={({ field }) => (
-                    <FormItem className='space-y-2'>
+                    <FormItem className='h-[80px] space-y-2'>
                       <FormLabel className='text-sm font-medium text-gray-700'>
                         Full Name
                       </FormLabel>
@@ -166,7 +166,7 @@ export default function AccountComponent() {
                           placeholder='Enter your full name'
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className='mt-1 text-sm text-red-600' />
                     </FormItem>
                   )}
                 />
@@ -174,7 +174,7 @@ export default function AccountComponent() {
                   control={form.control}
                   name='email'
                   render={({ field }) => (
-                    <FormItem className='space-y-2'>
+                    <FormItem className='h-[80px] space-y-2'>
                       <FormLabel className='text-sm font-medium text-gray-700'>
                         Email
                       </FormLabel>
@@ -186,7 +186,7 @@ export default function AccountComponent() {
                           placeholder='Enter your email'
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className='mt-1 text-sm text-red-600' />
                     </FormItem>
                   )}
                 />
@@ -194,7 +194,7 @@ export default function AccountComponent() {
                   control={form.control}
                   name='phone_number'
                   render={({ field }) => (
-                    <FormItem className='space-y-2'>
+                    <FormItem className='h-[80px] space-y-2'>
                       <FormLabel className='text-sm font-medium text-gray-700'>
                         Phone Number
                       </FormLabel>
@@ -206,7 +206,7 @@ export default function AccountComponent() {
                           placeholder='Enter your phone number'
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className='mt-1 text-sm text-red-600' />
                     </FormItem>
                   )}
                 />
@@ -214,7 +214,7 @@ export default function AccountComponent() {
                   control={form.control}
                   name='birthday'
                   render={({ field }) => (
-                    <FormItem className='space-y-2'>
+                    <FormItem className='h-[80px] space-y-2'>
                       <FormLabel className='text-sm font-medium text-gray-700'>
                         Birthday
                       </FormLabel>
@@ -230,7 +230,7 @@ export default function AccountComponent() {
                           }
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className='mt-1 text-sm text-red-600' />
                     </FormItem>
                   )}
                 />

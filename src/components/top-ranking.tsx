@@ -107,7 +107,7 @@ export default function TopRanking() {
                     <SelectItem value='all'>All</SelectItem>
                     <SelectItem value='restaurants'>Restaurant</SelectItem>
                     <SelectItem value='hotels'>Hotel</SelectItem>
-                    <SelectItem value='things-to-do'>Thing To Do</SelectItem>
+                    <SelectItem value='things-to-do'>Activities</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -134,7 +134,9 @@ export default function TopRanking() {
                 >
                   <div className='flex items-center gap-2'>
                     <div className='bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full'>
-                      <span className='text-sm font-medium'>{i + 1}</span>
+                      <span className='text-sm font-medium'>
+                        {(page - 1) * 5 + i + 1}
+                      </span>
                     </div>
                     <Tooltip>
                       <TooltipTrigger>
