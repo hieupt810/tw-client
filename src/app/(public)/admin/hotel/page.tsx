@@ -85,12 +85,44 @@ export default function HotelAdminPage() {
                 className='flex flex-row items-center justify-between p-4'
               >
                 <div>
-                  <div className='text-lg font-bold'>{hotel.name}</div>
-                  <div className='text-muted-foreground text-sm'>
-                    {hotel.city?.name} | {hotel.street}
+                  <div className='text-lg font-bold'>
+                    {hotel.name ? (
+                      hotel.name
+                    ) : (
+                      <span className='text-gray-400 italic'>Unknown Name</span>
+                    )}
                   </div>
+
+                  <div className='text-muted-foreground text-sm'>
+                    {hotel.city?.name || hotel.street ? (
+                      <>
+                        {hotel.city?.name || (
+                          <span className='text-gray-400 italic'>
+                            Unknown City
+                          </span>
+                        )}{' '}
+                        |{' '}
+                        {hotel.street || (
+                          <span className='text-gray-400 italic'>
+                            Unknown Street
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      <span className='text-gray-400 italic'>
+                        Unknown Address
+                      </span>
+                    )}
+                  </div>
+
                   <div className='text-muted-foreground text-xs'>
-                    {hotel.email}
+                    {hotel.email ? (
+                      hotel.email
+                    ) : (
+                      <span className='text-gray-400 italic'>
+                        Unknown Email
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className='flex gap-2'>

@@ -133,7 +133,7 @@ export default function TopPlacesAddedToTrip() {
               {topPlaceIntoTrip.item.map((place, i) => (
                 <div
                   key={place.element_id}
-                  className='flex items-center justify-between'
+                  className='flex h-10 items-center justify-between'
                 >
                   <div className='flex items-center gap-2'>
                     <div className='bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full'>
