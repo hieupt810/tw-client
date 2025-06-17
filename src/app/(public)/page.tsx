@@ -38,7 +38,7 @@ export default function HomePage() {
     await Promise.all([
       fetchHotels(1, 10),
       fetchRestaurants(1, 10),
-      fetchThingsToDo(1, 10),
+      fetchThingsToDo(1, 10, { subcategories: [], subtypes: [] }),
       fetchRecommendations(1, 10),
     ]);
     return () => {
