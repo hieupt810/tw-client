@@ -30,3 +30,13 @@ export interface IRestaurant extends IAttraction {
   traveler_choice_award: boolean;
 }
 export type IRestaurantSearch = ISearch<IRestaurant>;
+
+export interface IRestaurantFilter {
+  search?: string | null;
+  rating?: string | null;
+  cuisines: string[];
+  mealTypes: string[];
+  dietaryRestrictions: string[];
+  features: string[];
+  dishes: string[];
+}

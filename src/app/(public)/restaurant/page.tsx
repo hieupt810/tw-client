@@ -6,40 +6,89 @@ import { useCallback, useEffect } from 'react';
 import { useStore } from 'zustand';
 
 import CardItem from '@/components/card-item';
+import { RestaurantFilter } from '@/components/filters/restaurant-filter';
 import HeroSection from '@/components/hero-section';
 import Loading from '@/components/loading';
 import { Button } from '@/components/ui/button';
+import { useRestaurantParams } from '@/hooks/use-restaurant-params';
 import { useRestaurantStore } from '@/stores/restaurant-store';
+import { IRestaurantFilter } from '@/types/IRestaurant';
+
+const getFilterUrl = (
+  page: number,
+  size: number,
+  filters: IRestaurantFilter,
+) => {
+  let url = `/restaurant?page=${page}&size=${size}`;
+  if (filters.search) url += `&search=${encodeURIComponent(filters.search)}`;
+  if (filters.rating) url += `&rating=${encodeURIComponent(filters.rating)}`;
+  if (filters.cuisines.length)
+    url += `&cuisines=${encodeURIComponent(filters.cuisines.join(','))}`;
+  if (filters.mealTypes.length)
+    url += `&meal_types=${encodeURIComponent(filters.mealTypes.join(','))}`;
+  if (filters.dietaryRestrictions.length)
+    url += `&dietary_restrictions=${encodeURIComponent(
+      filters.dietaryRestrictions.join(','),
+    )}`;
+  if (filters.features.length)
+    url += `&features=${encodeURIComponent(filters.features.join(','))}`;
+  if (filters.dishes.length)
+    url += `&dishes=${encodeURIComponent(filters.dishes.join(','))}`;
+
+  return url;
+};
 
 export default function RestaurantsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const page = parseInt(searchParams.get('page') || '1');
-  const size = parseInt(searchParams.get('size') || '8');
 
-  const { restaurants, reset, fetchRestaurants } = useStore(
-    useRestaurantStore,
-    (state) => state,
-  );
+  const {
+    restaurants,
+    reset,
+    fetchRestaurants,
+    fetchCuisines,
+    fetchDietaryRestrictions,
+    fetchDishes,
+    fetchFeatures,
+    fetchMealTypes,
+  } = useStore(useRestaurantStore, (state) => state);
 
-  const handleNextPage = useCallback(() => {
-    const nextPage = page + 1;
-    router.push(`/restaurant?page=${nextPage}&size=${size}`);
-  }, [page, router, size]);
-
-  const handlePreviousPage = useCallback(() => {
-    const previousPage = page - 1;
-    router.push(`/restaurant?page=${previousPage}&size=${size}`);
-  }, [page, router, size]);
+  const { params } = useRestaurantParams(searchParams);
+  const { page, size, ...paramsWithoutPage } = params;
 
   useEffect(() => {
-    fetchRestaurants(page, size);
+    fetchRestaurants(page, size, paramsWithoutPage);
     return () => {
       reset();
     };
-  }, [fetchRestaurants, page, size, reset]);
+  }, [fetchRestaurants, page, size, searchParams, reset]);
 
-  if (restaurants.items.length === 0) return <Loading />;
+  useEffect(() => {
+    fetchCuisines();
+    fetchDietaryRestrictions();
+    fetchDishes();
+    fetchFeatures();
+    fetchMealTypes();
+  }, []);
+
+  const handleUpdateFilters = useCallback(
+    (newFilters: IRestaurantFilter) => {
+      router.push(getFilterUrl(page, size, newFilters));
+    },
+    [router],
+  );
+
+  const handleNextPage = useCallback(() => {
+    const nextPage = params.page + 1;
+    router.push(getFilterUrl(nextPage, size, params));
+  }, [params.page, router, params.size]);
+
+  const handlePreviousPage = useCallback(() => {
+    const previousPage = params.page - 1;
+    router.push(getFilterUrl(previousPage, size, params));
+  }, [params.page, router, params.size]);
+
+  if (restaurants.isLoading) return <Loading />;
 
   return (
     <>
@@ -47,6 +96,10 @@ export default function RestaurantsPage() {
         image='/restaurant-1.jpeg'
         title='Discover amazing dining options'
         description='Discover the best restaurants, cafes, and bars in your area. Indulge in a variety of cuisines and dining experiences tailored to your taste.'
+      />
+      <RestaurantFilter
+        filters={paramsWithoutPage}
+        onUpdateFilters={handleUpdateFilters}
       />
       <div className='my-10 grid grid-cols-2 gap-6 md:grid-cols-4'>
         {restaurants.items.map((restaurant) => (
@@ -58,16 +111,16 @@ export default function RestaurantsPage() {
           <Button
             variant='outline'
             onClick={handlePreviousPage}
-            disabled={page <= 1}
+            disabled={params.page <= 1}
           >
             <ArrowLeft />
             <span>Previous</span>
           </Button>
-          <span className='text-center text-sm font-medium'>{`Page ${page} of ${restaurants.paging.pageCount}`}</span>
+          <span className='text-center text-sm font-medium'>{`Page ${params.page} of ${restaurants.paging.pageCount}`}</span>
           <Button
             variant='outline'
             onClick={handleNextPage}
-            disabled={page >= restaurants.paging.pageCount}
+            disabled={params.page >= restaurants.paging.pageCount}
           >
             <span>Next</span>
             <ArrowRight />

@@ -33,6 +33,8 @@ type Action = {
   fetchFeatureHotels: () => Promise<void>;
 };
 
+const HOTEL_FEATURES_KEY = 'hotelFeatures';
+
 const initialState: State = {
   hotel: {
     item: null,
@@ -45,7 +47,7 @@ const initialState: State = {
     isLoading: true,
     features:
       typeof sessionStorage !== 'undefined'
-        ? JSON.parse(sessionStorage.getItem('featureHotels') || '[]')
+        ? JSON.parse(sessionStorage.getItem(HOTEL_FEATURES_KEY) || '[]')
         : [],
     paging: {
       offset: 0,
@@ -155,7 +157,7 @@ export const useHotelStore = create<State & Action>()((set) => ({
       const listFeature = await HotelService.feature();
       if (typeof sessionStorage !== 'undefined') {
         sessionStorage.setItem(
-          'featureHotels',
+          HOTEL_FEATURES_KEY,
           JSON.stringify(listFeature.features || []),
         );
       }

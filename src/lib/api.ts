@@ -8,7 +8,7 @@ import { getTokenPair, removeTokenPair } from './utils';
 
 const api = ky.create({
   prefixUrl: Constant.API_URL,
-  timeout: 10000,
+  timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': Constant.API_URL,
