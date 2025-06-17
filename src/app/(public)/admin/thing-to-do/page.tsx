@@ -45,7 +45,9 @@ export default function ThingToDoAdminPage() {
   const fetchThings = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await ThingToDoService.list(page, size, debouncedSearchTerm);
+      const data = await ThingToDoService.list(page, size, {
+        search: debouncedSearchTerm,
+      });
       setThings(data.data as IThingToDo[]);
       setTotalPages(data.paging.pageCount || 1);
     } catch {

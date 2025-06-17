@@ -1,13 +1,4 @@
-import {
-  ChevronDown,
-  Cookie,
-  Filter,
-  OctagonMinus,
-  Sandwich,
-  Star,
-  Utensils,
-  Wifi,
-} from 'lucide-react';
+import { ChevronDown, Filter, Layers2, Star, Tag } from 'lucide-react';
 import { memo, useEffect, useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
@@ -20,34 +11,33 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Slider } from '@/components/ui/slider';
-import { useRestaurantStore } from '@/stores/restaurant-store';
+import { useThingToDoStore } from '@/stores/thing-to-do-store';
 import { IPagingMeta } from '@/types/IPaging';
-import { IRestaurantFilter } from '@/types/IRestaurant';
+import { IThingToDoFilter } from '@/types/IThingToDo';
+
+import { Slider } from '../ui/slider';
 
 type Props = {
-  filters: IRestaurantFilter;
+  filters: IThingToDoFilter;
   onUpdateFilters: (
-    filters: IRestaurantFilter & Pick<IPagingMeta, 'page' | 'size'>,
+    filters: IThingToDoFilter & Pick<IPagingMeta, 'page' | 'size'>,
   ) => void;
 };
 
-export const RestaurantFilter = memo(({ filters, onUpdateFilters }: Props) => {
-  const { cuisines, dietaryRestrictions, dishes, features, mealTypes } =
-    useRestaurantStore((state) => state.restaurants);
+export const ThingToDoFilter = memo(({ filters, onUpdateFilters }: Props) => {
+  const { subcategories, subtypes } = useThingToDoStore(
+    (state) => state.thingsToDo,
+  );
 
-  const [localFilters, setLocalFilters] = useState<IRestaurantFilter>(filters);
+  const [localFilters, setLocalFilters] = useState<IThingToDoFilter>(filters);
 
   const [activeFiltersCountLocal, setActiveFiltersCountLocal] = useState(0);
 
   useEffect(() => {
     let count = 0;
-    if (localFilters.cuisines.length > 0) count++;
-    if (localFilters.dishes.length > 0) count++;
-    if (localFilters.mealTypes.length > 0) count++;
-    if (localFilters.dietaryRestrictions.length > 0) count++;
-    if (localFilters.features.length > 0) count++;
     if (localFilters.rating) count++;
+    if (localFilters.subcategories.length > 0) count++;
+    if (localFilters.subtypes.length > 0) count++;
     if (localFilters.search) count++;
 
     setActiveFiltersCountLocal(count);
@@ -57,10 +47,10 @@ export const RestaurantFilter = memo(({ filters, onUpdateFilters }: Props) => {
     setLocalFilters(filters);
   }, [filters]);
 
-  const handleFilterChange = (key: keyof IRestaurantFilter, value: string) => {
+  const handleFilterChange = (key: keyof IThingToDoFilter, value: string) => {
     setLocalFilters((prev) => {
       let updatedValue;
-      if (key !== 'rating' && key !== 'search') {
+      if (key !== 'search' && key !== 'rating') {
         updatedValue = prev[key]?.includes(value)
           ? (prev[key] as string[]).filter((v) => v !== value)
           : [...(prev[key] as string[]), value];
@@ -78,18 +68,17 @@ export const RestaurantFilter = memo(({ filters, onUpdateFilters }: Props) => {
 
   const resetFilters = () => {
     onUpdateFilters({
-      mealTypes: [],
-      cuisines: [],
-      dishes: [],
-      dietaryRestrictions: [],
-      features: [],
+      subcategories: [],
+      subtypes: [],
       page: 1,
       size: 8,
     });
   };
+
   const applyFilters = () => {
     onUpdateFilters({ ...localFilters, page: 1, size: 8 });
   };
+
   return (
     <div className='sticky top-0 z-40 border-b border-gray-200 bg-white'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
@@ -163,132 +152,54 @@ export const RestaurantFilter = memo(({ filters, onUpdateFilters }: Props) => {
                   </div>
                 </DropdownMenuContent>
               </DropdownMenu>
-
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant='outline' className='h-9'>
-                    <Cookie className='mr-2 h-4 w-4' />
-                    Cuisines
+                    <Tag className='mr-2 h-4 w-4' />
+                    Categories
                     <ChevronDown className='ml-2 h-4 w-4' />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuLabel>Cuisines</DropdownMenuLabel>
+                  <DropdownMenuLabel>Subcategories</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {cuisines?.map((cuisine, idx) => (
-                    <DropdownMenuCheckboxItem
-                      key={idx}
-                      onClick={() => handleFilterChange('cuisines', cuisine)}
-                      checked={
-                        localFilters.cuisines?.includes(cuisine) || false
-                      }
-                    >
-                      <span className='ml-2'>{cuisine}</span>
-                    </DropdownMenuCheckboxItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant='outline' className='h-9'>
-                    <Utensils className='mr-2 h-4 w-4' />
-                    Meal types
-                    <ChevronDown className='ml-2 h-4 w-4' />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>Meal types</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  {mealTypes?.map((mealType, idx) => (
-                    <DropdownMenuCheckboxItem
-                      key={idx}
-                      onClick={() => handleFilterChange('mealTypes', mealType)}
-                      checked={
-                        localFilters.mealTypes?.includes(mealType) || false
-                      }
-                    >
-                      <span className='ml-2'>{mealType}</span>
-                    </DropdownMenuCheckboxItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant='outline' className='h-9'>
-                    <Sandwich className='mr-2 h-4 w-4' />
-                    Dishes
-                    <ChevronDown className='ml-2 h-4 w-4' />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>Dishes</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  {dishes?.map((dish, idx) => (
-                    <DropdownMenuCheckboxItem
-                      key={idx}
-                      onClick={() => handleFilterChange('dishes', dish)}
-                      checked={localFilters.dishes?.includes(dish) || false}
-                    >
-                      <span className='ml-2'>{dish}</span>
-                    </DropdownMenuCheckboxItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant='outline' className='h-9'>
-                    <Wifi className='mr-2 h-4 w-4' />
-                    Amenities
-                    <ChevronDown className='ml-2 h-4 w-4' />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>Amenities</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  {features?.map((feature, idx) => (
-                    <DropdownMenuCheckboxItem
-                      key={idx}
-                      onClick={() => handleFilterChange('features', feature)}
-                      checked={
-                        localFilters.features?.includes(feature) || false
-                      }
-                    >
-                      <span className='ml-2'>{feature}</span>
-                    </DropdownMenuCheckboxItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant='outline' className='h-9'>
-                    <OctagonMinus className='mr-2 h-4 w-4' />
-                    Dietary restrictions
-                    <ChevronDown className='ml-2 h-4 w-4' />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>Dietary restrictions</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  {dietaryRestrictions?.map((dietaryRestriction, idx) => (
+                  {subcategories?.map((subcategory, idx) => (
                     <DropdownMenuCheckboxItem
                       key={idx}
                       onClick={() =>
-                        handleFilterChange(
-                          'dietaryRestrictions',
-                          dietaryRestriction,
-                        )
+                        handleFilterChange('subcategories', subcategory)
                       }
                       checked={
-                        localFilters.dietaryRestrictions?.includes(
-                          dietaryRestriction,
-                        ) || false
+                        localFilters.subcategories?.includes(subcategory) ||
+                        false
                       }
                     >
-                      <span className='ml-2'>{dietaryRestriction}</span>
+                      <span className='ml-2'>{subcategory}</span>
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant='outline' className='h-9'>
+                    <Layers2 className='mr-2 h-4 w-4' />
+                    Types
+                    <ChevronDown className='ml-2 h-4 w-4' />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>Subtypes</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {subtypes?.map((subtype, idx) => (
+                    <DropdownMenuCheckboxItem
+                      key={idx}
+                      onClick={() => handleFilterChange('subtypes', subtype)}
+                      checked={
+                        localFilters.subtypes?.includes(subtype) || false
+                      }
+                    >
+                      <span className='ml-2'>{subtype}</span>
                     </DropdownMenuCheckboxItem>
                   ))}
                 </DropdownMenuContent>
@@ -310,36 +221,16 @@ export const RestaurantFilter = memo(({ filters, onUpdateFilters }: Props) => {
         {activeFiltersCountLocal > 0 && (
           <div className='pb-4'>
             <div className='flex flex-wrap gap-2'>
-              {localFilters.cuisines?.length > 0 &&
-                localFilters.cuisines.map((cuisine, idx) => (
+              {localFilters.subcategories?.length > 0 &&
+                localFilters.subcategories.map((subcategory, idx) => (
                   <Badge key={idx} className='bg-purple-100 text-purple-700'>
-                    ${cuisine}
+                    {subcategory}
                   </Badge>
                 ))}
-              {localFilters.dishes?.length > 0 &&
-                localFilters.dishes.map((dish, idx) => (
+              {localFilters.subtypes?.length > 0 &&
+                localFilters.subtypes.map((subtype, idx) => (
                   <Badge key={idx} className='bg-purple-100 text-purple-700'>
-                    ${dish}
-                  </Badge>
-                ))}
-              {localFilters.mealTypes?.length > 0 &&
-                localFilters.mealTypes.map((mealType, idx) => (
-                  <Badge key={idx} className='bg-purple-100 text-purple-700'>
-                    ${mealType}
-                  </Badge>
-                ))}
-              {localFilters.dietaryRestrictions?.length > 0 &&
-                localFilters.dietaryRestrictions.map(
-                  (dietaryRestriction, idx) => (
-                    <Badge key={idx} className='bg-purple-100 text-purple-700'>
-                      ${dietaryRestriction}
-                    </Badge>
-                  ),
-                )}
-              {localFilters.features?.length > 0 &&
-                localFilters.features.map((feature, idx) => (
-                  <Badge key={idx} className='bg-purple-100 text-purple-700'>
-                    ${feature}
+                    {subtype}
                   </Badge>
                 ))}
               {localFilters.rating && Number(localFilters.rating) > 0 && (
@@ -358,4 +249,4 @@ export const RestaurantFilter = memo(({ filters, onUpdateFilters }: Props) => {
   );
 });
 
-RestaurantFilter.displayName = 'RestaurantFilter';
+ThingToDoFilter.displayName = 'ThingToDoFilter';

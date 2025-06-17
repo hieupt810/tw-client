@@ -12,6 +12,7 @@ import Loading from '@/components/loading';
 import { Button } from '@/components/ui/button';
 import { useRestaurantParams } from '@/hooks/use-restaurant-params';
 import { useRestaurantStore } from '@/stores/restaurant-store';
+import { IPagingMeta } from '@/types/IPaging';
 import { IRestaurantFilter } from '@/types/IRestaurant';
 
 const getFilterUrl = (
@@ -72,8 +73,8 @@ export default function RestaurantsPage() {
   }, []);
 
   const handleUpdateFilters = useCallback(
-    (newFilters: IRestaurantFilter) => {
-      router.push(getFilterUrl(page, size, newFilters));
+    (newFilters: IRestaurantFilter & Pick<IPagingMeta, 'page' | 'size'>) => {
+      router.push(getFilterUrl(newFilters.page, newFilters.size, newFilters));
     },
     [router],
   );
