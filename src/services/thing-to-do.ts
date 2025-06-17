@@ -7,9 +7,13 @@ class Routes {
 }
 
 export class ThingToDoService {
-  static list(page: number = 1, size: number = 10, search: string) {
+  static list(
+    page: number = 1,
+    size: number = 10,
+    filters: Record<string, string>,
+  ) {
     return api
-      .get(Routes.DEFAULT, { searchParams: { page, size, search } })
+      .get(Routes.DEFAULT, { searchParams: { page, size, ...filters } })
       .json<IAttractionPaging>();
   }
 
@@ -23,5 +27,15 @@ export class ThingToDoService {
 
   static edit(id: string, data: IThingToDo) {
     return api.put(`${Routes.DEFAULT}${id}`, { json: data }).json();
+  }
+
+  static subcategories() {
+    return api
+      .get(`${Routes.DEFAULT}subcategories/`)
+      .json<{ subcategories: string[] }>();
+  }
+
+  static subtypes() {
+    return api.get(`${Routes.DEFAULT}subtypes/`).json<{ subtypes: string[] }>();
   }
 }

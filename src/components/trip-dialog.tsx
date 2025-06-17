@@ -308,7 +308,8 @@ export const SearchedPlaceItem = ({
                 )}
               >
                 {capitalize(
-                  item.type === 'HOTEL' || item.type === 'RESTAURANT'
+                  upperCase(item.type) === 'HOTEL' ||
+                    upperCase(item.type) === 'RESTAURANT'
                     ? item.type
                     : 'attraction',
                 )}

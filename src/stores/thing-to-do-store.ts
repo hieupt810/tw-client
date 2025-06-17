@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { ThingToDoService } from '@/services/thing-to-do';
 import { IAttraction } from '@/types/IAttraction';
 import { IPagingMeta } from '@/types/IPaging';
-import { IThingToDo } from '@/types/IThingToDo';
+import { IThingToDo, IThingToDoFilter } from '@/types/IThingToDo';
 
 type State = {
   thingToDo: {
@@ -16,6 +16,8 @@ type State = {
     error: string;
     isLoading: boolean;
     paging: IPagingMeta;
+    subcategories?: string[];
+    subtypes?: string[];
   };
 };
 
@@ -25,9 +27,14 @@ type Action = {
   fetchThingsToDo: (
     page: number,
     size: number,
-    search?: string,
+    filters: IThingToDoFilter,
   ) => Promise<void>;
+  fetchSubcategories: () => Promise<void>;
+  fetchSubtypes: () => Promise<void>;
 };
+
+const THINGTODO_SUBCATEGORIES_KEY = 'thingtodoSubcategories';
+const THINGTODO_SUBTYPES_KEY = 'thingtodoSubtypes';
 
 const initialState: State = {
   thingToDo: {
@@ -46,6 +53,16 @@ const initialState: State = {
       size: 10,
       totalCount: 0,
     },
+    subcategories:
+      typeof sessionStorage !== 'undefined'
+        ? JSON.parse(
+            sessionStorage.getItem(THINGTODO_SUBCATEGORIES_KEY) || '[]',
+          )
+        : [],
+    subtypes:
+      typeof sessionStorage !== 'undefined'
+        ? JSON.parse(sessionStorage.getItem(THINGTODO_SUBTYPES_KEY) || '[]')
+        : [],
   },
 };
 
@@ -78,13 +95,25 @@ export const useThingToDoStore = create<State & Action>()((set) => ({
     }
   },
 
-  async fetchThingsToDo(page = 1, size = 10, search: string = '') {
+  async fetchThingsToDo(page = 1, size = 10, filters: IThingToDoFilter) {
     set((state) => ({
+      ...state,
       thingsToDo: { ...state.thingsToDo, isLoading: true },
     }));
     try {
-      const data = await ThingToDoService.list(page, size, search);
+      const filterParams: Record<string, string> = {};
+      if (filters.search) filterParams.search = filters.search;
+      if (filters.subcategories && filters.subcategories.length > 0) {
+        filterParams.subcategories = filters.subcategories.join(',');
+      }
+      if (filters.subtypes && filters.subtypes.length > 0) {
+        filterParams.subtypes = filters.subtypes.join(',');
+      }
+      if (filters.rating) filterParams.rating = filters.rating.toString();
+
+      const data = await ThingToDoService.list(page, size, filterParams);
       set((state) => ({
+        ...state,
         thingsToDo: {
           ...state.thingsToDo,
           items: data.data,
@@ -93,6 +122,7 @@ export const useThingToDoStore = create<State & Action>()((set) => ({
       }));
     } catch {
       set((state) => ({
+        ...state,
         thingsToDo: {
           ...state.thingsToDo,
           error: 'Failed to fetch attractions',
@@ -100,7 +130,60 @@ export const useThingToDoStore = create<State & Action>()((set) => ({
       }));
     } finally {
       set((state) => ({
+        ...state,
         thingsToDo: { ...state.thingsToDo, isLoading: false },
+      }));
+    }
+  },
+  async fetchSubcategories() {
+    try {
+      const data = await ThingToDoService.subcategories();
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.setItem(
+          THINGTODO_SUBCATEGORIES_KEY,
+          JSON.stringify(data.subcategories || []),
+        );
+      }
+      set((state) => ({
+        ...state,
+        thingsToDo: {
+          ...state.thingsToDo,
+          subcategories: data.subcategories || [],
+        },
+      }));
+    } catch {
+      set((state) => ({
+        ...state,
+        thingsToDo: {
+          ...state.thingsToDo,
+          error: 'Failed to fetch subcategories',
+        },
+      }));
+    }
+  },
+  async fetchSubtypes() {
+    try {
+      const data = await ThingToDoService.subtypes();
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.setItem(
+          THINGTODO_SUBTYPES_KEY,
+          JSON.stringify(data.subtypes || []),
+        );
+      }
+      set((state) => ({
+        ...state,
+        thingsToDo: {
+          ...state.thingsToDo,
+          subtypes: data.subtypes || [],
+        },
+      }));
+    } catch {
+      set((state) => ({
+        ...state,
+        thingsToDo: {
+          ...state.thingsToDo,
+          error: 'Failed to fetch subtypes',
+        },
       }));
     }
   },

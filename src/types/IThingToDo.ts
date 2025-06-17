@@ -8,3 +8,10 @@ export interface IThingToDo extends IAttraction {
   subtypes: string[];
   subcategories: string[];
 }
+
+export interface IThingToDoFilter {
+  search?: string | null;
+  rating?: number | null;
+  subcategories: string[];
+  subtypes: string[];
+}

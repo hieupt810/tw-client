@@ -6,46 +6,88 @@ import { useCallback, useEffect } from 'react';
 import { useStore } from 'zustand';
 
 import CardItem from '@/components/card-item';
+import { ThingToDoFilter } from '@/components/filters/thingtodo-filter';
 import HeroSection from '@/components/hero-section';
 import Loading from '@/components/loading';
 import { Button } from '@/components/ui/button';
+import { useThingToDoParams } from '@/hooks/use-thingtodo-params';
 import { useThingToDoStore } from '@/stores/thing-to-do-store';
+import { IPagingMeta } from '@/types/IPaging';
+import { IThingToDoFilter } from '@/types/IThingToDo';
+
+const getFilterUrl = (
+  page: number,
+  size: number,
+  filters: IThingToDoFilter,
+) => {
+  let url = `/thing-to-do?page=${page}&size=${size}`;
+  if (filters.search) url += `&search=${encodeURIComponent(filters.search)}`;
+  if (filters.subcategories.length > 0) {
+    url += `&subcategories=${encodeURIComponent(filters.subcategories.join(','))}`;
+  }
+  if (filters.subtypes.length > 0) {
+    url += `&subtypes=${encodeURIComponent(filters.subtypes.join(','))}`;
+  }
+  if (filters.rating) url += `&rating=${encodeURIComponent(filters.rating)}`;
+
+  return url;
+};
 
 export default function ThingsToDoPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const page = parseInt(searchParams.get('page') || '1');
-  const size = parseInt(searchParams.get('size') || '8');
 
-  const { thingsToDo, reset, fetchThingsToDo } = useStore(
-    useThingToDoStore,
-    (state) => state,
-  );
+  const { params } = useThingToDoParams(searchParams);
+  const { page, size, ...paramsWithoutPage } = params;
+
+  const {
+    thingsToDo,
+    reset,
+    fetchThingsToDo,
+    fetchSubcategories,
+    fetchSubtypes,
+  } = useStore(useThingToDoStore, (state) => state);
 
   const handleNextPage = useCallback(() => {
     const nextPage = page + 1;
-    router.push(`/thing-to-do?page=${nextPage}&size=${size}`);
+    router.push(getFilterUrl(nextPage, size, paramsWithoutPage));
   }, [page, router, size]);
 
   const handlePreviousPage = useCallback(() => {
     const previousPage = page - 1;
-    router.push(`/thing-to-do?page=${previousPage}&size=${size}`);
+    router.push(getFilterUrl(previousPage, size, paramsWithoutPage));
   }, [page, router, size]);
 
   useEffect(() => {
-    fetchThingsToDo(page, size);
+    fetchThingsToDo(page, size, paramsWithoutPage);
     return () => {
       reset();
     };
-  }, [fetchThingsToDo, page, size, reset]);
+  }, [fetchThingsToDo, page, size, reset, searchParams]);
 
-  if (thingsToDo.items.length === 0) return <Loading />;
+  useEffect(() => {
+    fetchSubcategories();
+    fetchSubtypes();
+  }, []);
+
+  const handleUpdateFilters = useCallback(
+    (newFilters: IThingToDoFilter & Pick<IPagingMeta, 'page' | 'size'>) => {
+      router.push(getFilterUrl(newFilters.page, newFilters.size, newFilters));
+    },
+    [router],
+  );
+
+  if (thingsToDo.isLoading) return <Loading />;
   return (
     <>
       <HeroSection
         image='/thing-to-do-1.jpeg'
         title='Plan, go - we make it easy'
         description='Discover family activities, adventures, tours, museums, and top attractions to plan your next trip.'
+      />
+      <ThingToDoFilter
+        filters={paramsWithoutPage}
+        onUpdateFilters={handleUpdateFilters}
       />
       <div className='my-10 grid grid-cols-2 gap-6 md:grid-cols-4'>
         {thingsToDo.items.map((thing) => (
