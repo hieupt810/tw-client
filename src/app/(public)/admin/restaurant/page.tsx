@@ -48,7 +48,7 @@ export default function RestaurantAdminPage() {
       const data = await RestaurantService.list(
         page,
         size,
-        debouncedSearchTerm,
+        { search: debouncedSearchTerm }, // Pass search term to the service,
       );
       setRestaurants(data.data as IRestaurant[]);
       setTotalPages(data.paging.pageCount || 1);

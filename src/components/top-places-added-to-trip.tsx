@@ -110,7 +110,7 @@ export default function TopPlacesAddedToTrip() {
                     <SelectItem value='all'>All</SelectItem>
                     <SelectItem value='restaurants'>Restaurant</SelectItem>
                     <SelectItem value='hotels'>Hotel</SelectItem>
-                    <SelectItem value='things-to-do'>Thing To Do</SelectItem>
+                    <SelectItem value='things-to-do'>Attractions</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -136,12 +136,12 @@ export default function TopPlacesAddedToTrip() {
                   className='flex h-10 items-center justify-between'
                 >
                   <div className='flex items-center gap-2'>
-                    <div className='bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full'>
+                    <div className='bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium'>
                       {(page - 1) * 5 + i + 1}
                     </div>
                     <Tooltip>
                       <TooltipTrigger>
-                        <div>
+                        <div className='text-sm'>
                           {place.name.length > 30
                             ? `${place.name.substring(0, 27)}...`
                             : place.name}
