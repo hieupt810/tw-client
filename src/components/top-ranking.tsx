@@ -107,7 +107,7 @@ export default function TopRanking() {
                     <SelectItem value='all'>All</SelectItem>
                     <SelectItem value='restaurants'>Restaurant</SelectItem>
                     <SelectItem value='hotels'>Hotel</SelectItem>
-                    <SelectItem value='things-to-do'>Activities</SelectItem>
+                    <SelectItem value='things-to-do'>Attractions</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -159,10 +159,9 @@ export default function TopRanking() {
                             <TooltipTrigger>
                               <span>
                                 {place.raw_ranking > 4
-                                  ? Number(place.raw_ranking).toFixed(4)
+                                  ? Number(place.raw_ranking).toFixed(3)
                                   : place.raw_ranking.toString().slice(0, 4)}
-                                {'... '}
-                                point
+                                &nbsp;point
                               </span>
                             </TooltipTrigger>
                             <TooltipContent>{place.raw_ranking}</TooltipContent>
