@@ -79,7 +79,7 @@ export default function AccountComponent() {
   //   return <Loading />;
   // }
 
-  return isLoading ? (
+  return user.isLoading ? (
     <SkeletonProfile />
   ) : (
     <div>
@@ -243,7 +243,6 @@ export default function AccountComponent() {
         autoplay
         title='Favourites'
         items={favourites}
-        // isContentLoading={isLoading}
         autoplayDelay={5000}
       />
     </div>
