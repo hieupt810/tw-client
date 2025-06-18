@@ -313,33 +313,33 @@ export const RestaurantFilter = memo(({ filters, onUpdateFilters }: Props) => {
               {localFilters.cuisines?.length > 0 &&
                 localFilters.cuisines.map((cuisine, idx) => (
                   <Badge key={idx} className='bg-purple-100 text-purple-700'>
-                    ${cuisine}
+                    {cuisine}
                   </Badge>
                 ))}
               {localFilters.dishes?.length > 0 &&
                 localFilters.dishes.map((dish, idx) => (
                   <Badge key={idx} className='bg-purple-100 text-purple-700'>
-                    ${dish}
+                    {dish}
                   </Badge>
                 ))}
               {localFilters.mealTypes?.length > 0 &&
                 localFilters.mealTypes.map((mealType, idx) => (
                   <Badge key={idx} className='bg-purple-100 text-purple-700'>
-                    ${mealType}
+                    {mealType}
                   </Badge>
                 ))}
               {localFilters.dietaryRestrictions?.length > 0 &&
                 localFilters.dietaryRestrictions.map(
                   (dietaryRestriction, idx) => (
                     <Badge key={idx} className='bg-purple-100 text-purple-700'>
-                      ${dietaryRestriction}
+                      {dietaryRestriction}
                     </Badge>
                   ),
                 )}
               {localFilters.features?.length > 0 &&
                 localFilters.features.map((feature, idx) => (
                   <Badge key={idx} className='bg-purple-100 text-purple-700'>
-                    ${feature}
+                    {feature}
                   </Badge>
                 ))}
               {localFilters.rating && Number(localFilters.rating) > 0 && (
