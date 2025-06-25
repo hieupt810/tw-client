@@ -85,7 +85,6 @@ export const useUserStore = create<State & Action>()((set) => ({
       users: { ...state.users, isLoading: true },
     }));
     try {
-      console.log('Fetching users', { page, size, name });
       const data = await UserService.list(page, size, name);
       set((state) => ({
         users: { ...state.users, items: data.data, paging: data.paging },

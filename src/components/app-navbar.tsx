@@ -77,7 +77,7 @@ export default function AppNavbar() {
                     <ImageWithFallback
                       width={5000}
                       height={5000}
-                      src={me.avatar || '/fallback-avatar.jpg'}
+                      src={me.avatar ? me.avatar : '/fallback-avatar.jpg'}
                       alt={me.full_name}
                     />
                   </div>

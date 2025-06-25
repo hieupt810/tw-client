@@ -45,7 +45,7 @@ const adminMenuItems = [
     icon: Utensils,
   },
   {
-    title: 'Activities Management',
+    title: 'Attraction Management',
     url: '/admin/thing-to-do',
     icon: MapPin,
   },
