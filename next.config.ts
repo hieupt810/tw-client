@@ -29,6 +29,16 @@ const nextConfig: NextConfig = {
         hostname: 'raw.githubusercontent.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'gravatar.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'robohash.org',
+        port: '',
+      },
     ],
   },
 };
